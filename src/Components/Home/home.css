@@ -1,0 +1,29 @@
+.home {
+    display: grid;
+    grid-template-columns: max-content max-content max-content;
+    grid-template-rows: max-content;
+    grid-template-areas:
+        "heading"
+        "movie"
+        "tv";
+}
+
+.home-heading {
+    font-size: 3em;
+    margin: 0;
+    grid-area: heading;
+}
+
+.heading {
+    padding-left: 20px
+}
+
+.home-movie {
+    width: 100vw;
+    grid-area: movie;
+}
+
+.home-tv {
+    width: 100vw;
+    grid-area: tv;
+}

@@ -1,12 +1,76 @@
 import React from "react";
 import {Link} from "@reach/router";
+import MovieSlider from "./../MovieSlider/MovieSlider";
+import john from "./../../john-300.jpg";
+import "./home.css";
 
-const Home = () => {
+const Home = props => {
+    let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
     return (
-        <div>
-            <h1>Home</h1>
-            <Link to="movie/1eqdwq">Go</Link>
-        </div>
+        <section className="home">
+            <h1 className="heading home-heading color-orange">Popular</h1>
+            <section className="home-movie">
+                <h1 className="heading color-orange">MOVIES</h1>
+                <MovieSlider>
+                    {arr.map((val, index) => {
+                        return (
+                            <Link
+                                to={"../movie/" + index}
+                                key={index}
+                                className="card"
+                            >
+                                <div>
+                                    <img
+                                        src={john}
+                                        alt="poster"
+                                        className="slider-image"
+                                    />
+                                    <div className="data">
+                                        <h3 className="card-movie-name">
+                                            John wick {val}
+                                        </h3>
+                                        <h4 className="card-release-date">
+                                            24 May, 2019
+                                        </h4>
+                                    </div>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </MovieSlider>
+            </section>
+            <section className="home-tv">
+                <h1 className="heading color-orange">TV-SHOWS</h1>
+                <MovieSlider>
+                    {arr.map((val, index) => {
+                        return (
+                            <Link
+                                to={"../movie/" + index}
+                                key={index}
+                                className="card"
+                            >
+                                <div>
+                                    <img
+                                        src={john}
+                                        alt="poster"
+                                        className="slider-image"
+                                    />
+                                    <div className="data">
+                                        <h3 className="card-movie-name">
+                                            John wick {val}
+                                        </h3>
+                                        <h4 className="card-release-date">
+                                            24 May, 2019
+                                        </h4>
+                                    </div>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </MovieSlider>
+            </section>
+        </section>
     );
 };
 

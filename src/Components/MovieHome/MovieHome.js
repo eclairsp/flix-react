@@ -27,12 +27,12 @@ const MovieHome = props => {
                                     className="slider-image"
                                 />
                                 <div className="data">
-                                    <h4 className="card-movie-name">
+                                    <h3 className="card-movie-name">
                                         John wick {val}
-                                    </h4>
-                                    <h5 className="card-release-date">
+                                    </h3>
+                                    <h4 className="card-release-date">
                                         24 May, 2019
-                                    </h5>
+                                    </h4>
                                 </div>
                             </div>
                         </Link>
@@ -51,12 +51,12 @@ const MovieHome = props => {
                             <div>
                                 <img src={john} alt="poster" />
                                 <div className="data">
-                                    <h4 className="card-movie-name">
+                                    <h3 className="card-movie-name">
                                         John Wick {val}
-                                    </h4>
-                                    <h5 className="card-release-date">
+                                    </h3>
+                                    <h4 className="card-release-date">
                                         24 May, 2019
-                                    </h5>
+                                    </h4>
                                 </div>
                             </div>
                         </Link>
