@@ -10,7 +10,7 @@ import "./app.css";
 
 function App() {
     return (
-        <div>
+        <div className="app">
             <Header />
             <Router>
                 <Home path="/" />
@@ -21,7 +21,11 @@ function App() {
                 <Search path="/search/:query" />
             </Router>
             <footer>
-                <p className="footer-msg">Made with &#128153; by, Prab</p>
+                Made with{" "}
+                <span role="img" aria-label="love">
+                    &#128153;
+                </span>{" "}
+                by, Prab
             </footer>
         </div>
     );

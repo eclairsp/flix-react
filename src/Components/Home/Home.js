@@ -10,7 +10,99 @@ const Home = props => {
     return (
         <section className="home">
             <h1 className="heading home-heading color-orange">Popular</h1>
-            <section className="home-movie">
+            <h1 className="heading color-orange">MOVIES</h1>
+            <section className="home-movie home-width">
+                <MovieSlider>
+                    {arr.map((val, index) => {
+                        return (
+                            <Link
+                                to={"../movie/" + index}
+                                key={index}
+                                className="card"
+                            >
+                                <div>
+                                    <img
+                                        src={john}
+                                        alt="poster"
+                                        className="slider-image"
+                                    />
+                                    <div className="data">
+                                        <h3 className="card-movie-name">
+                                            John wick {val}
+                                        </h3>
+                                        <h4 className="card-release-date">
+                                            24 May, 2019
+                                        </h4>
+                                    </div>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </MovieSlider>
+            </section>
+
+            <h1 className="heading color-orange">TV-SHOWS</h1>
+            <section className="home-tv home-width">
+                <MovieSlider>
+                    {arr.map((val, index) => {
+                        return (
+                            <Link
+                                to={"../movie/" + index}
+                                key={index}
+                                className="card"
+                            >
+                                <div>
+                                    <img
+                                        src={john}
+                                        alt="poster"
+                                        className="slider-image"
+                                    />
+                                    <div className="data">
+                                        <h3 className="card-movie-name">
+                                            John wick {val}
+                                        </h3>
+                                        <h4 className="card-release-date">
+                                            24 May, 2019
+                                        </h4>
+                                    </div>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </MovieSlider>
+            </section>
+
+            <h1 className="heading color-orange">PEOPLE</h1>
+            <section className="home-tv">
+                <MovieSlider>
+                    {arr.map((val, index) => {
+                        return (
+                            <Link
+                                to={"../movie/" + index}
+                                key={index}
+                                className="card"
+                            >
+                                <div>
+                                    <img
+                                        src={john}
+                                        alt="poster"
+                                        className="slider-image"
+                                    />
+                                    <div className="data">
+                                        <h3 className="card-movie-name">
+                                            John wick {val}
+                                        </h3>
+                                        <h4 className="card-release-date">
+                                            24 May, 2019
+                                        </h4>
+                                    </div>
+                                </div>
+                            </Link>
+                        );
+                    })}
+                </MovieSlider>
+            </section>
+            {/* <section className="home-movie">
                 <h1 className="heading color-orange">MOVIES</h1>
                 <MovieSlider>
                     {arr.map((val, index) => {
@@ -68,8 +160,8 @@ const Home = props => {
                             </Link>
                         );
                     })}
-                </MovieSlider>
-            </section>
+                </MovieSlider> 
+            </section>*/}
         </section>
     );
 };

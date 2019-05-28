@@ -9,36 +9,37 @@ const MovieHome = props => {
 
     return (
         <div>
-            <h1>Popular</h1>
             <h1>Top Rated</h1>
             <Link to="../movie/123">Go</Link>
-            <MovieSlider>
-                {arr.map((val, index) => {
-                    return (
-                        <Link
-                            to={"../movie/" + index}
-                            key={index}
-                            className="card"
-                        >
-                            <div>
-                                <img
-                                    src={john}
-                                    alt="poster"
-                                    className="slider-image"
-                                />
-                                <div className="data">
-                                    <h3 className="card-movie-name">
-                                        John wick {val}
-                                    </h3>
-                                    <h4 className="card-release-date">
-                                        24 May, 2019
-                                    </h4>
+            <section>
+                <MovieSlider>
+                    {arr.map((val, index) => {
+                        return (
+                            <Link
+                                to={"../movie/" + index}
+                                key={index}
+                                className="card"
+                            >
+                                <div>
+                                    <img
+                                        src={john}
+                                        alt="poster"
+                                        className="slider-image"
+                                    />
+                                    <div className="data">
+                                        <h3 className="card-movie-name">
+                                            John wick {val}
+                                        </h3>
+                                        <h4 className="card-release-date">
+                                            24 May, 2019
+                                        </h4>
+                                    </div>
                                 </div>
-                            </div>
-                        </Link>
-                    );
-                })}
-            </MovieSlider>
+                            </Link>
+                        );
+                    })}
+                </MovieSlider>
+            </section>
 
             <MovieSlider>
                 {arr.map((val, index) => {

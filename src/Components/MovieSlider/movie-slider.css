@@ -56,7 +56,6 @@
 }
 
 .slider-container-wrappper {
-    width: 100%;
     position: relative;
     display: flex;
     flex-wrap: nowrap;

@@ -1,29 +1,27 @@
 .home {
-    display: grid;
-    grid-template-columns: max-content max-content max-content;
-    grid-template-rows: max-content;
-    grid-template-areas:
-        "heading"
-        "movie"
-        "tv";
+    overflow-x: hidden;
 }
 
 .home-heading {
     font-size: 3em;
     margin: 0;
-    grid-area: heading;
+    width: max-content;
 }
 
 .heading {
-    padding-left: 20px
+    padding-left: 20px;
 }
 
-.home-movie {
-    width: 100vw;
-    grid-area: movie;
+.home-width {
+    width: calc(100vw - 20px);
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
-.home-tv {
-    width: 100vw;
-    grid-area: tv;
+@media (max-width : 599px) {
+    .home-width {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 100%;
+    }
 }
