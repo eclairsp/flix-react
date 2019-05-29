@@ -50,7 +50,6 @@ const SearchBox = props => {
             <button
                 className="search-btn"
                 onClick={() => {
-                    navigate(`./../search/${query}`);
                     inputRef.current.classList.remove(
                         "search-border-radius-focus"
                     );
@@ -59,11 +58,11 @@ const SearchBox = props => {
                     );
 
                     if (query === null || query === "") {
-                        inputRef.current.placeholder =
-                            "Enter what you want to search!!!";
+                        inputRef.current.placeholder = "Enter something!!!";
                         return;
                     }
                     resultRef.current.style.display = "none";
+                    navigate(`./../search/${query}`);
                 }}
                 ref={btnRef}
             >

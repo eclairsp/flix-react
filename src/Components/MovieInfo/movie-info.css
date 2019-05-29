@@ -1,4 +1,14 @@
 .details-1 {
+    display: flex;
+    padding: 30px;
+    justify-content: center;
+    align-items: center;
+    width: 80vw;
+    position: relative;
+    margin-top: 0;
+}
+
+.center-details {
     background-image:
         linear-gradient(270deg, rgba(0, 0, 0, 0.9) 40%, rgba(16, 16, 16, 0.7) 80%, rgba(16, 16, 16, 0.5) 90%),
         url('./../../av.jpg');
@@ -7,12 +17,18 @@
     background-position: center center;
     background-blend-mode: darken;
     display: flex;
-    padding: 30px;
     justify-content: center;
     align-items: center;
-    width: 100vw;
-    position: relative;
-    margin-top: 0;
+    width: 100%;
+}
+
+.center-next {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 30px;
+    margin-top: 30px;
 }
 
 .car {
@@ -47,11 +63,134 @@
     padding-left: 20px;
 }
 
+.movie-main-details {
+    width: 80vw;
+    display: grid;
+    grid-template-columns: 50vw 30vw;
+    grid-template-rows: max-content max-content;
+    grid-template-areas: 
+        "cast_crew details"
+        "trailer details";
+}
+
+.cast_crew {
+    grid-area: cast_crew;
+}
+
+.cast {
+    width: 50vw;
+}
+
+.trailer {
+    grid-area: trailer
+}
+
+.all-movie-details {
+    grid-area: details
+}
+
+.video {
+    width: 50vw;
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+}
+
+.video iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.details-main {
+    padding-left: 40px;
+    width: 30vw;
+    display: grid;
+    grid-auto-columns: max-content;
+    grid-auto-rows: max-content max-content max-content max-content max-content max-content max-content max-content;
+    grid-template-areas: 
+        "rating"
+        "runtime"
+        "language"
+        "country"
+        "genre"
+        "production"
+        "budget" 
+        "box-office";
+    justify-items: flex-start;
+    align-items: center;
+}
+
+.genre__tag {
+    display: inline;
+    background: #ff5252;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    margin: 10px;
+    margin-right: 20px;
+}
+
+.tags {
+    width: 30vw;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px;
+    font-size: 1.2em;
+    padding-left: 25px;
+}
+
+.details-main p {
+    width: max-content;
+    margin: 0;
+}
+
+.genre {
+    grid-area: genre;
+}
+
+.rating {
+    grid-area: rating;
+}
+
+.runtime {
+    grid-area: runtime;
+}
+
+.country {
+    grid-area: country;
+}
+
+.language {
+    grid-area: language;
+}
+
+.production {
+    grid-area: production;
+}
+
+.recommend-heading-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.recommend-heading {
+    width: 80vw;
+}
+
 @media (max-width : 600px) {
 
     .details-1 {
         padding: 0;
         background: none;
+    }
+
+    .center-details {
+        background-image: none;
     }
 
     .car {
@@ -76,5 +215,38 @@
         padding-left: 0;
         word-spacing: 5px;
         line-height: 20px;
+    }
+
+    .movie-main-details {
+        width: 100vw;
+        display: grid;
+        grid-template-columns: max-content;
+        grid-template-rows: max-content max-content max-content;
+        grid-template-areas: 
+            "cast_crew"
+            "trailer"
+            "details";
+    }
+
+    .video {
+        width: 100vw;
+    }
+
+    .cast {
+        width: 100vw;
+    }
+
+    .details-main {
+        padding-left: 0;
+        width: 100vw;
+        grid-auto-columns: 100vw;
+    }
+
+    .tags {
+        width: 100vw;
+    }
+
+    .recommend-heading {
+        width: 100vw;
     }
 }

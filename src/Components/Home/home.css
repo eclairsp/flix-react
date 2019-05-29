@@ -18,6 +18,13 @@
     margin-bottom: 50px;
 }
 
+.heading-see-more {
+    display: inline;
+    text-decoration: none;
+    font-size: 0.8em;
+    padding-left: 20px;
+}
+
 @media (max-width : 599px) {
     .home-width {
         margin-top: 30px;

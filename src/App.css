@@ -7,6 +7,7 @@ html {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 body {
@@ -21,7 +22,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
 }
 
-.laod {
+.load {
     height: 100%;
     width: 100%;
     background: #fff;
@@ -32,6 +33,7 @@ body {
     width: 100%;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 .flex-center {
@@ -41,23 +43,23 @@ body {
 }
 
 h1 {
-    font-size: 2em;
+    font-size: 2.5em;
 }
 
 h2 {
-    font-size: 1.5em;
+    font-size: 1.6em;
 }
 
 h3 {
-    font-size: 1em
+    font-size: 1.3em
 }
 
 h4 {
-    font-size: 0.8em;
+    font-size: 1em;
 }
 
 h5 {
-    font-size: 0.5em;
+    font-size: 0.8em;
 }
 
 .color-orange {
