@@ -6,7 +6,7 @@ import MovieInfo from "./Components/MovieInfo/MovieInfo";
 // import MovieHome from "./Components/MovieHome/MovieHome";
 import Header from "./Components/Header/Header";
 import Search from "./Components/Search/Search";
-import "./app.css";
+import "./App.css";
 
 // const Header = true && import('./Components/Header/Header')
 const Movie = lazy(() => import("./Components/Movie/Movie"));
