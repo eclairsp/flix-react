@@ -1,0 +1,31 @@
+.results-search-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.results-search {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 90vw;
+}
+
+.card-res {
+    margin: 20px;
+    margin-left: 0;
+}
+
+@media (max-width : 599px) {
+    .results-search {
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 20px;
+    }
+
+    .result-heading {
+        font-size: 1.4em;
+    }
+}

@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "@reach/router";
 import MovieSlider from "./../MovieSlider/MovieSlider";
+import {LazyLoadImage} from "react-lazy-load-image-component";
 import john from "./../../john-300.jpg";
 import "./home.css";
 
@@ -21,10 +22,10 @@ const Home = props => {
                                 className="card"
                             >
                                 <div>
-                                    <img
+                                    <LazyLoadImage
+                                        alt="ppster"
+                                        effect="blur"
                                         src={john}
-                                        alt="poster"
-                                        className="slider-image"
                                     />
                                     <div className="data">
                                         <h3 className="card-movie-name">
@@ -73,7 +74,7 @@ const Home = props => {
             </section>
 
             <h1 className="heading color-orange">PEOPLE</h1>
-            <section className="home-tv">
+            <section className="home-tv home-width">
                 <MovieSlider>
                     {arr.map((val, index) => {
                         return (
