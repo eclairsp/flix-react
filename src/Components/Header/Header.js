@@ -1,14 +1,15 @@
-import React from "react";
+import React, {useRef} from "react";
 import {Link} from "@reach/router";
 import flixLogo from "../../FLIX.svg";
 import SearchBox from "./../SearchBox/SearchBox";
 import "./header.css";
 
-class Top extends React.Component {
-    render() {
-        return (
-            <header className="header-wrapper">
-                {/* <div className="menu">
+const Top = props => {
+    const menuRef = useRef();
+    const hamRef = useRef();
+    return (
+        <header className="header-wrapper">
+            {/* <div className="menu">
                     <svg className="svg-icon-menu svg-icon" viewBox="0 0 20 20">
                         <path
                             fill="none"
@@ -19,21 +20,74 @@ class Top extends React.Component {
                         />
                     </svg>
                 </div> */}
-                <div className="header">
-                    <Link to="/">
-                        <div className="logo">
-                            <img
-                                src={flixLogo}
-                                className="logo"
-                                alt="flix-logo"
-                            />
-                        </div>
-                    </Link>
-                    <SearchBox />
+            <div className="header">
+                <Link to="/">
+                    <div className="logo">
+                        <img src={flixLogo} className="logo" alt="flix-logo" />
+                    </div>
+                </Link>
+                <SearchBox />
+                <svg
+                    className="ham hamRotate ham4"
+                    viewBox="0 0 100 100"
+                    onClick={e => {
+                        menuRef.current.classList.toggle("menu-active");
+                        hamRef.current.classList.toggle("active");
+                    }}
+                    ref={hamRef}
+                >
+                    <path
+                        className="line top"
+                        d="m 70,33 h -40 c 0,0 -8.5,-0.149796 -8.5,8.5 0,8.649796 8.5,8.5 8.5,8.5 h 20 v -20"
+                    />
+                    <path className="line middle" d="m 70,50 h -40" />
+                    <path
+                        className="line bottom"
+                        d="m 30,67 h 40 c 0,0 8.5,0.149796 8.5,-8.5 0,-8.649796 -8.5,-8.5 -8.5,-8.5 h -20 v 20"
+                    />
+                </svg>
+            </div>
+            <div className="menu" ref={menuRef}>
+                <div className="menu-wrap">
+                    <ul className="menu-main">
+                        <Link
+                            to="/"
+                            onClick={e => {
+                                menuRef.current.classList.toggle("menu-active");
+                                hamRef.current.classList.toggle("active");
+                            }}
+                        >
+                            <li>
+                                <h1 className="menu-item">Home</h1>
+                            </li>
+                        </Link>
+                        <Link
+                            to="./../movie"
+                            onClick={e => {
+                                menuRef.current.classList.toggle("menu-active");
+                                hamRef.current.classList.toggle("active");
+                            }}
+                        >
+                            <li>
+                                <h1 className="menu-item">Movies</h1>
+                            </li>
+                        </Link>
+                        <Link
+                            to="./../search"
+                            onClick={e => {
+                                menuRef.current.classList.toggle("menu-active");
+                                hamRef.current.classList.toggle("active");
+                            }}
+                        >
+                            <li>
+                                <h1 className="menu-item">Search</h1>
+                            </li>
+                        </Link>
+                    </ul>
                 </div>
-            </header>
-        );
-    }
-}
+            </div>
+        </header>
+    );
+};
 
 export default Top;

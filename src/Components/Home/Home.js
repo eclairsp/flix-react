@@ -11,12 +11,12 @@ const Home = props => {
     return (
         <section className="home">
             <h1 className="heading home-heading color-orange">Popular</h1>
-            <h1 className="heading color-orange">
+            <h2 className="heading color-orange">
                 MOVIES{" "}
                 <Link to="../movie" className="heading-see-more">
                     <span className="heading-see-more">See more</span>
                 </Link>
-            </h1>
+            </h2>
             <section className="home-movie home-width">
                 <MovieSlider>
                     {arr.map((val, index) => {
@@ -47,12 +47,12 @@ const Home = props => {
                 </MovieSlider>
             </section>
 
-            <h1 className="heading color-orange">
+            <h2 className="heading color-orange">
                 TV-SHOWS{" "}
                 <Link to="../movie" className="heading-see-more">
                     <span className="heading-see-more">See more</span>
                 </Link>
-            </h1>
+            </h2>
             <section className="home-tv home-width">
                 <MovieSlider>
                     {arr.map((val, index) => {
@@ -83,12 +83,12 @@ const Home = props => {
                 </MovieSlider>
             </section>
 
-            <h1 className="heading color-orange">
+            <h2 className="heading color-orange">
                 PEOPLE{" "}
                 <Link to="../movie" className="heading-see-more">
                     <span className="heading-see-more">See more</span>
                 </Link>
-            </h1>
+            </h2>
             <section className="home-tv home-width">
                 <MovieSlider>
                     {arr.map((val, index) => {

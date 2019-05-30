@@ -61,6 +61,7 @@
 .synopsis {
     font-size: 1.2em;
     padding-left: 20px;
+    line-height: 1.5;
 }
 
 .movie-main-details {
@@ -214,7 +215,7 @@
     .synopsis{
         padding-left: 0;
         word-spacing: 5px;
-        line-height: 20px;
+        line-height: 1.5;
     }
 
     .movie-main-details {

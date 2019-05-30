@@ -19,7 +19,7 @@ body {
     overflow-x: hidden;
     width: 100vw;
     min-height: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+    font-family: 'Numans', sans-serif;
 }
 
 .load {
@@ -43,23 +43,29 @@ body {
 }
 
 h1 {
-    font-size: 2.5em;
+    font-size: 4em;
+    font-family: 'Imprima', sans-serif;
+    font-weight: bold;
 }
 
 h2 {
-    font-size: 1.6em;
+    font-size: 2em;
+    font-family: 'Imprima', sans-serif;
 }
 
 h3 {
-    font-size: 1.3em
+    font-size: 1.5em;
+    font-family: 'Imprima', sans-serif;
 }
 
 h4 {
     font-size: 1em;
+    font-family: 'Imprima', sans-serif;
 }
 
 h5 {
-    font-size: 0.8em;
+    font-size: 1em;
+    font-family: 'Imprima', sans-serif;
 }
 
 .color-orange {
@@ -79,4 +85,24 @@ footer {
     text-align: center;
     font-size: 1.3em;
     background: #000;
+}
+
+@media (max-width : 600px) {
+    h1 {
+        font-size: 2.5em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    h3{
+        font-size: 1em;
+    }
+    h4 {
+        font-size: 0.8em;
+    }
+    h5 {
+        font-size: 0.5em;
+    }
 }
