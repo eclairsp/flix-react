@@ -24,6 +24,10 @@
     padding-left: 20px;
 }
 
+.celeb-name {
+    margin: 0;
+}
+
 @media (max-width : 599px) {
     .home-width {
         margin-top: 30px;

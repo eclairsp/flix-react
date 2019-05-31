@@ -22,6 +22,30 @@
     width: 90vw;
 }
 
+.before-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.before-search svg {
+    width: 40vw;
+    height: 40vw;
+}
+
+.cir {
+    animation: rotate 300ms ease infinte;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0)
+    }
+    to {
+        transform: rotate(360deg)
+    }
+}
+
 @media (max-width : 599px) {
     .results-search {
         justify-content: flex-start;

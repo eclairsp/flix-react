@@ -58,7 +58,8 @@ const SearchBox = props => {
                     );
 
                     if (query === null || query === "") {
-                        inputRef.current.placeholder = "Enter something!!!";
+                        const newLocal = "Enter something!!!";
+                        inputRef.current.placeholder = newLocal;
                         return;
                     }
                     resultRef.current.style.display = "none";

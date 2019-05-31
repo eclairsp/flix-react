@@ -23,6 +23,7 @@ function App() {
                         <MovieHome path="/" />
                         <MovieInfo path=":movieId" />
                     </Movie>
+                    <Search path="/search" />
                     <Search path="/search/:query" />
                 </Router>
             </Suspense>

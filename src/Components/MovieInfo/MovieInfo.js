@@ -1,15 +1,73 @@
-import React from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import {Link} from "@reach/router";
-import shazam from "./../../shazam1.jpg";
 import play from "./../../play-icon-18-64.png";
-import levi from "./../../levi.jpg";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
 import john from "./../../john-300.jpg";
 import "./movie-info.css";
 
 const MovieInfo = props => {
-    let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    let arr2 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    const [movieInfo, changeMovieInfo] = useState([]);
+    const [videoSrc, changeVideoSrc] = useState(null);
+    const [cast, changeCast] = useState([]);
+    const [similar, changeSimilar] = useState([]);
+    const [cardWidth, changeWidth] = useState(0);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            let urlMovie = `https://api.themoviedb.org/3/movie/${
+                props.movieId
+            }?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
+            let urlVideo = `https://api.themoviedb.org/3/movie/${
+                props.movieId
+            }/videos?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
+            let urlCast = `
+            https://api.themoviedb.org/3/movie/${
+                props.movieId
+            }/credits?api_key=74d9bb95f2c26a20a3f908c481d10af3`;
+            let urlSimilar = `https://api.themoviedb.org/3/movie/${
+                props.movieId
+            }/similar?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1`;
+
+            fetch(urlMovie)
+                .then(res => res.json())
+                .then(data => {
+                    changeMovieInfo(data);
+                });
+
+            fetch(urlVideo)
+                .then(res => res.json())
+                .then(data => {
+                    let first = true;
+                    data.results.map(val => {
+                        if (val.type === "Trailer" && first) {
+                            changeVideoSrc(val.key);
+                            first = false;
+                        }
+                    });
+                });
+
+            fetch(urlCast)
+                .then(res => res.json())
+                .then(data => {
+                    delete data.id;
+                    changeCast(data);
+                });
+
+            fetch(urlSimilar)
+                .then(res => res.json())
+                .then(data => {
+                    changeSimilar(data.results);
+                });
+        };
+
+        fetchData();
+    }, [props.movieId]);
+
+    const cardRef = useCallback(node => {
+        if (node !== null) {
+            changeWidth(node.offsetWidth);
+        }
+    }, []);
 
     return (
         <>
@@ -19,35 +77,25 @@ const MovieInfo = props => {
                         <div className="poster">
                             <img
                                 className="poster-main"
-                                src={shazam}
+                                src={` http://image.tmdb.org/t/p/w342/${
+                                    movieInfo.poster_path
+                                }`}
                                 alt={`${props.movieId} poster`}
                             />
                         </div>
                         <article className="movie-main-info">
                             <h1 className="movie-main-name heading heading-details heading-main color-orange">
-                                Monty h2ython and the Holy Grail (2019)
+                                {movieInfo.title}
                             </h1>
                             <h2 className="heading heading-details">
-                                Wed Mar 23 2019
+                                {new Date(
+                                    movieInfo.release_date
+                                ).toDateString()}
                             </h2>
                             <h2 className="heading heading-details">
                                 Overview,
                             </h2>
-                            <p className="synopsis">
-                                Lorem Ih2sum is simh2ly dummy text of the
-                                h2rinting and tyh2esetting industry. Lorem
-                                Ih2sum has been the industry's standard dummy
-                                text ever since the 1500s, when an unknown
-                                h2rinter took a galley of tyh2e and scrambled it
-                                to make a tyh2e sh2ecimen book. It has survived
-                                not only five centuries, but also the leah2 into
-                                electronic tyh2esetting, remaining essentially
-                                unchanged. It was h2oh2ularised in the 1960s
-                                with the release of Letraset sheets containing
-                                Lorem Ih2sum h2assages, and more recently with
-                                desktoh2 h2ublishing software like Aldus
-                                h2ageMaker including versions of Lorem Ih2sum.
-                            </p>
+                            <p className="synopsis">{movieInfo.overview}</p>
                             <h2 className="heading heading-details">
                                 IMDB: 7.1/10
                             </h2>
@@ -66,36 +114,52 @@ const MovieInfo = props => {
                     <div className="cast-crew">
                         <h1 className="heading color-orange">Cast and Crew</h1>
                         <h2 className="heading">
-                            Directed By, Steven Spielberg
+                            Directed By,{" "}
+                            {cast.crew === undefined
+                                ? "not found"
+                                : cast.crew.map(val => {
+                                      if (val.job === "Director") {
+                                          return val.name + " | ";
+                                      }
+                                  })}
                         </h2>
                         <h2 className="heading">
-                            Screenplay By, Steven Spielberg
+                            Screenplay By,{" "}
+                            {cast.crew === undefined
+                                ? "not found"
+                                : cast.crew.map(val => {
+                                      if (val.job === "Screenplay") {
+                                          return val.name + " | ";
+                                      }
+                                  })}
                         </h2>
                         <div className="cast">
-                            <MovieSlider>
-                                {arr.map((val, index) => {
-                                    return (
-                                        <Link
-                                            to={"../movie/" + index}
-                                            key={index}
-                                            className="card"
-                                        >
-                                            <div className="card card-r">
-                                                <div>
-                                                    <img
-                                                        className="image"
-                                                        src={levi}
-                                                        alt="cast"
-                                                    />
-                                                </div>
-                                                <div className="infoo">
-                                                    <h5>Shazam</h5>
-                                                    <h5>Zachary Levi</h5>
-                                                </div>
-                                            </div>
-                                        </Link>
-                                    );
-                                })}
+                            <MovieSlider width={cardWidth}>
+                                {cast.cast === undefined
+                                    ? "not found"
+                                    : cast.cast.map((val, index) => {
+                                          return (
+                                              <div
+                                                  className="card card-r"
+                                                  key={index}
+                                                  ref={cardRef}
+                                              >
+                                                  <div>
+                                                      <img
+                                                          className="image"
+                                                          src={`http://image.tmdb.org/t/p/w92/${
+                                                              val.profile_path
+                                                          }`}
+                                                          alt={val.name}
+                                                      />
+                                                  </div>
+                                                  <div className="infoo">
+                                                      <h5>{val.character}</h5>
+                                                      <h5>{val.name}</h5>
+                                                  </div>
+                                              </div>
+                                          );
+                                      })}
                             </MovieSlider>
                         </div>
                     </div>
@@ -107,7 +171,7 @@ const MovieInfo = props => {
                                     title={`${props.movieId} trailer`}
                                     width="560"
                                     height="315"
-                                    src="https://www.youtube-nocookie.com/embed/aFtgADlZbVc"
+                                    src={`https://www.youtube-nocookie.com/embed/${videoSrc}`}
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
@@ -121,29 +185,44 @@ const MovieInfo = props => {
                             <div className="rating">
                                 <h3 className="heading">Rating</h3>
                                 <div className="tags">
-                                    <div className="genre__tag">Adult</div>
+                                    <div className="genre__tag">
+                                        {movieInfo.adult === true
+                                            ? "Adult"
+                                            : "Not Adult"}
+                                    </div>
                                 </div>
                             </div>
                             <div className="genres">
                                 <h3 className="heading">Genres</h3>
                                 <div className="tags">
-                                    <div className="genre__tag">Action</div>
-                                    <div className="genre__tag">Adventure</div>
-                                    <div className="genre__tag">Comedy</div>
+                                    {movieInfo.genres === undefined
+                                        ? "no genre found"
+                                        : movieInfo.genres.map((val, index) => {
+                                              return (
+                                                  <div
+                                                      key={index}
+                                                      className="genre__tag"
+                                                  >
+                                                      {val.name}
+                                                  </div>
+                                              );
+                                          })}
                                 </div>
                             </div>
                             <div className="country">
-                                <h3 className="heading">Country</h3>
+                                <h3 className="heading">Tagline</h3>
                                 <div className="tags">
                                     <div className="genre__tag">
-                                        United States of America
+                                        {movieInfo.tagline}
                                     </div>
                                 </div>
                             </div>
                             <div className="language">
                                 <h3 className="heading">Langauge</h3>
                                 <div className="tags">
-                                    <div className="genre__tag">English</div>
+                                    <div className="genre__tag">
+                                        {movieInfo.original_language}
+                                    </div>
                                 </div>
                             </div>
                             <div className="production">
@@ -151,31 +230,47 @@ const MovieInfo = props => {
                                     Production Companies
                                 </h3>
                                 <div className="tags">
-                                    <div className="genre__tag">DC</div>
-                                    <div className="genre__tag">
-                                        Warner Bros
-                                    </div>
-                                    <div className="genre__tag">DC Comics</div>
+                                    {movieInfo.production_companies ===
+                                    undefined
+                                        ? "no genre found"
+                                        : movieInfo.production_companies.map(
+                                              (val, index) => {
+                                                  return (
+                                                      <div
+                                                          key={index}
+                                                          className="genre__tag"
+                                                      >
+                                                          {val.name}
+                                                      </div>
+                                                  );
+                                              }
+                                          )}
                                 </div>
                             </div>
                             <div className="runtime">
                                 <h3 className="heading">Runtime</h3>
                                 <div className="tags">
                                     <div className="genre__tag">
-                                        120 minutes
+                                        {movieInfo.runtime === undefined
+                                            ? "Not found"
+                                            : `${movieInfo.runtime} minutes`}
                                     </div>
                                 </div>
                             </div>
                             <div className="budget">
                                 <h3 className="heading">Budget</h3>
                                 <div className="tags">
-                                    <div className="genre__tag">1000000$</div>
+                                    <div className="genre__tag">
+                                        {`${movieInfo.budget} $`}
+                                    </div>
                                 </div>
                             </div>
                             <div className="box-office">
                                 <h3 className="heading">Box-Office</h3>
                                 <div className="tags">
-                                    <div className="genre__tag">10000000$</div>
+                                    <div className="genre__tag">
+                                        {`${movieInfo.revenue} $`}
+                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -186,35 +281,47 @@ const MovieInfo = props => {
             <section className="recommendations home-width">
                 <div className="recommend-heading-wrapper">
                     <h1 className="heading recommend-heading color-orange">
-                        Recommendations
+                        Similar Movies
                     </h1>
                 </div>
-                <MovieSlider>
-                    {arr2.map((val, index) => {
-                        return (
-                            <Link
-                                to={"../movie/" + index}
-                                key={index}
-                                className="card"
-                            >
-                                <div>
-                                    <img
-                                        src={john}
-                                        alt="poster"
-                                        className="slider-image"
-                                    />
-                                    <div className="data">
-                                        <h3 className="card-movie-name">
-                                            John wick {val}
-                                        </h3>
-                                        <h4 className="card-release-date">
-                                            24 May, 2019
-                                        </h4>
-                                    </div>
-                                </div>
-                            </Link>
-                        );
-                    })}
+                <MovieSlider width={cardWidth}>
+                    {similar === undefined
+                        ? "not found"
+                        : similar.map((val, index) => {
+                              console.log(similar);
+                              return (
+                                  <Link
+                                      to={"./../../movie/" + val.id}
+                                      key={index}
+                                      className="card"
+                                      ref={cardRef}
+                                  >
+                                      <div>
+                                          <img
+                                              src={
+                                                  val.backdrop_path === null
+                                                      ? john
+                                                      : `http://image.tmdb.org/t/p/w300/${
+                                                            val.backdrop_path
+                                                        }`
+                                              }
+                                              alt="poster"
+                                              className="slider-image"
+                                          />
+                                          <div className="data">
+                                              <h3 className="card-movie-name">
+                                                  {val.title}
+                                              </h3>
+                                              <h4 className="card-release-date">
+                                                  {new Date(
+                                                      val.release_date
+                                                  ).toDateString()}
+                                              </h4>
+                                          </div>
+                                      </div>
+                                  </Link>
+                              );
+                          })}
                 </MovieSlider>
             </section>
         </>

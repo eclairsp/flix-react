@@ -11,11 +11,16 @@ const MovieSlider = props => {
     useEffect(() => {
         // Scroll to the new position based on changes in scrollToNExt and scrollToPrev functions.
         sliderContainerRef.current.scrollLeft = scrollPosition;
-
-        getCardWidth(document.querySelector(".card").clientWidth);
+        getCardWidth(props.width);
 
         changeSliderContainerWidth(sliderContainerRef.current.offsetWidth);
-    }, [scrollPosition, sliderContainerWidth]);
+    }, [
+        props.card,
+        props.cardWidth,
+        props.width,
+        scrollPosition,
+        sliderContainerWidth
+    ]);
 
     function scrollBy() {
         let totalCards = Math.floor(sliderContainerWidth / cardWidth);

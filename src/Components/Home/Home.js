@@ -1,12 +1,64 @@
-import React from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import {Link} from "@reach/router";
 import MovieSlider from "./../MovieSlider/MovieSlider";
-import {LazyLoadImage} from "react-lazy-load-image-component";
+// import {LazyLoadImage} from "react-lazy-load-image-component";
 import john from "./../../john-300.jpg";
 import "./home.css";
 
 const Home = props => {
-    let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    const [movieData, changeMovieData] = useState([]);
+    const [tvData, changeTvData] = useState([]);
+    const [celebData, changeCelebData] = useState([]);
+    const [cardWidth, changeWidth] = useState(0);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            let urlMovie =
+                "https://api.themoviedb.org/3/movie/popular?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1";
+            let urlTv =
+                "https://api.themoviedb.org/3/tv/popular?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1";
+            let urlCeleb =
+                "https://api.themoviedb.org/3/person/popular?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1";
+
+            fetch(urlMovie)
+                .then(res => res.json())
+                .then(data => {
+                    delete data.page;
+                    delete data.total_results;
+                    delete data.total_pages;
+
+                    changeMovieData(data.results);
+                });
+
+            fetch(urlTv)
+                .then(res => res.json())
+                .then(data => {
+                    delete data.page;
+                    delete data.total_results;
+                    delete data.total_pages;
+
+                    changeTvData(data.results);
+                });
+
+            fetch(urlCeleb)
+                .then(res => res.json())
+                .then(data => {
+                    delete data.page;
+                    delete data.total_results;
+                    delete data.total_pages;
+
+                    changeCelebData(data.results);
+                });
+        };
+
+        fetchData();
+    }, []);
+
+    const cardRef = useCallback(node => {
+        if (node !== null) {
+            changeWidth(node.offsetWidth);
+        }
+    }, []);
 
     return (
         <section className="home">
@@ -18,27 +70,37 @@ const Home = props => {
                 </Link>
             </h2>
             <section className="home-movie home-width">
-                <MovieSlider>
-                    {arr.map((val, index) => {
+                <MovieSlider width={cardWidth}>
+                    {movieData.map((val, index) => {
                         return (
                             <Link
-                                to={"../movie/" + index}
-                                key={index}
+                                to={"../movie/" + val.id}
+                                key={val.id}
                                 className="card"
+                                ref={cardRef}
                             >
                                 <div>
-                                    <LazyLoadImage
-                                        alt="ppster"
+                                    <img
+                                        alt="poster"
                                         effect="blur"
-                                        src={john}
+                                        src={
+                                            val.backdrop_path === null
+                                                ? john
+                                                : `http://image.tmdb.org/t/p/w300/${
+                                                      val.backdrop_path
+                                                  }`
+                                        }
+                                        className="slider-image"
                                     />
                                     <div className="data">
-                                        <h3 className="card-movie-name">
-                                            John wick {val}
-                                        </h3>
-                                        <h4 className="card-release-date">
-                                            24 May, 2019
+                                        <h4 className="card-movie-name">
+                                            {val.title}
                                         </h4>
+                                        <h5 className="card-release-date">
+                                            {new Date(
+                                                val.release_date
+                                            ).toDateString()}
+                                        </h5>
                                     </div>
                                 </div>
                             </Link>
@@ -54,27 +116,36 @@ const Home = props => {
                 </Link>
             </h2>
             <section className="home-tv home-width">
-                <MovieSlider>
-                    {arr.map((val, index) => {
+                <MovieSlider width={cardWidth}>
+                    {tvData.map((val, index) => {
                         return (
                             <Link
-                                to={"../movie/" + index}
-                                key={index}
+                                to={"../movie/" + val.id}
+                                key={val.id}
                                 className="card"
+                                ref={cardRef}
                             >
                                 <div>
                                     <img
-                                        src={john}
+                                        src={
+                                            val.backdrop_path === null
+                                                ? john
+                                                : `http://image.tmdb.org/t/p/w300/${
+                                                      val.backdrop_path
+                                                  }`
+                                        }
                                         alt="poster"
                                         className="slider-image"
                                     />
                                     <div className="data">
-                                        <h3 className="card-movie-name">
-                                            John wick {val}
-                                        </h3>
-                                        <h4 className="card-release-date">
-                                            24 May, 2019
+                                        <h4 className="card-movie-name">
+                                            {val.name}{" "}
                                         </h4>
+                                        <h5 className="card-release-date">
+                                            {new Date(
+                                                val.first_air_date
+                                            ).toDateString()}
+                                        </h5>
                                     </div>
                                 </div>
                             </Link>
@@ -90,26 +161,30 @@ const Home = props => {
                 </Link>
             </h2>
             <section className="home-tv home-width">
-                <MovieSlider>
-                    {arr.map((val, index) => {
+                <MovieSlider width={cardWidth}>
+                    {celebData.map((val, index) => {
                         return (
                             <Link
-                                to={"../movie/" + index}
-                                key={index}
+                                to={"../movie/" + val.id}
+                                key={val.id}
                                 className="card"
+                                ref={cardRef}
                             >
                                 <div>
                                     <img
-                                        src={john}
+                                        src={
+                                            val.profile_path === null
+                                                ? john
+                                                : `http://image.tmdb.org/t/p/w154/${
+                                                      val.profile_path
+                                                  }`
+                                        }
                                         alt="poster"
                                         className="slider-image"
                                     />
                                     <div className="data">
-                                        <h3 className="card-movie-name">
-                                            John wick {val}
-                                        </h3>
-                                        <h4 className="card-release-date">
-                                            24 May, 2019
+                                        <h4 className="card-movie-name">
+                                            {val.name}
                                         </h4>
                                     </div>
                                 </div>
