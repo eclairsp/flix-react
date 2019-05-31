@@ -1,8 +1,9 @@
 import React, {useState, useEffect, useCallback} from "react";
 import {Link} from "@reach/router";
+import {LazyLoadImage} from "react-lazy-load-image-component";
 import play from "./../../play-icon-18-64.png";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
-import john from "./../../john-300.jpg";
+import {placeholderImg} from "../../placeholder.jpg";
 import "./movie-info.css";
 
 const MovieInfo = props => {
@@ -75,12 +76,13 @@ const MovieInfo = props => {
                 <section className="details-1">
                     <div className="car">
                         <div className="poster">
-                            <img
+                            <LazyLoadImage
                                 className="poster-main"
                                 src={` http://image.tmdb.org/t/p/w342/${
                                     movieInfo.poster_path
                                 }`}
                                 alt={`${props.movieId} poster`}
+                                placeholderSrc={placeholderImg}
                             />
                         </div>
                         <article className="movie-main-info">
@@ -145,12 +147,15 @@ const MovieInfo = props => {
                                                   ref={cardRef}
                                               >
                                                   <div>
-                                                      <img
+                                                      <LazyLoadImage
                                                           className="image"
                                                           src={`http://image.tmdb.org/t/p/w92/${
                                                               val.profile_path
                                                           }`}
                                                           alt={val.name}
+                                                          placeholderSrc={
+                                                              placeholderImg
+                                                          }
                                                       />
                                                   </div>
                                                   <div className="infoo">
@@ -295,18 +300,20 @@ const MovieInfo = props => {
                                       key={index}
                                       className="card"
                                       ref={cardRef}
+                                      onClick={window.scrollTo(0, 0)}
                                   >
                                       <div>
-                                          <img
+                                          <LazyLoadImage
                                               src={
                                                   val.backdrop_path === null
-                                                      ? john
+                                                      ? placeholderImg
                                                       : `http://image.tmdb.org/t/p/w300/${
                                                             val.backdrop_path
                                                         }`
                                               }
                                               alt="poster"
                                               className="slider-image"
+                                              placeholderSrc={placeholderImg}
                                           />
                                           <div className="data">
                                               <h3 className="card-movie-name">

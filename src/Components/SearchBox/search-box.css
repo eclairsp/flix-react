@@ -100,7 +100,6 @@ ul {
 
 .result {
     top: 65px;
-    display: none;
     grid-area: res;
     position: absolute;
     z-index: 10000;

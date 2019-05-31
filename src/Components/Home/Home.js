@@ -1,9 +1,19 @@
 import React, {useState, useEffect, useCallback} from "react";
 import {Link} from "@reach/router";
+import posed from "react-pose";
 import MovieSlider from "./../MovieSlider/MovieSlider";
-// import {LazyLoadImage} from "react-lazy-load-image-component";
-import john from "./../../john-300.jpg";
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import {placeholderImg} from "../../placeholder.jpg";
 import "./home.css";
+
+const Hom = posed.div({
+    enter: {y: 0, opacity: 1, delay: 300},
+    exit: {
+        y: 100,
+        opacity: 0,
+        transition: {duration: 200}
+    }
+});
 
 const Home = props => {
     const [movieData, changeMovieData] = useState([]);
@@ -61,139 +71,143 @@ const Home = props => {
     }, []);
 
     return (
-        <section className="home">
-            <h1 className="heading home-heading color-orange">Popular</h1>
-            <h2 className="heading color-orange">
-                MOVIES{" "}
-                <Link to="../movie" className="heading-see-more">
-                    <span className="heading-see-more">See more</span>
-                </Link>
-            </h2>
-            <section className="home-movie home-width">
-                <MovieSlider width={cardWidth}>
-                    {movieData.map((val, index) => {
-                        return (
-                            <Link
-                                to={"../movie/" + val.id}
-                                key={val.id}
-                                className="card"
-                                ref={cardRef}
-                            >
-                                <div>
-                                    <img
-                                        alt="poster"
-                                        effect="blur"
-                                        src={
-                                            val.backdrop_path === null
-                                                ? john
-                                                : `http://image.tmdb.org/t/p/w300/${
-                                                      val.backdrop_path
-                                                  }`
-                                        }
-                                        className="slider-image"
-                                    />
-                                    <div className="data">
-                                        <h4 className="card-movie-name">
-                                            {val.title}
-                                        </h4>
-                                        <h5 className="card-release-date">
-                                            {new Date(
-                                                val.release_date
-                                            ).toDateString()}
-                                        </h5>
+        <Hom>
+            <section className="home">
+                <h1 className="heading home-heading color-orange">Popular</h1>
+                <h2 className="heading color-orange">
+                    MOVIES{" "}
+                    <Link to="../movie" className="heading-see-more">
+                        <span className="heading-see-more">See more</span>
+                    </Link>
+                </h2>
+                <section className="home-movie home-width">
+                    <MovieSlider width={cardWidth}>
+                        {movieData.map((val, index) => {
+                            return (
+                                <Link
+                                    to={"../movie/" + val.id}
+                                    key={val.id}
+                                    className="card"
+                                    ref={cardRef}
+                                >
+                                    <div>
+                                        <LazyLoadImage
+                                            alt="poster"
+                                            effect="blur"
+                                            src={
+                                                val.backdrop_path === null
+                                                    ? placeholderImg
+                                                    : `http://image.tmdb.org/t/p/w300/${
+                                                          val.backdrop_path
+                                                      }`
+                                            }
+                                            className="slider-image"
+                                            placeholderSrc={placeholderImg}
+                                        />
+                                        <div className="data">
+                                            <h4 className="card-movie-name">
+                                                {val.title}
+                                            </h4>
+                                            <h5 className="card-release-date">
+                                                {new Date(
+                                                    val.release_date
+                                                ).toDateString()}
+                                            </h5>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        );
-                    })}
-                </MovieSlider>
-            </section>
+                                </Link>
+                            );
+                        })}
+                    </MovieSlider>
+                </section>
 
-            <h2 className="heading color-orange">
-                TV-SHOWS{" "}
-                <Link to="../movie" className="heading-see-more">
-                    <span className="heading-see-more">See more</span>
-                </Link>
-            </h2>
-            <section className="home-tv home-width">
-                <MovieSlider width={cardWidth}>
-                    {tvData.map((val, index) => {
-                        return (
-                            <Link
-                                to={"../movie/" + val.id}
-                                key={val.id}
-                                className="card"
-                                ref={cardRef}
-                            >
-                                <div>
-                                    <img
-                                        src={
-                                            val.backdrop_path === null
-                                                ? john
-                                                : `http://image.tmdb.org/t/p/w300/${
-                                                      val.backdrop_path
-                                                  }`
-                                        }
-                                        alt="poster"
-                                        className="slider-image"
-                                    />
-                                    <div className="data">
-                                        <h4 className="card-movie-name">
-                                            {val.name}{" "}
-                                        </h4>
-                                        <h5 className="card-release-date">
-                                            {new Date(
-                                                val.first_air_date
-                                            ).toDateString()}
-                                        </h5>
+                <h2 className="heading color-orange">
+                    TV-SHOWS{" "}
+                    <Link to="../movie" className="heading-see-more">
+                        <span className="heading-see-more">See more</span>
+                    </Link>
+                </h2>
+                <section className="home-tv home-width">
+                    <MovieSlider width={cardWidth}>
+                        {tvData.map((val, index) => {
+                            return (
+                                <Link
+                                    to={"../movie/" + val.id}
+                                    key={val.id}
+                                    className="card"
+                                    ref={cardRef}
+                                >
+                                    <div>
+                                        <LazyLoadImage
+                                            src={
+                                                val.backdrop_path === null
+                                                    ? placeholderImg
+                                                    : `http://image.tmdb.org/t/p/w300/${
+                                                          val.backdrop_path
+                                                      }`
+                                            }
+                                            alt="poster"
+                                            className="slider-image"
+                                            placeholderSrc={placeholderImg}
+                                        />
+                                        <div className="data">
+                                            <h4 className="card-movie-name">
+                                                {val.name}{" "}
+                                            </h4>
+                                            <h5 className="card-release-date">
+                                                {new Date(
+                                                    val.first_air_date
+                                                ).toDateString()}
+                                            </h5>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        );
-                    })}
-                </MovieSlider>
-            </section>
+                                </Link>
+                            );
+                        })}
+                    </MovieSlider>
+                </section>
 
-            <h2 className="heading color-orange">
-                PEOPLE{" "}
-                <Link to="../movie" className="heading-see-more">
-                    <span className="heading-see-more">See more</span>
-                </Link>
-            </h2>
-            <section className="home-tv home-width">
-                <MovieSlider width={cardWidth}>
-                    {celebData.map((val, index) => {
-                        return (
-                            <Link
-                                to={"../movie/" + val.id}
-                                key={val.id}
-                                className="card"
-                                ref={cardRef}
-                            >
-                                <div>
-                                    <img
-                                        src={
-                                            val.profile_path === null
-                                                ? john
-                                                : `http://image.tmdb.org/t/p/w154/${
-                                                      val.profile_path
-                                                  }`
-                                        }
-                                        alt="poster"
-                                        className="slider-image"
-                                    />
-                                    <div className="data">
-                                        <h4 className="card-movie-name">
-                                            {val.name}
-                                        </h4>
+                <h2 className="heading color-orange">
+                    PEOPLE{" "}
+                    <Link to="../movie" className="heading-see-more">
+                        <span className="heading-see-more">See more</span>
+                    </Link>
+                </h2>
+                <section className="home-tv home-width">
+                    <MovieSlider width={cardWidth}>
+                        {celebData.map((val, index) => {
+                            return (
+                                <Link
+                                    to={"../movie/" + val.id}
+                                    key={val.id}
+                                    className="card"
+                                    ref={cardRef}
+                                >
+                                    <div>
+                                        <LazyLoadImage
+                                            src={
+                                                val.profile_path === null
+                                                    ? placeholderImg
+                                                    : `http://image.tmdb.org/t/p/w154/${
+                                                          val.profile_path
+                                                      }`
+                                            }
+                                            alt="poster"
+                                            className="slider-image"
+                                            placeholderSrc={placeholderImg}
+                                        />
+                                        <div className="data">
+                                            <h4 className="card-movie-name">
+                                                {val.name}
+                                            </h4>
+                                        </div>
                                     </div>
-                                </div>
-                            </Link>
-                        );
-                    })}
-                </MovieSlider>
-            </section>
-            {/* <section className="home-movie">
+                                </Link>
+                            );
+                        })}
+                    </MovieSlider>
+                </section>
+                {/* <section className="home-movie">
                 <h1 className="heading color-orange">MOVIES</h1>
                 <MovieSlider>
                     {arr.map((val, index) => {
@@ -253,7 +267,8 @@ const Home = props => {
                     })}
                 </MovieSlider> 
             </section>*/}
-        </section>
+            </section>
+        </Hom>
     );
 };
 

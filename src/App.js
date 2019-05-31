@@ -1,5 +1,6 @@
 import React, {Suspense, lazy} from "react";
-import {Router} from "@reach/router";
+import {Router, Location} from "@reach/router";
+import posed, {PoseGroup} from "react-pose";
 import Home from "./Components/Home/Home";
 // import Movie from "./Components/Movie/Movie";
 import MovieInfo from "./Components/MovieInfo/MovieInfo";
@@ -12,20 +13,37 @@ import "./App.css";
 const Movie = lazy(() => import("./Components/Movie/Movie"));
 const MovieHome = lazy(() => import("./Components/MovieHome/MovieHome"));
 
+const RoutesContainer = posed.div({
+    enter: {y: 0, opacity: 1, delay: 300},
+    exit: {
+        y: 100,
+        opacity: 0,
+        transition: {duration: 200}
+    }
+});
+
 function App() {
     return (
         <div className="app">
             <Header />
             <Suspense fallback={<div className="load">Loading...</div>}>
-                <Router>
-                    <Home path="/" />
-                    <Movie path="/movie">
-                        <MovieHome path="/" />
-                        <MovieInfo path=":movieId" />
-                    </Movie>
-                    <Search path="/search" />
-                    <Search path="/search/:query" />
-                </Router>
+                <Location>
+                    {({location}) => (
+                        <PoseGroup>
+                            <RoutesContainer key={location.key}>
+                                <Router primary={false}>
+                                    <Home path="/" />
+                                    <Movie path="/movie">
+                                        <MovieHome path="/" />
+                                        <MovieInfo path=":movieId" />
+                                    </Movie>
+                                    <Search path="/search" />
+                                    <Search path="/search/:query" />
+                                </Router>
+                            </RoutesContainer>
+                        </PoseGroup>
+                    )}
+                </Location>
             </Suspense>
             <footer>
                 Made with{" "}
