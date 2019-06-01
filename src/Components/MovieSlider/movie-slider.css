@@ -70,7 +70,7 @@
     height: 100%;
     background: rgba(10, 10, 10, 0.5);
     transition: all 300ms ease 100ms;
-    z-index: 2;
+    z-index: 4;
 }
 
 .next {
@@ -132,8 +132,9 @@
         padding: 20px;
     }
 
-    .dummy{
-        display: none;
+    .dummy {
+        width: 20px;
+        word-break: break-all;
     }
 
     .card {

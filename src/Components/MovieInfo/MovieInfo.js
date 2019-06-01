@@ -1,17 +1,16 @@
 import React, {useState, useEffect, useCallback} from "react";
 import {Link} from "@reach/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import play from "./../../play-icon-18-64.png";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
-import {placeholderImg} from "../../placeholder.jpg";
+import placeholderImg from "../../placeholder.jpg";
+import celebPlaceholder from "./../../user.svg";
 import "./movie-info.css";
 
 const MovieInfo = props => {
     const [movieInfo, changeMovieInfo] = useState([]);
-    const [videoSrc, changeVideoSrc] = useState(null);
+    const [videoSrc, changeVideoSrc] = useState([]);
     const [cast, changeCast] = useState([]);
     const [similar, changeSimilar] = useState([]);
-    const [cardWidth, changeWidth] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -38,13 +37,7 @@ const MovieInfo = props => {
             fetch(urlVideo)
                 .then(res => res.json())
                 .then(data => {
-                    let first = true;
-                    data.results.map(val => {
-                        if (val.type === "Trailer" && first) {
-                            changeVideoSrc(val.key);
-                            first = false;
-                        }
-                    });
+                    changeVideoSrc(data.results);
                 });
 
             fetch(urlCast)
@@ -64,25 +57,31 @@ const MovieInfo = props => {
         fetchData();
     }, [props.movieId]);
 
-    const cardRef = useCallback(node => {
-        if (node !== null) {
-            changeWidth(node.offsetWidth);
-        }
-    }, []);
+    const backgroundRef = useCallback(
+        node => {
+            if (node !== null && window.innerWidth > 600) {
+                node.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
+                    movieInfo.backdrop_path
+                })`;
+            }
+        },
+        [movieInfo.backdrop_path]
+    );
 
     return (
         <>
-            <div className="center-details">
+            <div className="center-details" ref={backgroundRef}>
                 <section className="details-1">
                     <div className="car">
                         <div className="poster">
                             <LazyLoadImage
                                 className="poster-main"
-                                src={` http://image.tmdb.org/t/p/w342/${
+                                src={` https://image.tmdb.org/t/p/w342/${
                                     movieInfo.poster_path
                                 }`}
                                 alt={`${props.movieId} poster`}
                                 placeholderSrc={placeholderImg}
+                                effect="blur"
                             />
                         </div>
                         <article className="movie-main-info">
@@ -104,9 +103,6 @@ const MovieInfo = props => {
                             <h2 className="heading heading-details">
                                 Rotten Tomatoes: 81%
                             </h2>
-                            <h2 className="heading heading-details">
-                                <img src={play} alt="play trailer" />
-                            </h2>
                         </article>
                     </div>
                 </section>
@@ -123,6 +119,7 @@ const MovieInfo = props => {
                                       if (val.job === "Director") {
                                           return val.name + " | ";
                                       }
+                                      return null;
                                   })}
                         </h2>
                         <h2 className="heading">
@@ -133,10 +130,11 @@ const MovieInfo = props => {
                                       if (val.job === "Screenplay") {
                                           return val.name + " | ";
                                       }
+                                      return null;
                                   })}
                         </h2>
                         <div className="cast">
-                            <MovieSlider width={cardWidth}>
+                            <MovieSlider>
                                 {cast.cast === undefined
                                     ? "not found"
                                     : cast.cast.map((val, index) => {
@@ -144,23 +142,32 @@ const MovieInfo = props => {
                                               <div
                                                   className="card card-r"
                                                   key={index}
-                                                  ref={cardRef}
                                               >
                                                   <div>
                                                       <LazyLoadImage
                                                           className="image"
-                                                          src={`http://image.tmdb.org/t/p/w92/${
-                                                              val.profile_path
-                                                          }`}
+                                                          src={
+                                                              val.profile_path ===
+                                                              null
+                                                                  ? celebPlaceholder
+                                                                  : `https://image.tmdb.org/t/p/w154/${
+                                                                        val.profile_path
+                                                                    }`
+                                                          }
                                                           alt={val.name}
                                                           placeholderSrc={
-                                                              placeholderImg
+                                                              celebPlaceholder
                                                           }
+                                                          effect="blur"
                                                       />
                                                   </div>
                                                   <div className="infoo">
-                                                      <h5>{val.character}</h5>
-                                                      <h5>{val.name}</h5>
+                                                      <h5 className="actor-name">
+                                                          {val.name} plays,
+                                                      </h5>
+                                                      <h5 className="character">
+                                                          {val.character}
+                                                      </h5>
                                                   </div>
                                               </div>
                                           );
@@ -169,19 +176,49 @@ const MovieInfo = props => {
                         </div>
                     </div>
                     <div className="trailer">
-                        <h1 className="heading color-orange">Trailer</h1>
-                        <div className="info">
-                            <div className="video">
-                                <iframe
-                                    title={`${props.movieId} trailer`}
-                                    width="560"
-                                    height="315"
-                                    src={`https://www.youtube-nocookie.com/embed/${videoSrc}`}
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                />
-                            </div>
+                        <h1 className="heading color-orange">Videos</h1>
+                        <div className="video-slider">
+                            <MovieSlider>
+                                {videoSrc.reverse().map((val, index) => {
+                                    return (
+                                        <div className="card" key={index}>
+                                            {/* <iframe
+                                                    title={`${
+                                                        props.movieId
+                                                    } trailer`}
+                                                    src={`https://www.youtube-nocookie.com/embed/${videoSrc}`}
+                                                    frameBorder="0"
+                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                /> */}
+                                            <div>
+                                                {/* <LazyLoadImage
+                                                    src={`https://img.youtube.com/vi/${
+                                                        val.key
+                                                    }/hqdefault.jpg`}
+                                                    alt="poster"
+                                                    className="slider-image"
+                                                    placeholderSrc={
+                                                        placeholderImg
+                                                    }
+                                                    effec="blur"
+                                                /> */}
+                                                <iframe
+                                                    title={`${
+                                                        val.name
+                                                    } trailer`}
+                                                    src={`https://www.youtube-nocookie.com/embed/${
+                                                        val.key
+                                                    }`}
+                                                    frameBorder="0"
+                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                />
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </MovieSlider>
                         </div>
                     </div>
                     <div className="all-movie-details">
@@ -289,17 +326,15 @@ const MovieInfo = props => {
                         Similar Movies
                     </h1>
                 </div>
-                <MovieSlider width={cardWidth}>
+                <MovieSlider>
                     {similar === undefined
                         ? "not found"
                         : similar.map((val, index) => {
-                              console.log(similar);
                               return (
                                   <Link
                                       to={"./../../movie/" + val.id}
                                       key={index}
                                       className="card"
-                                      ref={cardRef}
                                       onClick={window.scrollTo(0, 0)}
                                   >
                                       <div>
@@ -307,13 +342,14 @@ const MovieInfo = props => {
                                               src={
                                                   val.backdrop_path === null
                                                       ? placeholderImg
-                                                      : `http://image.tmdb.org/t/p/w300/${
+                                                      : `https://image.tmdb.org/t/p/w300/${
                                                             val.backdrop_path
                                                         }`
                                               }
                                               alt="poster"
                                               className="slider-image"
                                               placeholderSrc={placeholderImg}
+                                              effec="blur"
                                           />
                                           <div className="data">
                                               <h3 className="card-movie-name">

@@ -9,9 +9,7 @@
 }
 
 .center-details {
-    background-image:
-        linear-gradient(270deg, rgba(0, 0, 0, 0.9) 40%, rgba(16, 16, 16, 0.7) 80%, rgba(16, 16, 16, 0.5) 90%),
-        url('./../../av.jpg');
+    background-image: linear-gradient(270deg, rgba(0, 0, 0, 0.9) 40%, rgba(16, 16, 16, 0.7) 80%, rgba(16, 16, 16, 0.5) 90%);
     background-size: cover;
     background-attachment: fixed;
     background-position: center center;
@@ -82,12 +80,43 @@
     width: 50vw;
 }
 
+.actor-name {
+    margin: 0;
+    bottom: 0;
+}
+
+.image {
+    border-radius: 10px;
+    position: relative;
+}
+
+.character {
+    margin-bottom: 0;
+}
+
 .trailer {
     grid-area: trailer
 }
 
 .all-movie-details {
     grid-area: details
+}
+
+.video-slider {
+    width: 50vw;
+}
+
+.video-play-btn {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(16, 16, 16, 0.5);
+    z-index: 2;
 }
 
 .video {
@@ -229,6 +258,10 @@
             "details";
     }
 
+    .video-slider {
+        width: 100vw;
+    }
+    
     .video {
         width: 100vw;
     }

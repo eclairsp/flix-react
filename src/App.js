@@ -6,12 +6,13 @@ import Home from "./Components/Home/Home";
 import MovieInfo from "./Components/MovieInfo/MovieInfo";
 // import MovieHome from "./Components/MovieHome/MovieHome";
 import Header from "./Components/Header/Header";
-import Search from "./Components/Search/Search";
+// import Search from "./Components/Search/Search";
 import "./App.css";
 
 // const Header = true && import('./Components/Header/Header')
 const Movie = lazy(() => import("./Components/Movie/Movie"));
 const MovieHome = lazy(() => import("./Components/MovieHome/MovieHome"));
+const Search = lazy(() => import("./Components/Search/Search"));
 
 const RoutesContainer = posed.div({
     enter: {y: 0, opacity: 1, delay: 300},
