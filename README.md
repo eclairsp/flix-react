@@ -13,3 +13,11 @@
 - [ ] Better next and previous in Sliders(carousels).
 - [ ] It's not fully responsive. 
 - [ ] Pages for celebs
+
+## How to run:
+```sh
+clone or download repo
+cd \\file directory\\
+npm install
+npm start
+```
