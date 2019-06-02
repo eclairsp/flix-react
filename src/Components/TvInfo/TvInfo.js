@@ -306,7 +306,7 @@ const TvInfo = props => {
                     <section className="recommendations home-width">
                         <div className="recommend-heading-wrapper">
                             <h1 className="heading recommend-heading color-orange">
-                                Similar Movies
+                                Similar TV-Shows
                             </h1>
                         </div>
                         <MovieSlider>
