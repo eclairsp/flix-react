@@ -22,13 +22,6 @@ body {
     font-family: 'Numans', sans-serif;
 }
 
-.load {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background: #fff;
-}
-
 .app {
     position: relative;
     min-height: 100vh;
@@ -37,6 +30,12 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    padding-bottom: 68px;
+}
+
+img {
+    overflow: hidden;
+    font-size: 8px;
 }
 
 .flex-center {
@@ -92,6 +91,22 @@ footer {
     text-align: center;
     font-size: 1.3em;
     background: #000;
+}
+
+.loader {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} 
+
+.circle {
+    width: 20vw;
+    height: 20vw;
+    border-radius: 50%;
+    background: #ff5252;
+    color: #fff;
 }
 
 @media (max-width : 600px) {

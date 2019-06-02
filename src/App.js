@@ -1,4 +1,4 @@
-import React, {Suspense, lazy} from "react";
+import React, {lazy, Suspense} from "react";
 import {Router, Location} from "@reach/router";
 import posed, {PoseGroup} from "react-pose";
 import Home from "./Components/Home/Home";
@@ -15,7 +15,7 @@ const MovieHome = lazy(() => import("./Components/MovieHome/MovieHome"));
 const Search = lazy(() => import("./Components/Search/Search"));
 
 const RoutesContainer = posed.div({
-    enter: {y: 0, opacity: 1, delay: 300},
+    enter: {y: 0, opacity: 1, delay: 300, staggerChildren: 50},
     exit: {
         y: 100,
         opacity: 0,
@@ -24,10 +24,15 @@ const RoutesContainer = posed.div({
 });
 
 function App() {
+    let loader = (
+        <div class="loader">
+            <div className="circle">LOADING ...</div>
+        </div>
+    );
     return (
         <div className="app">
             <Header />
-            <Suspense fallback={<div className="load">Loading...</div>}>
+            <Suspense fallback={loader}>
                 <Location>
                     {({location}) => (
                         <PoseGroup>

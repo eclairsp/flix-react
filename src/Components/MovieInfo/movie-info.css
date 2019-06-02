@@ -80,18 +80,14 @@
     width: 50vw;
 }
 
-.actor-name {
+.card-r {
+    background: #000;
+}
+
+.cast-name {
+    padding-left: 10px;
     margin: 0;
-    bottom: 0;
-}
-
-.image {
-    border-radius: 10px;
-    position: relative;
-}
-
-.character {
-    margin-bottom: 0;
+    margin-bottom: 5px;
 }
 
 .trailer {
@@ -169,7 +165,6 @@
     flex-wrap: wrap;
     margin: 10px;
     font-size: 1.2em;
-    padding-left: 25px;
 }
 
 .details-main p {
@@ -234,6 +229,7 @@
     }
 
     .movie-main-info {
+        margin-top: 30px;
         width: 90vw;
     }
 

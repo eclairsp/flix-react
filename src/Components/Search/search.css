@@ -10,31 +10,63 @@
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    width: 90vw;
-}
-
-.card-res {
-    margin: 20px;
-    margin-left: 0;
+    width: 100vw;
 }
 
 .result-heading {
-    width: 90vw;
+    width: 100vw;
 }
 
-.before-search {
+.no-result-wrapper {
+    margin-top: 20px;
+    width: 100vw;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
-.before-search svg {
-    width: 40vw;
-    height: 40vw;
+.no-result {
+    width: 35vw;
+    height: 35vw;
 }
 
-.cir {
-    animation: rotate 300ms ease infinte;
+.no-result-head {
+    width: 80vw;
+    text-align: center;
+}
+
+.result-full-img {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    grid-area: ps;
+}
+
+.result-full-info {
+    grid-area: i;
+    align-self: center;
+}
+
+.card-after-result {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: max-content;
+    grid-template-areas: 
+        "ps i"; 
+    background: #000;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+    width: 30vw;
+}
+
+.card-after-result-head {
+    overflow-wrap: break-word;
+}
+
+.loader {
+    animation: rotate 300ms infinite;
 }
 
 @keyframes rotate {
@@ -55,5 +87,12 @@
 
     .result-heading {
         font-size: 1.4em;
+    }
+
+    .card-after-result {
+        width: 90vw;
+        margin: 0;
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 }

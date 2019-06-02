@@ -115,17 +115,12 @@ class SearchBox extends Component {
                 query: ""
             });
         } else {
-            this.setState(
-                {
-                    inputBorder: true,
-                    resultVisible: true,
-                    placeholder: "Search any Movie, TV-Show, Celeb",
-                    query: e.target.value
-                },
-                () => {
-                    console.log(this.state.query);
-                }
-            );
+            this.setState({
+                inputBorder: true,
+                resultVisible: true,
+                placeholder: "Search any Movie, TV-Show, Celeb",
+                query: e.target.value
+            });
             this.searchMovie(e.target.value);
         }
     };

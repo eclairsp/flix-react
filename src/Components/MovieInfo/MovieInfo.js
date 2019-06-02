@@ -85,7 +85,7 @@ const MovieInfo = props => {
                             />
                         </div>
                         <article className="movie-main-info">
-                            <h1 className="movie-main-name heading heading-details heading-main color-orange">
+                            <h1 className="heading heading-details color-orange">
                                 {movieInfo.title}
                             </h1>
                             <h2 className="heading heading-details">
@@ -161,11 +161,11 @@ const MovieInfo = props => {
                                                           effect="blur"
                                                       />
                                                   </div>
-                                                  <div className="infoo">
-                                                      <h5 className="actor-name">
-                                                          {val.name} plays,
-                                                      </h5>
-                                                      <h5 className="character">
+                                                  <div>
+                                                      <h4 className="cast-name">
+                                                          {val.name}
+                                                      </h4>
+                                                      <h5 className="cast-name">
                                                           {val.character}
                                                       </h5>
                                                   </div>
@@ -179,45 +179,27 @@ const MovieInfo = props => {
                         <h1 className="heading color-orange">Videos</h1>
                         <div className="video-slider">
                             <MovieSlider>
-                                {videoSrc.reverse().map((val, index) => {
-                                    return (
-                                        <div className="card" key={index}>
-                                            {/* <iframe
-                                                    title={`${
-                                                        props.movieId
-                                                    } trailer`}
-                                                    src={`https://www.youtube-nocookie.com/embed/${videoSrc}`}
-                                                    frameBorder="0"
-                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
-                                                /> */}
-                                            <div>
-                                                {/* <LazyLoadImage
-                                                    src={`https://img.youtube.com/vi/${
-                                                        val.key
-                                                    }/hqdefault.jpg`}
-                                                    alt="poster"
-                                                    className="slider-image"
-                                                    placeholderSrc={
-                                                        placeholderImg
-                                                    }
-                                                    effec="blur"
-                                                /> */}
-                                                <iframe
-                                                    title={`${
-                                                        val.name
-                                                    } trailer`}
-                                                    src={`https://www.youtube-nocookie.com/embed/${
-                                                        val.key
-                                                    }`}
-                                                    frameBorder="0"
-                                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
-                                                />
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                {videoSrc === undefined
+                                    ? "no videos found"
+                                    : videoSrc.reverse().map((val, index) => {
+                                          return (
+                                              <div className="card" key={index}>
+                                                  <div>
+                                                      <iframe
+                                                          title={`${
+                                                              val.name
+                                                          } trailer`}
+                                                          src={`https://www.youtube-nocookie.com/embed/${
+                                                              val.key
+                                                          }`}
+                                                          frameBorder="0"
+                                                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                          allowFullScreen
+                                                      />
+                                                  </div>
+                                              </div>
+                                          );
+                                      })}
                             </MovieSlider>
                         </div>
                     </div>
@@ -347,7 +329,7 @@ const MovieInfo = props => {
                                                         }`
                                               }
                                               alt="poster"
-                                              className="slider-image"
+                                              className="card-image"
                                               placeholderSrc={placeholderImg}
                                               effec="blur"
                                           />
