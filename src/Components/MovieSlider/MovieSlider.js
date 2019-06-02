@@ -11,15 +11,27 @@ const MovieSlider = props => {
     }, [scrollPosition]);
 
     function scrollToNext() {
-        changeScrollPosition(
-            scrollPosition + sliderContainerRef.current.offsetWidth / 2
-        );
+        if (props.type !== "full") {
+            changeScrollPosition(
+                scrollPosition + sliderContainerRef.current.offsetWidth / 2
+            );
+        } else {
+            changeScrollPosition(
+                scrollPosition + sliderContainerRef.current.offsetWidth - 50
+            );
+        }
     }
 
     function scrollToPrev() {
-        changeScrollPosition(
-            scrollPosition - sliderContainerRef.current.offsetWidth / 2
-        );
+        if (props.type !== "full") {
+            changeScrollPosition(
+                scrollPosition - sliderContainerRef.current.offsetWidth / 2
+            );
+        } else {
+            changeScrollPosition(
+                scrollPosition - sliderContainerRef.current.offsetWidth
+            );
+        }
     }
 
     return (

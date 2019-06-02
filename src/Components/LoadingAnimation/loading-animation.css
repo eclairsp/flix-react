@@ -1,0 +1,107 @@
+.loader-wrapper {
+    margin-top: 20px;
+    width: 100vw;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loader {
+    width: 30vw;
+    height: 30vw;
+}
+
+.loader-head {
+    width: 80vw;
+    text-align: center;
+}
+
+.loader-side-in-left {
+    animation: side-in-left 2s infinite;
+}
+
+@keyframes side-in-left {
+    0% {
+        transform: translateX(-1000px)
+    }
+    20% {
+        transform: translateX(0)
+    }
+
+    80% {
+        transform: translateX(0)
+    }
+    100% {
+        transform: translateX(1000px)
+    }
+}
+
+.loader-top-in {
+    animation: top-in 2s infinite;
+}
+
+@keyframes top-in {
+    0% {
+        transform: translateY(-1000px)
+    }
+    30% {
+        transform: translateY(0)
+    }
+
+    70% {
+        transform: translateY(0)
+    }
+    100% {
+        transform: translateY(1000px)
+    }
+}
+
+.loader-bottom-up {
+    animation: bottom-up 2s infinite;
+}
+
+@keyframes bottom-up {
+    0% {
+        transform: translateY(1000px)
+    }
+    30% {
+        transform: translateY(0)
+    }
+
+    70% {
+        transform: translateY(0)
+    }
+    100% {
+        transform: translateY(-1000px)
+    }
+}
+
+.loader-tip {
+    animation: tip 2s infinite;
+    transform-origin: 50% 50%;
+}
+
+@keyframes tip {
+    0% {
+        transform: translateY(-1000px)
+    }
+    30% {
+        transform: translateY(0)
+    }
+
+    70% {
+        transform: translateY(0)
+    }
+    100% {
+        transform: translateY(1000px)
+    }
+}
+
+@media (max-width : 600px) {
+    .loader {
+        width: 60vw;
+        height: 60vw;
+    }
+}

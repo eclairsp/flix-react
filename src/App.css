@@ -93,14 +93,6 @@ footer {
     background: #000;
 }
 
-.loader {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} 
-
 .circle {
     width: 20vw;
     height: 20vw;

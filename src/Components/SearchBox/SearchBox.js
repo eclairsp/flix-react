@@ -139,6 +139,8 @@ class SearchBox extends Component {
     handleSuggestClick = index => {
         if (this.state.resultLastHead[index] === "movie") {
             navigate(`./../movie/${this.state.resultId[index]}`);
+        } else if (this.state.resultLastHead[index] === "TV") {
+            navigate(`./../tv/${this.state.resultId[index]}`);
         }
     };
 

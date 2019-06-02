@@ -7,12 +7,15 @@ import MovieInfo from "./Components/MovieInfo/MovieInfo";
 // import MovieHome from "./Components/MovieHome/MovieHome";
 import Header from "./Components/Header/Header";
 // import Search from "./Components/Search/Search";
+import LoadingAnimation from "./Components/LoadingAnimation/LoadingAnimation";
 import "./App.css";
 
 // const Header = true && import('./Components/Header/Header')
 const Movie = lazy(() => import("./Components/Movie/Movie"));
 const MovieHome = lazy(() => import("./Components/MovieHome/MovieHome"));
 const Search = lazy(() => import("./Components/Search/Search"));
+const Tv = lazy(() => import("./Components/Tv/Tv"));
+const TvInfo = lazy(() => import("./Components/TvInfo/TvInfo"));
 
 const RoutesContainer = posed.div({
     enter: {y: 0, opacity: 1, delay: 300, staggerChildren: 50},
@@ -24,15 +27,14 @@ const RoutesContainer = posed.div({
 });
 
 function App() {
-    let loader = (
-        <div class="loader">
-            <div className="circle">LOADING ...</div>
-        </div>
-    );
     return (
         <div className="app">
             <Header />
-            <Suspense fallback={loader}>
+            <Suspense
+                fallback={
+                    <LoadingAnimation animation={true} message="LOADING..." />
+                }
+            >
                 <Location>
                     {({location}) => (
                         <PoseGroup>
@@ -43,6 +45,10 @@ function App() {
                                         <MovieHome path="/" />
                                         <MovieInfo path=":movieId" />
                                     </Movie>
+                                    <Tv path="/tv">
+                                        {/* <TvHome path="/" /> */}
+                                        <TvInfo path=":tvId" />
+                                    </Tv>
                                     <Search path="/search" />
                                     <Search path="/search/:query" />
                                 </Router>

@@ -4,6 +4,7 @@ import posed from "react-pose";
 import MovieSlider from "./../MovieSlider/MovieSlider";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {placeholderImg} from "../../placeholder.jpg";
+import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
 import "./home.css";
 
 const Hom = posed.div({
@@ -61,9 +62,7 @@ const Home = props => {
                     changeCelebData(data.results);
                 });
 
-            setTimeout(() => {
-                changeLoaded(true);
-            }, 2000);
+            changeLoaded(true);
         };
 
         fetchData();
@@ -131,7 +130,7 @@ const Home = props => {
 
                     <h2 className="heading color-orange">
                         TV-SHOWS{" "}
-                        <Link to="../movie" className="heading-see-more">
+                        <Link to="../tv" className="heading-see-more">
                             <span className="heading-see-more">See more</span>
                         </Link>
                     </h2>
@@ -140,7 +139,7 @@ const Home = props => {
                             {tvData.map(val => {
                                 return (
                                     <Link
-                                        to={"../movie/" + val.id}
+                                        to={"../tv/" + val.id}
                                         key={val.id}
                                         className="card"
                                         ref={cardRef}
@@ -217,9 +216,7 @@ const Home = props => {
                 </section>
             )}
             {!loaded && (
-                <div class="loader">
-                    <div className="circle" />
-                </div>
+                <LoadingAnimation animation={true} message="LOADING..." />
             )}
         </Hom>
     );
