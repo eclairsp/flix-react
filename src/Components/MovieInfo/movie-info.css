@@ -208,6 +208,7 @@
     .details-1 {
         padding: 0;
         background: none;
+        width: 90vw;
     }
 
     .center-details {
@@ -215,6 +216,8 @@
     }
 
     .car {
+        margin-top: 20px;
+        margin-bottom: 20px;
         width: 100vw;
         justify-items: center;
         grid-auto-columns: 1fr;
@@ -269,7 +272,7 @@
     }
 
     .tags {
-        width: 100vw;
+        width: 90vw;
     }
 
     .recommend-heading {

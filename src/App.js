@@ -16,6 +16,7 @@ const MovieHome = lazy(() => import("./Components/MovieHome/MovieHome"));
 const Search = lazy(() => import("./Components/Search/Search"));
 const Tv = lazy(() => import("./Components/Tv/Tv"));
 const TvInfo = lazy(() => import("./Components/TvInfo/TvInfo"));
+const SeasonInfo = lazy(() => import("./Components/SeasonInfo/SeasonInfo"));
 
 const RoutesContainer = posed.div({
     enter: {y: 0, opacity: 1, delay: 300, staggerChildren: 50},
@@ -48,6 +49,7 @@ function App() {
                                     <Tv path="/tv">
                                         {/* <TvHome path="/" /> */}
                                         <TvInfo path=":tvId" />
+                                        <SeasonInfo path="/season/:tvId/:name/:seasons" />
                                     </Tv>
                                     <Search path="/search" />
                                     <Search path="/search/:query" />

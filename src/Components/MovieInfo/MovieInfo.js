@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {Link} from "@reach/router";
 import posed from "react-pose";
 import {LazyLoadImage} from "react-lazy-load-image-component";
@@ -23,6 +23,7 @@ const MovieInfo = props => {
     const [cast, changeCast] = useState([]);
     const [similar, changeSimilar] = useState([]);
     const [loaded, changeLoaded] = useState(false);
+    const backgroundRef = useRef();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,21 +67,19 @@ const MovieInfo = props => {
                 });
 
             changeLoaded(true);
-        };
 
-        fetchData();
-    }, [props.movieId]);
-
-    const backgroundRef = useCallback(
-        node => {
-            if (node !== null && window.innerWidth > 600) {
-                node.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
+            if (
+                backgroundRef.current !== undefined &&
+                window.innerWidth > 600
+            ) {
+                backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
                     movieInfo.backdrop_path
                 })`;
             }
-        },
-        [movieInfo.backdrop_path]
-    );
+        };
+
+        fetchData();
+    }, [movieInfo.backdrop_path, props.movieId]);
 
     return (
         <Hom>

@@ -80,6 +80,21 @@ const Top = props => {
                                     </li>
                                 </Link>
                                 <Link
+                                    to="./../tv"
+                                    onClick={e => {
+                                        hamRef.current.classList.toggle(
+                                            "active"
+                                        );
+                                        menuVisible
+                                            ? changeMenuVisible(false)
+                                            : changeMenuVisible(true);
+                                    }}
+                                >
+                                    <li>
+                                        <h1 className="menu-item">TV-Shows</h1>
+                                    </li>
+                                </Link>
+                                <Link
                                     to="./../search"
                                     onClick={e => {
                                         hamRef.current.classList.toggle(

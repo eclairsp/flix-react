@@ -1,0 +1,27 @@
+.season {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.season-link {
+    width: 80vw;
+    text-decoration: none;
+}
+
+.all-season {
+    margin: 0;
+    padding-left: 30px;
+}
+
+@media (max-width : 600px) {
+    .season-link {
+        width: 90vw;
+    }
+    .all-season {
+        padding-left: 0;
+    }
+}

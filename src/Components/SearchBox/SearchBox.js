@@ -140,7 +140,11 @@ class SearchBox extends Component {
         if (this.state.resultLastHead[index] === "movie") {
             navigate(`./../movie/${this.state.resultId[index]}`);
         } else if (this.state.resultLastHead[index] === "TV") {
-            navigate(`./../tv/${this.state.resultId[index]}`);
+            if (window.location.href.includes("season")) {
+                navigate(`./../../../../tv/${this.state.resultId[index]}`);
+            } else {
+                navigate(`./../tv/${this.state.resultId[index]}`);
+            }
         }
     };
 

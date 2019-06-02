@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {Link} from "@reach/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
@@ -6,6 +6,7 @@ import placeholderImg from "../../placeholder.jpg";
 import celebPlaceholder from "./../../user.svg";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
 import "./../MovieInfo/movie-info.css";
+import "./tv-info.css";
 
 const TvInfo = props => {
     const [tvInfo, changeTvInfo] = useState([]);
@@ -13,6 +14,7 @@ const TvInfo = props => {
     const [cast, changeCast] = useState([]);
     const [similar, changeSimilar] = useState([]);
     const [loaded, changeLoaded] = useState(false);
+    const backgroundRef = useRef();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,21 +58,19 @@ const TvInfo = props => {
                 });
 
             changeLoaded(true);
-        };
 
-        fetchData();
-    }, [props.movieId, props.tvId]);
-
-    const backgroundRef = useCallback(
-        node => {
-            if (node !== null && window.innerWidth > 600) {
-                node.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
+            if (
+                backgroundRef.current !== undefined &&
+                window.innerWidth > 600
+            ) {
+                backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
                     tvInfo.backdrop_path
                 })`;
             }
-        },
-        [tvInfo.backdrop_path]
-    );
+        };
+
+        fetchData();
+    }, [props.movieId, props.tvId, tvInfo.backdrop_path]);
 
     return (
         <>
@@ -115,6 +115,18 @@ const TvInfo = props => {
                             </div>
                         </section>
                     </div>
+                    <section className="season">
+                        <Link
+                            to={`./../season/${props.tvId}/${tvInfo.name}/${
+                                tvInfo.number_of_seasons
+                            }`}
+                            className="season-link"
+                        >
+                            <h1 className="all-season color-orange">
+                                Season Information
+                            </h1>
+                        </Link>
+                    </section>
                     <div className="center-next">
                         <section className="movie-main-details">
                             <div className="cast-crew">

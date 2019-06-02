@@ -1,0 +1,97 @@
+.season-head {
+    margin: 0;
+    cursor: pointer;
+    width: max-content;
+}
+
+.season-head-number {
+    margin: 20px;
+    cursor: pointer;
+}
+
+.season-selector {
+    overflow: hidden;
+    width: 95vw;
+}
+
+.season-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding-left: 20px;
+}
+
+.episode-head {
+    margin: 10px;
+}
+
+.synopsis-episode{
+    font-size: 1.2em;
+}
+
+.episode-still {
+    grid-area: img;
+    justify-self: center;
+    align-self: center;
+    border-radius: 10px;
+}
+
+.episode-info {
+    grid-area: info;
+    padding-left: 20px;
+}
+
+.season-card {
+    width: 90vw;
+    background: #000;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: max-content;
+    grid-template-areas:
+        "img info";
+}
+
+.season-number-card {
+    width: 90vw;
+    background: #000;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+@media (max-width : 600px) {
+
+    .season-selector {
+        width: 90vw;
+    }
+
+    .season-wrap {
+        width: 90vw;
+    }
+
+    .right-align-text {
+        text-align: right;
+    }
+
+    .episode-info {
+        padding-left: 0;
+    }
+
+    .episode-still {
+        display: none;
+    }
+
+    .season-card {
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: max-content;
+        grid-template-areas:
+            "info"
+    }
+}
