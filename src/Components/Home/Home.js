@@ -186,7 +186,7 @@ const Home = props => {
                                             src={
                                                 val.backdrop_path === null
                                                     ? celeb154
-                                                    : `https://image.tmdb.org/t/p/w300/${
+                                                    : `https://image.tmdb.org/t/p/w154/${
                                                           val.profile_path
                                                       }`
                                             }
