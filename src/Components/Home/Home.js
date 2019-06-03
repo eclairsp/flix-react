@@ -3,7 +3,9 @@ import {Link} from "@reach/router";
 import posed from "react-pose";
 import MovieSlider from "./../MovieSlider/MovieSlider";
 import {LazyLoadImage} from "react-lazy-load-image-component";
-import {placeholderImg} from "../../placeholder.jpg";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import backdrop300 from "../../backdrop-300.png";
+import celeb154 from "./../../celeb-154.png";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
 import "./home.css";
 
@@ -91,17 +93,20 @@ const Home = props => {
                                     >
                                         <div>
                                             <LazyLoadImage
-                                                alt="poster"
+                                                alt={`${val.title} poster`}
                                                 effect="blur"
                                                 src={
                                                     val.backdrop_path === null
-                                                        ? placeholderImg
+                                                        ? backdrop300
                                                         : `https://image.tmdb.org/t/p/w300/${
                                                               val.backdrop_path
                                                           }`
                                                 }
                                                 className="card-image"
-                                                placeholderSrc={placeholderImg}
+                                                placeholderSrc={backdrop300}
+                                                onError={e =>
+                                                    (e.target.src = backdrop300)
+                                                }
                                             />
                                             <div className="data">
                                                 <h4 className="card-movie-name">
@@ -137,16 +142,20 @@ const Home = props => {
                                     >
                                         <div>
                                             <LazyLoadImage
+                                                alt={`${val.name} poster`}
+                                                effect="blur"
                                                 src={
                                                     val.backdrop_path === null
-                                                        ? placeholderImg
+                                                        ? backdrop300
                                                         : `https://image.tmdb.org/t/p/w300/${
                                                               val.backdrop_path
                                                           }`
                                                 }
-                                                alt="poster"
                                                 className="card-image"
-                                                placeholderSrc={placeholderImg}
+                                                placeholderSrc={backdrop300}
+                                                onError={e =>
+                                                    (e.target.src = backdrop300)
+                                                }
                                             />
                                             <div className="data">
                                                 <h4 className="card-movie-name">
@@ -170,31 +179,29 @@ const Home = props => {
                         <MovieSlider>
                             {celebData.map(val => {
                                 return (
-                                    <Link
-                                        to={"../movie/" + val.id}
-                                        key={val.id}
-                                        className="card"
-                                    >
-                                        <div>
-                                            <LazyLoadImage
-                                                src={
-                                                    val.profile_path === null
-                                                        ? placeholderImg
-                                                        : `https://image.tmdb.org/t/p/w154/${
-                                                              val.profile_path
-                                                          }`
-                                                }
-                                                alt="poster"
-                                                className="card-image"
-                                                placeholderSrc={placeholderImg}
-                                            />
-                                            <div className="data">
-                                                <h4 className="card-celeb-name">
-                                                    {val.name}
-                                                </h4>
-                                            </div>
+                                    <div key={val.id} className="card">
+                                        <LazyLoadImage
+                                            alt={`${val.name}`}
+                                            effect="blur"
+                                            src={
+                                                val.backdrop_path === null
+                                                    ? celeb154
+                                                    : `https://image.tmdb.org/t/p/w300/${
+                                                          val.profile_path
+                                                      }`
+                                            }
+                                            className="card-image"
+                                            placeholderSrc={celeb154}
+                                            onError={e =>
+                                                (e.target.src = celeb154)
+                                            }
+                                        />
+                                        <div className="data">
+                                            <h4 className="card-celeb-name">
+                                                {val.name}
+                                            </h4>
                                         </div>
-                                    </Link>
+                                    </div>
                                 );
                             })}
                         </MovieSlider>

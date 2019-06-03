@@ -42,6 +42,10 @@
     padding-left: 20px;
 }
 
+.episode-hand-emoji {
+    font-size: 0.8em
+}
+
 .season-card {
     width: 90vw;
     background: #000;

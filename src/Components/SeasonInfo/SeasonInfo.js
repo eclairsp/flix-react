@@ -1,7 +1,10 @@
 import React from "react";
 import {Link} from "@reach/router";
 import posed from "react-pose";
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
+import backdrop300 from "./../../backdrop-300.png";
 import "./season-info.css";
 
 const Mov = posed.div({
@@ -88,11 +91,19 @@ class SeasonInfo extends React.Component {
                         >
                             Select Season{" "}
                             {this.state.open ? (
-                                <span role="img" aria-label="down">
+                                <span
+                                    className="episode-hand-emoji"
+                                    role="img"
+                                    aria-label="hand-down"
+                                >
                                     &#128071;
                                 </span>
                             ) : (
-                                <span role="img" aria-label="up">
+                                <span
+                                    className="episode-hand-emoji"
+                                    role="img"
+                                    aria-label="hand-up"
+                                >
                                     &#128070;
                                 </span>
                             )}
@@ -126,12 +137,21 @@ class SeasonInfo extends React.Component {
                                         key={index + 1}
                                         className="season-card"
                                     >
-                                        <img
+                                        <LazyLoadImage
                                             alt={val.name}
-                                            src={`https://image.tmdb.org/t/p/w342/${
-                                                val.still_path
-                                            }`}
+                                            src={
+                                                val.still_path === null
+                                                    ? backdrop300
+                                                    : `https://image.tmdb.org/t/p/w342/${
+                                                          val.still_path
+                                                      }`
+                                            }
                                             className="episode-still"
+                                            effect="blur"
+                                            placeholderSrc={backdrop300}
+                                            onError={e =>
+                                                (e.target.src = backdrop300)
+                                            }
                                         />
                                         <div className="episode-info">
                                             <h3 className="episode-head color-orange">

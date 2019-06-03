@@ -2,9 +2,11 @@ import React, {useState, useEffect, useRef} from "react";
 import {Link} from "@reach/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
-import placeholderImg from "../../placeholder.jpg";
-import celebPlaceholder from "./../../user.svg";
+import poster342 from "./../../poster-342.png";
+import backdrop300 from "../../backdrop-300.png";
+import celeb154 from "./../../celeb-154.png";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import "./../MovieInfo/movie-info.css";
 import "./tv-info.css";
 
@@ -82,12 +84,19 @@ const TvInfo = props => {
                                 <div className="poster">
                                     <LazyLoadImage
                                         className="poster-main"
-                                        src={` https://image.tmdb.org/t/p/w342/${
-                                            tvInfo.poster_path
-                                        }`}
+                                        src={
+                                            tvInfo.poster_path === null
+                                                ? poster342
+                                                : `https://image.tmdb.org/t/p/w342/${
+                                                      tvInfo.poster_path
+                                                  }`
+                                        }
                                         alt={`${tvInfo.name} poster`}
-                                        placeholderSrc={placeholderImg}
+                                        placeholderSrc={poster342}
                                         effect="blur"
+                                        onError={e =>
+                                            (e.target.src = poster342)
+                                        }
                                     />
                                 </div>
                                 <article className="movie-main-info">
@@ -157,16 +166,19 @@ const TvInfo = props => {
                                                                   src={
                                                                       val.profile_path ===
                                                                       null
-                                                                          ? celebPlaceholder
+                                                                          ? celeb154
                                                                           : `https://image.tmdb.org/t/p/w154/${
                                                                                 val.profile_path
                                                                             }`
                                                                   }
                                                                   alt={val.name}
                                                                   placeholderSrc={
-                                                                      celebPlaceholder
+                                                                      celeb154
                                                                   }
                                                                   effect="blur"
+                                                                  onError={e =>
+                                                                      (e.target.src = celeb154)
+                                                                  }
                                                               />
                                                           </div>
                                                           <div>
@@ -325,7 +337,7 @@ const TvInfo = props => {
                                                       src={
                                                           val.backdrop_path ===
                                                           null
-                                                              ? placeholderImg
+                                                              ? backdrop300
                                                               : `https://image.tmdb.org/t/p/w300/${
                                                                     val.backdrop_path
                                                                 }`
@@ -333,9 +345,12 @@ const TvInfo = props => {
                                                       alt="poster"
                                                       className="card-image"
                                                       placeholderSrc={
-                                                          placeholderImg
+                                                          backdrop300
                                                       }
                                                       effec="blur"
+                                                      onError={e =>
+                                                          (e.target.src = backdrop300)
+                                                      }
                                                   />
                                                   <div className="data">
                                                       <h3 className="card-movie-name">

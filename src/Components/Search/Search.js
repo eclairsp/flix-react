@@ -2,7 +2,9 @@ import React from "react";
 import {navigate} from "@reach/router";
 import posed from "react-pose";
 import {LazyLoadImage} from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
+import celeb154 from "./../../celeb-154.png";
 import "./search.css";
 
 const Hom = posed.div({
@@ -104,10 +106,24 @@ class Search extends React.Component {
                                         >
                                             <LazyLoadImage
                                                 className="result-full-img"
-                                                src={`https://image.tmdb.org/t/p/w154/${
-                                                    this.state.resultImg[index]
-                                                }`}
+                                                src={
+                                                    this.state.resultImg[
+                                                        index
+                                                    ] === null
+                                                        ? celeb154
+                                                        : `https://image.tmdb.org/t/p/w154/${
+                                                              this.state
+                                                                  .resultImg[
+                                                                  index
+                                                              ]
+                                                          }`
+                                                }
                                                 alt={val}
+                                                placeholderSrc={celeb154}
+                                                effect="blur"
+                                                onError={e =>
+                                                    (e.target.src = celeb154)
+                                                }
                                             />
                                             <div className="result-full-info">
                                                 <h3 className="heading color-orange card-after-result-head">

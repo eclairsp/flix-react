@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import posed, {PoseGroup} from "react-pose";
 import {navigate, Link} from "@reach/router";
+import {LazyLoadImage} from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+import search45 from "./../../search-45.png";
 import "./search-box.css";
 
 const configInput = {
@@ -88,7 +91,12 @@ class SearchBox extends Component {
                         id.push(val.id);
                     } else if (val.media_type === "person") {
                         head.push(val.name);
-                        secHead.push("known for, " + val.known_for[0].title);
+                        secHead.push(
+                            val.known_for[0] === null ||
+                                val.known_for[0] === undefined
+                                ? ""
+                                : `known for, ${val.known_for[0].title}`
+                        );
                         lastHead.push("celeb");
                         img.push(val.profile_path);
                         id.push(val.id);
@@ -183,14 +191,26 @@ class SearchBox extends Component {
                                             }
                                         >
                                             <div className="result-card">
-                                                <img
-                                                    className="result-img"
-                                                    src={`http://image.tmdb.org/t/p/w45/${
+                                                <LazyLoadImage
+                                                    src={
                                                         this.state.resultImg[
                                                             index
-                                                        ]
-                                                    }`}
+                                                        ] === null
+                                                            ? search45
+                                                            : `http://image.tmdb.org/t/p/w45/${
+                                                                  this.state
+                                                                      .resultImg[
+                                                                      index
+                                                                  ]
+                                                              }`
+                                                    }
                                                     alt={val}
+                                                    className="result-img"
+                                                    placeholderSrc={search45}
+                                                    effec="blur"
+                                                    onError={e =>
+                                                        (e.target.src = search45)
+                                                    }
                                                 />
                                                 <div className="result-info">
                                                     <h5 className="result-text">
