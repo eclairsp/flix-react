@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect} from "react";
 import {Link} from "@reach/router";
 import posed from "react-pose";
 import MovieSlider from "./../MovieSlider/MovieSlider";
@@ -20,7 +20,6 @@ const Home = props => {
     const [movieData, changeMovieData] = useState([]);
     const [tvData, changeTvData] = useState([]);
     const [celebData, changeCelebData] = useState([]);
-    const [cardWidth, changeWidth] = useState(0);
     const [loaded, changeLoaded] = useState(false);
 
     useEffect(() => {
@@ -68,12 +67,6 @@ const Home = props => {
         fetchData();
     }, []);
 
-    const cardRef = useCallback(node => {
-        if (node !== null) {
-            changeWidth(node.clientWidth);
-        }
-    }, []);
-
     return (
         <Hom>
             {loaded && (
@@ -88,14 +81,13 @@ const Home = props => {
                         </Link>
                     </h2>
                     <section className="home-movie home-width">
-                        <MovieSlider width={cardWidth}>
+                        <MovieSlider>
                             {movieData.map(val => {
                                 return (
                                     <Link
                                         to={"../movie/" + val.id}
                                         key={val.id}
                                         className="card"
-                                        ref={cardRef}
                                     >
                                         <div>
                                             <LazyLoadImage
@@ -130,19 +122,18 @@ const Home = props => {
 
                     <h2 className="heading color-orange">
                         TV-SHOWS{" "}
-                        <Link to="../tv" className="heading-see-more">
+                        {/* <Link to="../tv" className="heading-see-more">
                             <span className="heading-see-more">See more</span>
-                        </Link>
+                        </Link> */}
                     </h2>
                     <section className="home-tv home-width">
-                        <MovieSlider width={cardWidth}>
+                        <MovieSlider>
                             {tvData.map(val => {
                                 return (
                                     <Link
                                         to={"../tv/" + val.id}
                                         key={val.id}
                                         className="card"
-                                        ref={cardRef}
                                     >
                                         <div>
                                             <LazyLoadImage
@@ -174,14 +165,9 @@ const Home = props => {
                         </MovieSlider>
                     </section>
 
-                    <h2 className="heading color-orange">
-                        CELEB{" "}
-                        <Link to="../movie" className="heading-see-more">
-                            <span className="heading-see-more">See more</span>
-                        </Link>
-                    </h2>
+                    <h2 className="heading color-orange">CELEB </h2>
                     <section className="home-tv home-width">
-                        <MovieSlider width={cardWidth}>
+                        <MovieSlider>
                             {celebData.map(val => {
                                 return (
                                     <Link
