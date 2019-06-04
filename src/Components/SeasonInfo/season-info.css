@@ -32,8 +32,6 @@
 
 .episode-still {
     grid-area: img;
-    justify-self: center;
-    align-self: center;
     border-radius: 10px;
 }
 
@@ -58,6 +56,8 @@
     grid-template-rows: max-content;
     grid-template-areas:
         "img info";
+    align-items: center;
+    justify-content: center;
 }
 
 .season-number-card {
@@ -68,7 +68,7 @@
     margin-bottom: 10px;
 }
 
-@media (max-width : 600px) {
+@media only screen and (min-width: 0) and (max-width: 600px) {
 
     .season-selector {
         width: 90vw;
@@ -92,6 +92,21 @@
 
     .season-card {
         padding: 0;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: max-content;
+        grid-template-areas:
+            "info"
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .episode-still {
+        display: none;
+    }
+
+    .season-card {
+        padding: 20px;
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: max-content;

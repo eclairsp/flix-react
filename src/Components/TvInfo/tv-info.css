@@ -17,7 +17,7 @@
     padding-left: 30px;
 }
 
-@media (max-width : 600px) {
+@media (max-width : 768px) {
     .season-link {
         width: 90vw;
     }

@@ -103,6 +103,7 @@ class Search extends React.Component {
                                             onClick={() =>
                                                 this.handleCardClick(index)
                                             }
+                                            key={this.state.resultId[index]}
                                         >
                                             <LazyLoadImage
                                                 className="result-full-img"

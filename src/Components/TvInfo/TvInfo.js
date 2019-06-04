@@ -38,6 +38,18 @@ const TvInfo = props => {
                 .then(res => res.json())
                 .then(data => {
                     changeTvInfo(data);
+                    if (
+                        (backgroundRef.current !== undefined ||
+                            backgroundRef.current !== null) &&
+                        window.innerWidth > 600
+                    ) {
+                        setTimeout(
+                            (backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
+                                data.backdrop_path
+                            })`),
+                            400
+                        );
+                    }
                 });
 
             fetch(urlVideo)
@@ -60,19 +72,11 @@ const TvInfo = props => {
                 });
 
             changeLoaded(true);
-
-            if (
-                backgroundRef.current !== undefined &&
-                window.innerWidth > 600
-            ) {
-                backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
-                    tvInfo.backdrop_path
-                })`;
-            }
         };
 
         fetchData();
-    }, [props.movieId, props.tvId, tvInfo.backdrop_path]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>

@@ -36,13 +36,13 @@ const MovieHome = props => {
             localStorage.getItem("userCountry") === null ||
             localStorage.getItem("userCountryCode") === null
         ) {
-            let urlCountry =
-                "http://api.ipstack.com/check?access_key=902974efd3ea033ac779b36609781f62";
+            let urlCountry = "https://ipapi.co/json/";
             fetch(urlCountry)
                 .then(res => res.json())
                 .then(data => {
+                    console.log(data);
                     localStorage.setItem("userCountry", data.country_name);
-                    localStorage.setItem("userCountryCode", data.country_code);
+                    localStorage.setItem("userCountryCode", data.country);
                     changeCountry(localStorage.getItem("userCountry"));
                     changeCountryCode(localStorage.getItem("userCountryCode"));
                 });
@@ -72,14 +72,12 @@ const MovieHome = props => {
             fetch(urlNowPlaying)
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data.results);
                     changeNowPlaying(data.results);
                 });
 
             fetch(urlUpcoming)
                 .then(res => res.json())
                 .then(data => {
-                    console.log(data.results);
                     changeUpcoming(data.results);
                 });
 

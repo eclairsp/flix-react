@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
 import {Link} from "@reach/router";
-import posed from "react-pose";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
 import poster342 from "./../../poster-342.png";
@@ -8,15 +7,6 @@ import backdrop300 from "../../backdrop-300.png";
 import celeb154 from "./../../celeb-154.png";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
 import "./movie-info.css";
-
-const Hom = posed.div({
-    enter: {y: 0, opacity: 1, delay: 300},
-    exit: {
-        y: 100,
-        opacity: 0,
-        transition: {duration: 200}
-    }
-});
 
 const MovieInfo = props => {
     const [movieInfo, changeMovieInfo] = useState([]);
@@ -107,7 +97,7 @@ const MovieInfo = props => {
     }, []);
 
     return (
-        <Hom>
+        <>
             {loaded && (
                 <>
                     <section className="center-details" ref={backgroundRef}>
@@ -449,7 +439,7 @@ const MovieInfo = props => {
             {!loaded && (
                 <LoadingAnimation animation={true} message="LOADING..." />
             )}
-        </Hom>
+        </>
     );
 };
 

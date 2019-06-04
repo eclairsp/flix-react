@@ -51,7 +51,8 @@ class SearchBox extends Component {
         resultSecHead: [],
         resultLastHead: [],
         resultImg: [],
-        resultId: []
+        resultId: [],
+        cache: {}
     };
 
     componentDidMount() {
@@ -63,55 +64,71 @@ class SearchBox extends Component {
         });
     }
 
-    searchMovie = query => {
+    searchMovie = async query => {
         let urlSearch = `https://api.themoviedb.org/3/search/multi?api_key=74d9bb95f2c26a20a3f908c481d10af3&query=${query}&sort_by=popularity.asc`;
 
-        fetch(urlSearch)
-            .then(res => res.json())
-            .then(data => {
-                delete data.page;
-                delete data.total_results;
-                let head = [];
-                let secHead = [];
-                let lastHead = [];
-                let img = [];
-                let id = [];
-                data.results.map(val => {
-                    if (val.media_type === "movie") {
-                        head.push(val.title);
-                        secHead.push(val.release_date);
-                        lastHead.push("movie");
-                        img.push(val.poster_path);
-                        id.push(val.id);
-                    } else if (val.media_type === "tv") {
-                        head.push(val.name);
-                        secHead.push(val.first_air_date);
-                        lastHead.push("TV");
-                        img.push(val.poster_path);
-                        id.push(val.id);
-                    } else if (val.media_type === "person") {
-                        head.push(val.name);
-                        secHead.push(
-                            val.known_for[0] === null ||
-                                val.known_for[0] === undefined
-                                ? ""
-                                : `known for, ${val.known_for[0].title}`
-                        );
-                        lastHead.push("celeb");
-                        img.push(val.profile_path);
-                        id.push(val.id);
-                    }
-                    return null;
-                });
+        const res = await fetch(urlSearch);
+        return await res.json();
+    };
 
-                this.setState({
-                    resultHead: head.slice(0, 5),
-                    resultSecHead: secHead.slice(0, 5),
-                    resultLastHead: lastHead.slice(0, 5),
-                    resultImg: img.slice(0, 5),
-                    resultId: id.slice(0, 5)
-                });
+    setResults = data => {
+        let head = [];
+        let secHead = [];
+        let lastHead = [];
+        let img = [];
+        let id = [];
+        data.results.map(val => {
+            if (val.media_type === "movie") {
+                head.push(val.title);
+                secHead.push(val.release_date);
+                lastHead.push("movie");
+                img.push(val.poster_path);
+                id.push(val.id);
+            } else if (val.media_type === "tv") {
+                head.push(val.name);
+                secHead.push(val.first_air_date);
+                lastHead.push("TV");
+                img.push(val.poster_path);
+                id.push(val.id);
+            } else if (val.media_type === "person") {
+                head.push(val.name);
+                secHead.push(
+                    val.known_for[0] === null || val.known_for[0] === undefined
+                        ? ""
+                        : `known for, ${val.known_for[0].title}`
+                );
+                lastHead.push("celeb");
+                img.push(val.profile_path);
+                id.push(val.id);
+            }
+            return null;
+        });
+
+        this.setState({
+            resultHead: head.slice(0, 5),
+            resultSecHead: secHead.slice(0, 5),
+            resultLastHead: lastHead.slice(0, 5),
+            resultImg: img.slice(0, 5),
+            resultId: id.slice(0, 5)
+        });
+    };
+
+    cache = query => {
+        if (this.state.cache[query]) {
+            this.setResults(this.state.cache[query]);
+        } else {
+            this.searchMovie(query).then(data => {
+                this.setState(prevState => ({
+                    cache: {
+                        // object that we want to update
+                        ...prevState.cache, // keep all other key-value pairs
+                        [query]: data // update the value of specific key
+                    }
+                }));
+
+                this.setResults(data);
             });
+        }
     };
 
     handleQueryChange = e => {
@@ -129,9 +146,15 @@ class SearchBox extends Component {
                 placeholder: "Search any Movie, TV-Show, Celeb",
                 query: e.target.value
             });
-            this.searchMovie(e.target.value);
+            this.cache(e.target.value);
         }
     };
+
+    // On input change, call the cache fucntion.
+    // cache function will check if query is found in cache.
+    // if yes set the states no need for fetch.
+    // if no fetch the results, save in cache, set the states
+    // reduces fetch for typos.
 
     handleBtnClick = () => {
         if (this.state.query === "") {
@@ -160,7 +183,6 @@ class SearchBox extends Component {
         return (
             <div className="search-container">
                 <Input
-                    type="text"
                     placeholder={this.state.placeholder}
                     className="search-input"
                     onChange={e => this.handleQueryChange(e)}
