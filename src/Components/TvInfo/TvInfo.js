@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import {Link} from "@reach/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
+import {Helmet} from "react-helmet";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
 import poster342 from "./../../poster-342.png";
 import backdrop300 from "../../backdrop-300.png";
@@ -39,16 +40,12 @@ const TvInfo = props => {
                 .then(data => {
                     changeTvInfo(data);
                     if (
-                        (backgroundRef.current !== undefined ||
-                            backgroundRef.current !== null) &&
+                        backgroundRef.current !== null &&
                         window.innerWidth > 600
                     ) {
-                        setTimeout(
-                            (backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
-                                data.backdrop_path
-                            })`),
-                            400
-                        );
+                        backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
+                            data.backdrop_path
+                        })`;
                     }
                 });
 
@@ -82,6 +79,10 @@ const TvInfo = props => {
         <>
             {loaded && (
                 <>
+                    <Helmet>
+                        <title>{`${tvInfo.name} (TV) | FLIX`}</title>
+                        <meta name="description" content={tvInfo.overview} />
+                    </Helmet>
                     <div className="center-details" ref={backgroundRef}>
                         <section className="details-1">
                             <div className="car">
@@ -242,9 +243,18 @@ const TvInfo = props => {
                                     <div className="rating">
                                         <h3 className="heading">Seasons</h3>
                                         <div className="tags">
-                                            <div className="genre__tag">
-                                                {tvInfo.number_of_seasons}
-                                            </div>
+                                            <Link
+                                                to={`./../season/${
+                                                    props.tvId
+                                                }/${tvInfo.name}/${
+                                                    tvInfo.number_of_seasons
+                                                }`}
+                                                className="season-link"
+                                            >
+                                                <div className="genre__tag">
+                                                    {tvInfo.number_of_seasons}
+                                                </div>
+                                            </Link>
                                         </div>
                                     </div>
                                     <div className="genres">
@@ -293,9 +303,18 @@ const TvInfo = props => {
                                             Total episodes
                                         </h3>
                                         <div className="tags">
-                                            <div className="genre__tag">
-                                                {tvInfo.number_of_episodes}
-                                            </div>
+                                            <Link
+                                                to={`./../season/${
+                                                    props.tvId
+                                                }/${tvInfo.name}/${
+                                                    tvInfo.number_of_seasons
+                                                }`}
+                                                className="season-link"
+                                            >
+                                                <div className="genre__tag">
+                                                    {tvInfo.number_of_episodes}
+                                                </div>
+                                            </Link>
                                         </div>
                                     </div>
                                     <div className="budget">

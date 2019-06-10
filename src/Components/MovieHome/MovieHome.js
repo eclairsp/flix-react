@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "@reach/router";
+import {Helmet} from "react-helmet";
 import posed from "react-pose";
 import MovieSlider from "../MovieSlider/MovieSlider";
 import {LazyLoadImage} from "react-lazy-load-image-component";
@@ -90,6 +91,13 @@ const MovieHome = props => {
 
     return (
         <Hom>
+            <Helmet>
+                <title>{`FLIX | Movies Home`}</title>
+                <meta
+                    name="description"
+                    content="Get the latest and upcoming movies. Also the top rated movies over the year."
+                />
+            </Helmet>
             {loaded && (
                 <section className="home">
                     <h1 className="heading home-heading color-orange">

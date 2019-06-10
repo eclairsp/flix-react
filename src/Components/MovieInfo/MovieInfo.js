@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from "react";
 import {Link} from "@reach/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
+import {Helmet} from "react-helmet";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
 import poster342 from "./../../poster-342.png";
 import backdrop300 from "../../backdrop-300.png";
@@ -37,16 +38,12 @@ const MovieInfo = props => {
                 .then(data => {
                     changeMovieInfo(data);
                     if (
-                        (backgroundRef.current !== undefined ||
-                            backgroundRef.current !== null) &&
+                        backgroundRef.current !== null &&
                         window.innerWidth > 600
                     ) {
-                        setTimeout(
-                            (backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
-                                data.backdrop_path
-                            })`),
-                            400
-                        );
+                        backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
+                            data.backdrop_path
+                        })`;
                     }
                 });
 
@@ -100,6 +97,10 @@ const MovieInfo = props => {
         <>
             {loaded && (
                 <>
+                    <Helmet>
+                        <title>{`${movieInfo.title} (Movie) | FLIX`}</title>
+                        <meta name="description" content={movieInfo.overview} />
+                    </Helmet>
                     <section className="center-details" ref={backgroundRef}>
                         <section className="details-1">
                             <div className="car">

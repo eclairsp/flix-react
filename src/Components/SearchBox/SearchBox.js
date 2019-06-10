@@ -42,18 +42,25 @@ const Input = posed.input(configInput);
 const Btn = posed.button(configBtn);
 
 class SearchBox extends Component {
-    state = {
-        inputBorder: false,
-        resultVisible: false,
-        placeholder: "Search any Movie, TV-Show, Celeb",
-        query: "",
-        resultHead: [],
-        resultSecHead: [],
-        resultLastHead: [],
-        resultImg: [],
-        resultId: [],
-        cache: {}
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            inputBorder: false,
+            resultVisible: false,
+            placeholder: "Search any Movie, TV-Show, Celeb",
+            query: "",
+            resultHead: [],
+            resultSecHead: [],
+            resultLastHead: [],
+            resultImg: [],
+            resultId: [],
+            cache: {},
+            activeElement: 0
+        };
+
+        this.searchListRef = React.createRef();
+    }
 
     componentDidMount() {
         document.addEventListener("click", () => {
@@ -104,6 +111,7 @@ class SearchBox extends Component {
             return null;
         });
 
+        // 5 because, only want to display five results in suggestions of search
         this.setState({
             resultHead: head.slice(0, 5),
             resultSecHead: secHead.slice(0, 5),
@@ -123,6 +131,7 @@ class SearchBox extends Component {
                         // object that we want to update
                         ...prevState.cache, // keep all other key-value pairs
                         [query]: data // update the value of specific key
+                        // use [query] it will make the key value of query, i.e. the typed words instead of "query"
                     }
                 }));
 
@@ -144,7 +153,8 @@ class SearchBox extends Component {
                 inputBorder: true,
                 resultVisible: true,
                 placeholder: "Search any Movie, TV-Show, Celeb",
-                query: e.target.value
+                query: e.target.value,
+                activeElement: 0
             });
             this.cache(e.target.value);
         }
@@ -179,6 +189,59 @@ class SearchBox extends Component {
         }
     };
 
+    handleKeyboardPress = e => {
+        let keyPressed = e.keyCode || e.which;
+        if (keyPressed === 13) {
+            this.setState({
+                inputBorder: false,
+                resultVisible: false,
+                activeElement: 0
+            });
+            navigate(`./../search/${this.state.query}`);
+        } else if (keyPressed === 40 && this.searchListRef.current !== null) {
+            if (this.state.activeElement <= 4) {
+                if (this.state.activeElement !== 0) {
+                    this.searchListRef.current.children[
+                        this.state.activeElement - 1
+                    ].children[0].classList.remove("search-result-active");
+                }
+
+                this.searchListRef.current.children[
+                    this.state.activeElement
+                ].children[0].classList.add("search-result-active");
+
+                this.setState({
+                    activeElement:
+                        this.state.activeElement === 4
+                            ? 4
+                            : this.state.activeElement + 1
+                });
+                console.log(this.state.activeElement);
+            }
+        } else if (keyPressed === 38 && this.searchListRef.current !== null) {
+            if (this.state.activeElement <= 4 && this.state.activeElement > 0) {
+                if (this.state.activeElement !== 0) {
+                    this.searchListRef.current.children[
+                        this.state.activeElement
+                    ].children[0].classList.remove("search-result-active");
+                }
+
+                this.searchListRef.current.children[
+                    this.state.activeElement - 1
+                ].children[0].classList.add("search-result-active");
+            }
+
+            console.log(this.state.activeElement);
+
+            this.setState({
+                activeElement:
+                    this.state.activeElement === 4
+                        ? 3
+                        : this.state.activeElement - 1
+            });
+        }
+    };
+
     render() {
         return (
             <div className="search-container">
@@ -186,6 +249,7 @@ class SearchBox extends Component {
                     placeholder={this.state.placeholder}
                     className="search-input"
                     onChange={e => this.handleQueryChange(e)}
+                    onKeyDown={e => this.handleKeyboardPress(e)}
                     pose={this.state.inputBorder ? "on" : "off"}
                 />
                 <Btn
@@ -203,7 +267,7 @@ class SearchBox extends Component {
                 <PoseGroup>
                     {this.state.resultVisible && (
                         <Result key="results" className="result">
-                            <ul>
+                            <ul ref={this.searchListRef}>
                                 {this.state.resultHead.map((val, index) => {
                                     return (
                                         <li
@@ -211,6 +275,7 @@ class SearchBox extends Component {
                                             onClick={() =>
                                                 this.handleSuggestClick(index)
                                             }
+                                            // className="search-result-active"
                                         >
                                             <div className="result-card">
                                                 <LazyLoadImage

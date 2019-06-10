@@ -1,6 +1,7 @@
 import React from "react";
 import {navigate} from "@reach/router";
 import posed from "react-pose";
+import {Helmet} from "react-helmet";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
@@ -91,8 +92,13 @@ class Search extends React.Component {
             <Hom>
                 {this.state.query && (
                     <section className="search-results">
+                        <Helmet>
+                            <title>{`Search results for "${
+                                this.props.query
+                            }" | FLIX`}</title>
+                        </Helmet>
                         <h1 className="heading result-heading home-heading color-orange">
-                            {`Search results for ${this.props.query}`}
+                            {`Search results for "${this.props.query}"`}
                         </h1>
                         <div className="results-search-wrapper">
                             <div className="results-search">
@@ -161,10 +167,16 @@ class Search extends React.Component {
                     </section>
                 )}
                 {!this.state.query && (
-                    <LoadingAnimation
-                        message="Search any movie, tv, and celeb"
-                        animation={false}
-                    />
+                    <>
+                        <Helmet>
+                            <title>Search any movie, TV-show, and celeb</title>
+                        </Helmet>
+
+                        <LoadingAnimation
+                            message="Search any movie, tv, and celeb"
+                            animation={false}
+                        />
+                    </>
                 )}
             </Hom>
         );
