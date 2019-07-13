@@ -1,0 +1,40 @@
+.login-wrapper {
+	padding: 20px;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.login-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.label-name {
+	font-size: 2em;
+}
+
+.input {
+	padding: 10px;
+	font-size: 2em;
+	background: none;
+	border: #ff5252 solid 4px;
+	border-radius: 20px;
+	margin: 10px;
+	color: #fff;
+}
+
+.login-btn {
+	padding: 10px;
+	margin: 10px;
+	border: 4px solid #ff5252;
+	background: none;
+	color: #fff;
+	font-size: 2em;
+	border-radius: 10px;
+	align-self: flex-end;
+}

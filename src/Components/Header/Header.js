@@ -1,8 +1,10 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import {Link} from "@reach/router";
 import posed, {PoseGroup} from "react-pose";
 import flixLogo from "../../FLIX.svg";
 import SearchBox from "./../SearchBox/SearchBox";
+import tryLogout from "../Fetch/logout";
+import tryGettingUser from "../Fetch/getUser";
 import "./header.css";
 
 const Menu = posed.div({
@@ -10,9 +12,39 @@ const Menu = posed.div({
     exit: {y: 100, opacity: 0, transition: {duration: 300}}
 });
 
-const Top = props => {
+const Header = () => {
     const [menuVisible, changeMenuVisible] = useState(false);
+    const [userMenu, changeUserMenu] = useState(false);
     const hamRef = useRef();
+    const [name, changeName] = useState("");
+    const [loggedIn, changeLoggedIn] = useState(name === "" ? false : true);
+
+    useEffect(() => {
+        const getUser = async () => {
+            const user = await tryGettingUser();
+
+            if (user[0] === true) {
+                changeName(user[1].user._id);
+                changeLoggedIn(true);
+            }
+        };
+
+        getUser();
+    });
+
+    const handleLogout = async () => {
+        const logoutSuccessfull = await tryLogout();
+
+        if (logoutSuccessfull) {
+            changeLoggedIn(true);
+            window.location.href = "http://localhost:3000/";
+            console.log("Logged Out");
+        } else {
+            changeLoggedIn(false);
+            console.log("Can't Logout");
+        }
+    };
+
     return (
         <header className="header-wrapper">
             <div className="header">
@@ -21,7 +53,32 @@ const Top = props => {
                         <img src={flixLogo} className="logo" alt="flix-logo" />
                     </div>
                 </Link>
+
                 <SearchBox />
+
+                {name !== "" && (
+                    <section
+                        className="profile-pic"
+                        onClick={() => changeUserMenu(!userMenu)}
+                    >
+                        <img
+                            src={`http://localhost:3001/user/${name}/avatar`}
+                            alt="profile pic"
+                            className="profile-pic-image"
+                        />
+                        {userMenu && (
+                            <ul className="profile-pic-options">
+                                <li>Your profile</li>
+                                {loggedIn && (
+                                    <li onClick={() => handleLogout()}>
+                                        Sign out
+                                    </li>
+                                )}
+                            </ul>
+                        )}
+                    </section>
+                )}
+
                 <svg
                     className="ham hamRotate ham4"
                     viewBox="0 0 100 100"
@@ -118,4 +175,4 @@ const Top = props => {
     );
 };
 
-export default Top;
+export default Header;

@@ -28,29 +28,34 @@ const Home = () => {
         let urlCeleb =
             "https://api.themoviedb.org/3/person/popular?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1";
 
-        const fetchData = () => {
-            fetch(urlMovie)
-                .then(res => res.json())
-                .then(data => {
-                    changeMovieData(data.results);
-                });
+        const fetchData = async (url, type) => {
+            try {
+                const response = await fetch(url);
 
-            fetch(urlTv)
-                .then(res => res.json())
-                .then(data => {
-                    changeTvData(data.results);
-                });
+                const data = await response.json();
 
-            fetch(urlCeleb)
-                .then(res => res.json())
-                .then(data => {
-                    changeCelebData(data.results);
-                });
-
-            changeLoaded(true);
+                switch (type) {
+                    case "movie":
+                        changeMovieData(data.results);
+                        break;
+                    case "tv":
+                        changeTvData(data.results);
+                        break;
+                    case "celeb":
+                        changeCelebData(data.results);
+                        break;
+                    default:
+                        break;
+                }
+            } catch (error) {
+                console.log("Error: ", error);
+            }
         };
 
-        fetchData();
+        fetchData(urlMovie, "movie");
+        fetchData(urlTv, "tv");
+        fetchData(urlCeleb, "celeb");
+        changeLoaded(true);
     }, []);
 
     return (

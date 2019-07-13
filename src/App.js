@@ -1,4 +1,4 @@
-import React, {lazy, Suspense} from "react";
+import React, {lazy, Suspense, useEffect} from "react";
 import {Router, Location} from "@reach/router";
 import posed, {PoseGroup} from "react-pose";
 import Home from "./Components/Home/Home";
@@ -10,6 +10,8 @@ import Header from "./Components/Header/Header";
 import LoadingAnimation from "./Components/LoadingAnimation/LoadingAnimation";
 import "./App.css";
 
+import getFavs from "./Components/Fetch/getFavs";
+
 // const Header = true && import('./Components/Header/Header')
 const Movie = lazy(() => import("./Components/Movie/Movie"));
 const MovieHome = lazy(() => import("./Components/MovieHome/MovieHome"));
@@ -17,6 +19,8 @@ const Search = lazy(() => import("./Components/Search/Search"));
 const Tv = lazy(() => import("./Components/Tv/Tv"));
 const TvInfo = lazy(() => import("./Components/TvInfo/TvInfo"));
 const SeasonInfo = lazy(() => import("./Components/SeasonInfo/SeasonInfo"));
+const Login = lazy(() => import("./Components/Login/Login"));
+const Register = lazy(() => import("./Components/Register/Register"));
 
 const RoutesContainer = posed.div({
     enter: {y: 0, opacity: 1, delay: 300, staggerChildren: 50},
@@ -27,7 +31,10 @@ const RoutesContainer = posed.div({
     }
 });
 
-function App() {
+const App = () => {
+    useEffect(() => {
+        getFavs();
+    });
     return (
         <div className="app">
             <Header />
@@ -42,6 +49,8 @@ function App() {
                             <RoutesContainer key={location.key}>
                                 <Router primary={false}>
                                     <Home path="/" />
+                                    <Login path="/login" />
+                                    <Register path="/signup" />
                                     <Movie path="/movie">
                                         <MovieHome path="/" />
                                         <MovieInfo path=":movieId" />
@@ -68,6 +77,6 @@ function App() {
             </footer>
         </div>
     );
-}
+};
 
 export default App;

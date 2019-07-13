@@ -55,7 +55,11 @@ class SearchBox extends Component {
             resultLastHead: [],
             resultImg: [],
             resultId: [],
-            cache: {},
+            cache:
+                localStorage.getItem("cache") === null ||
+                localStorage.getItem("cache") === undefined
+                    ? {}
+                    : JSON.parse(localStorage.getItem("cache")),
             activeElement: 0
         };
 
@@ -134,7 +138,7 @@ class SearchBox extends Component {
                         // use [query] it will make the key value of query, i.e. the typed words instead of "query"
                     }
                 }));
-
+                localStorage.setItem("cache", JSON.stringify(this.state.cache));
                 this.setResults(data);
             });
         }

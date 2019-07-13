@@ -38,6 +38,16 @@
     border-radius: 10px;
 }
 
+.fav-no {
+    font-size: 2em;
+    color: red;
+}
+
+.fav-yes {
+    font-size: 2em;
+    color: yellow;
+}
+
 .data {
     position: absolute;
     width: 100%;
