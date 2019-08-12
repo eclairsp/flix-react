@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import {Link} from "@reach/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {Helmet} from "react-helmet";
@@ -17,58 +17,62 @@ const TvInfo = props => {
     const [cast, changeCast] = useState([]);
     const [similar, changeSimilar] = useState([]);
     const [loaded, changeLoaded] = useState(false);
-    const backgroundRef = useRef();
+    const [ratings, changeRatings] = useState([]);
+    const [background, changeBackground] = useState("none");
 
     useEffect(() => {
         const fetchData = async () => {
             let urlMovie = `https://api.themoviedb.org/3/tv/${
                 props.tvId
-            }?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
-            let urlVideo = `https://api.themoviedb.org/3/tv/${
-                props.tvId
-            }/videos?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
-            let urlCast = `
-            https://api.themoviedb.org/3/tv/${
-                props.tvId
-            }/credits?api_key=74d9bb95f2c26a20a3f908c481d10af3`;
-            let urlSimilar = `https://api.themoviedb.org/3/tv/${
-                props.tvId
-            }/similar?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1`;
+            }?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&append_to_response=videos,credits,similar,external_ids`;
+            // let urlVideo = `https://api.themoviedb.org/3/tv/${
+            //     props.tvId
+            // }/videos?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
+            // let urlCast = `
+            // https://api.themoviedb.org/3/tv/${
+            //     props.tvId
+            // }/credits?api_key=74d9bb95f2c26a20a3f908c481d10af3`;
+            // let urlSimilar = `https://api.themoviedb.org/3/tv/${
+            //     props.tvId
+            // }/similar?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1`;
 
-            fetch(urlMovie)
-                .then(res => res.json())
-                .then(data => {
-                    changeTvInfo(data);
-                    if (
-                        backgroundRef.current !== null &&
-                        window.innerWidth > 600
-                    ) {
-                        backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
-                            data.backdrop_path
-                        })`;
-                    }
-                });
+            const response = await fetch(urlMovie);
+            const data = await response.json();
 
-            fetch(urlVideo)
-                .then(res => res.json())
-                .then(data => {
-                    changeVideoSrc(data.results);
-                });
+            changeTvInfo(data);
+            changeBackground(
+                `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
+                    data.backdrop_path
+                })`
+            );
 
-            fetch(urlCast)
-                .then(res => res.json())
-                .then(data => {
-                    delete data.id;
-                    changeCast(data);
-                });
+            changeVideoSrc(data.videos.results);
+            changeCast(data.credits);
+            changeSimilar(data.similar.results);
 
-            fetch(urlSimilar)
-                .then(res => res.json())
-                .then(data => {
-                    changeSimilar(data.results);
-                });
+            const rating = [
+                {
+                    Source: "The Movie Database",
+                    Value: data.vote_average.toString() + "/10"
+                }
+            ];
+
+            const ratings = await fetchRatings(
+                data.external_ids.imdb_id,
+                rating
+            );
+            changeRatings(ratings);
 
             changeLoaded(true);
+        };
+
+        const fetchRatings = async (imdbId, arr) => {
+            const url = `https://www.omdbapi.com/?apikey=ba5af482&i=${imdbId}`;
+            console.log(imdbId);
+            const response = await fetch(url);
+            const data = await response.json();
+
+            return [...arr, ...data.Ratings];
         };
 
         fetchData();
@@ -83,7 +87,14 @@ const TvInfo = props => {
                         <title>{`${tvInfo.name} (TV) | FLIX`}</title>
                         <meta name="description" content={tvInfo.overview} />
                     </Helmet>
-                    <div className="center-details" ref={backgroundRef}>
+                    <div
+                        className="center-details"
+                        style={
+                            window.innerWidth < 600
+                                ? {}
+                                : {backgroundImage: background}
+                        }
+                    >
                         <section className="details-1">
                             <div className="car">
                                 <div className="poster">
@@ -119,12 +130,21 @@ const TvInfo = props => {
                                     <p className="synopsis">
                                         {tvInfo.overview}
                                     </p>
-                                    <h2 className="heading heading-details">
-                                        IMDB: 7.1/10
-                                    </h2>
-                                    <h2 className="heading heading-details">
-                                        Rotten Tomatoes: 81%
-                                    </h2>
+                                    {ratings === undefined ||
+                                    ratings.length === 0
+                                        ? "not found"
+                                        : ratings.map((val, index) => {
+                                              return (
+                                                  <h2
+                                                      key={index}
+                                                      className="heading heading-details"
+                                                  >
+                                                      {`${val.Source}: ${
+                                                          val.Value
+                                                      }`}
+                                                  </h2>
+                                              );
+                                          })}
                                 </article>
                             </div>
                         </section>

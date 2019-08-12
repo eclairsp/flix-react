@@ -8,6 +8,7 @@ import MovieInfo from "./Components/MovieInfo/MovieInfo";
 import Header from "./Components/Header/Header";
 // import Search from "./Components/Search/Search";
 import LoadingAnimation from "./Components/LoadingAnimation/LoadingAnimation";
+// import Notify from "./Components/Notification/Notify";
 import "./App.css";
 
 import getFavs from "./Components/Fetch/getFavs";
@@ -21,6 +22,7 @@ const TvInfo = lazy(() => import("./Components/TvInfo/TvInfo"));
 const SeasonInfo = lazy(() => import("./Components/SeasonInfo/SeasonInfo"));
 const Login = lazy(() => import("./Components/Login/Login"));
 const Register = lazy(() => import("./Components/Register/Register"));
+const User = lazy(() => import("./Components/User/User"));
 
 const RoutesContainer = posed.div({
     enter: {y: 0, opacity: 1, delay: 300, staggerChildren: 50},
@@ -62,6 +64,7 @@ const App = () => {
                                     </Tv>
                                     <Search path="/search" />
                                     <Search path="/search/:query" />
+                                    <User path="/user/:username" />
                                 </Router>
                             </RoutesContainer>
                         </PoseGroup>
@@ -75,6 +78,7 @@ const App = () => {
                 </span>{" "}
                 by, Prab
             </footer>
+            {/* <Notify /> */}
         </div>
     );
 };

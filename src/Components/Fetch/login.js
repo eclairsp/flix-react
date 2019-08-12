@@ -1,3 +1,5 @@
+import getFavs from "./getFavs";
+
 const tryLogin = async (username, password) => {
     var userData = JSON.stringify({
         username: username,
@@ -17,6 +19,7 @@ const tryLogin = async (username, password) => {
 
         if (response.status === 200) {
             localStorage.setItem("authToken", data.token);
+            await getFavs();
             return true;
         }
 

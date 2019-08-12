@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import {Link} from "@reach/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import {Helmet} from "react-helmet";
@@ -15,78 +15,126 @@ const MovieInfo = props => {
     const [cast, changeCast] = useState([]);
     const [similar, changeSimilar] = useState([]);
     const [loaded, changeLoaded] = useState(false);
-    const backgroundRef = useRef();
+    const [ratings, changeRatings] = useState([]);
+    const [background, changeBackground] = useState("none");
 
     useEffect(() => {
         const fetchData = async () => {
             let urlMovie = `https://api.themoviedb.org/3/movie/${
                 props.movieId
-            }?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
-            let urlVideo = `https://api.themoviedb.org/3/movie/${
-                props.movieId
-            }/videos?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
-            let urlCast = `
-            https://api.themoviedb.org/3/movie/${
-                props.movieId
-            }/credits?api_key=74d9bb95f2c26a20a3f908c481d10af3`;
-            let urlSimilar = `https://api.themoviedb.org/3/movie/${
-                props.movieId
-            }/similar?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1`;
+            }?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&append_to_response=videos,credits,similar`;
+            // let urlVideo = `https://api.themoviedb.org/3/movie/${
+            //     props.movieId
+            // }/videos?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
+            // let urlCast = `
+            // https://api.themoviedb.org/3/movie/${
+            //     props.movieId
+            // }/credits?api_key=74d9bb95f2c26a20a3f908c481d10af3`;
+            // let urlSimilar = `https://api.themoviedb.org/3/movie/${
+            //     props.movieId
+            // }/similar?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1`;
 
-            fetch(urlMovie)
-                .then(res => res.json())
-                .then(data => {
-                    changeMovieInfo(data);
-                    if (
-                        backgroundRef.current !== null &&
-                        window.innerWidth > 600
-                    ) {
-                        backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
-                            data.backdrop_path
-                        })`;
-                    }
-                });
+            const response = await fetch(urlMovie);
+            const data = await response.json();
 
-            fetch(urlVideo)
-                .then(res => res.json())
-                .then(data => {
-                    let trailer = data.results.filter(val => {
-                        return val.type === "Trailer";
-                    });
+            changeMovieInfo(data);
+            // if (backgroundRef.current !== null && window.innerWidth > 600) {
+            //     backgroundRef.current.style.backgroundImage = `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
+            //         data.backdrop_path
+            //     })`;
+            // }
 
-                    let teaser = data.results.filter(val => {
-                        return val.type === "Teaser";
-                    });
+            changeBackground(
+                `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
+                    data.backdrop_path
+                })`
+            );
 
-                    if (trailer.length === 10) {
-                        changeVideoSrc([...trailer]);
-                    } else if (
-                        teaser.length === 10 - trailer.length ||
-                        teaser.length < 10 - trailer.length
-                    ) {
-                        changeVideoSrc([...trailer, ...teaser]);
-                    } else {
-                        changeVideoSrc([
-                            ...trailer,
-                            ...teaser.slice(0, 10 - trailer.length)
-                        ]);
-                    }
-                });
+            let trailer = data.videos.results.filter(val => {
+                return val.type === "Trailer";
+            });
 
-            fetch(urlCast)
-                .then(res => res.json())
-                .then(data => {
-                    delete data.id;
-                    changeCast(data);
-                });
+            let teaser = data.videos.results.filter(val => {
+                return val.type === "Teaser";
+            });
 
-            fetch(urlSimilar)
-                .then(res => res.json())
-                .then(data => {
-                    changeSimilar(data.results);
-                });
+            if (trailer.length === 10) {
+                changeVideoSrc([...trailer]);
+            } else if (
+                teaser.length === 10 - trailer.length ||
+                teaser.length < 10 - trailer.length
+            ) {
+                changeVideoSrc([...trailer, ...teaser]);
+            } else {
+                changeVideoSrc([
+                    ...trailer,
+                    ...teaser.slice(0, 10 - trailer.length)
+                ]);
+            }
+
+            changeCast(data.credits);
+
+            changeSimilar(data.similar.results);
+
+            const rating = [
+                {
+                    Source: "The Movie Database",
+                    Value: data.vote_average.toString() + "/10"
+                }
+            ];
+
+            const ratings = await fetchRatings(data.imdb_id, rating);
+            changeRatings(ratings);
+
+            // fetch(urlVideo)
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         let trailer = data.results.filter(val => {
+            //             return val.type === "Trailer";
+            //         });
+
+            //         let teaser = data.results.filter(val => {
+            //             return val.type === "Teaser";
+            //         });
+
+            //         if (trailer.length === 10) {
+            //             changeVideoSrc([...trailer]);
+            //         } else if (
+            //             teaser.length === 10 - trailer.length ||
+            //             teaser.length < 10 - trailer.length
+            //         ) {
+            //             changeVideoSrc([...trailer, ...teaser]);
+            //         } else {
+            //             changeVideoSrc([
+            //                 ...trailer,
+            //                 ...teaser.slice(0, 10 - trailer.length)
+            //             ]);
+            //         }
+            //     });
+
+            // fetch(urlCast)
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         delete data.id;
+            //         changeCast(data);
+            //     });
+
+            // fetch(urlSimilar)
+            //     .then(res => res.json())
+            //     .then(data => {
+            //         changeSimilar(data.results);
+            //     });
 
             changeLoaded(true);
+        };
+
+        const fetchRatings = async (imdbId, arr) => {
+            const url = `https://www.omdbapi.com/?apikey=ba5af482&i=${imdbId}`;
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            return [...arr, ...data.Ratings];
         };
 
         fetchData();
@@ -101,7 +149,14 @@ const MovieInfo = props => {
                         <title>{`${movieInfo.title} (Movie) | FLIX`}</title>
                         <meta name="description" content={movieInfo.overview} />
                     </Helmet>
-                    <section className="center-details" ref={backgroundRef}>
+                    <section
+                        className="center-details"
+                        style={
+                            window.innerWidth < 600
+                                ? {}
+                                : {backgroundImage: background}
+                        }
+                    >
                         <section className="details-1">
                             <div className="car">
                                 <div className="poster">
@@ -137,12 +192,21 @@ const MovieInfo = props => {
                                     <p className="synopsis">
                                         {movieInfo.overview}
                                     </p>
-                                    <h2 className="heading heading-details">
-                                        IMDB: 7.1/10
-                                    </h2>
-                                    <h2 className="heading heading-details">
-                                        Rotten Tomatoes: 81%
-                                    </h2>
+                                    {ratings === undefined ||
+                                    ratings.length === 0
+                                        ? "not found"
+                                        : ratings.map((val, index) => {
+                                              return (
+                                                  <h2
+                                                      key={index}
+                                                      className="heading heading-details"
+                                                  >
+                                                      {`${val.Source}: ${
+                                                          val.Value
+                                                      }`}
+                                                  </h2>
+                                              );
+                                          })}
                                 </article>
                             </div>
                         </section>

@@ -1,6 +1,6 @@
 import getFavs from "./getFavs";
 
-const addToFav = async (tmdbId, type) => {
+const RemoveFav = async (tmdbId, type) => {
     const auth = `Bearer ${localStorage.getItem("authToken")}`;
     let dataFav = JSON.stringify({
         tmdbID: tmdbId.toString(),
@@ -8,8 +8,8 @@ const addToFav = async (tmdbId, type) => {
     });
 
     try {
-        const response = await fetch("http://localhost:3001/user/fav", {
-            method: "post",
+        const response = await fetch("http://localhost:3001/user/remove/fav", {
+            method: "delete",
             headers: {
                 "Content-type": "application/json",
                 Authorization: auth
@@ -30,4 +30,4 @@ const addToFav = async (tmdbId, type) => {
     }
 };
 
-export default addToFav;
+export default RemoveFav;

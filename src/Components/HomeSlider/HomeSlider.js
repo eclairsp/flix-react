@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState} from "react";
 import {Link} from "@reach/router";
 import MovieSlider from "../MovieSlider/MovieSlider";
 import {LazyLoadImage} from "react-lazy-load-image-component";
@@ -6,19 +6,30 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import backdrop300 from "../../backdrop-300.png";
 import celeb154 from "./../../celeb-154.png";
 import addToFav from "../Fetch/addToFav";
+import removeFav from "../Fetch/removeFav";
 
 const HomeSlider = ({name, data, type, showMore}) => {
     const imagePlaceholder = name === "PEOPLE" ? celeb154 : backdrop300;
 
-    const [favs] = useState(JSON.parse(sessionStorage.getItem("favs")));
-    const favRef = useRef();
+    const [favs, updateFavs] = useState(
+        JSON.parse(sessionStorage.getItem("favs"))
+    );
 
-    const addFav = async (e, index) => {
+    const Fav = async (e, index, isFav) => {
         e.preventDefault();
         e.stopPropagation();
-        const isAdded = await addToFav(data[index].id, type);
 
-        return isAdded;
+        if (isFav) {
+            const isRemoved = await removeFav(data[index].id, type);
+            if (isRemoved) {
+                updateFavs(JSON.parse(sessionStorage.getItem("favs")));
+            }
+        } else {
+            const isAdded = await addToFav(data[index].id, type);
+            if (isAdded) {
+                updateFavs(JSON.parse(sessionStorage.getItem("favs")));
+            }
+        }
     };
 
     const checkFav = index => {
@@ -66,21 +77,18 @@ const HomeSlider = ({name, data, type, showMore}) => {
                             >
                                 {localStorage.getItem("authToken") && (
                                     <h1
-                                        onClick={e => {
-                                            const added = addFav(e, index);
-                                            if (added) {
-                                                e.target.classList.remove(
-                                                    "fav-no"
-                                                );
-                                                e.target.classList.add(
-                                                    "fav-yes"
-                                                );
-                                            }
-                                        }}
-                                        className={fav ? "fav-yes" : "fav-no"}
-                                        ref={favRef}
+                                        onClick={async e => Fav(e, index, fav)}
+                                        className="fav"
                                     >
-                                        Fav
+                                        {fav ? (
+                                            <span role="img" aria-label="love">
+                                                &#128155;
+                                            </span>
+                                        ) : (
+                                            <span role="img" aria-label="love">
+                                                &#128153;
+                                            </span>
+                                        )}
                                     </h1>
                                 )}
                                 <div>

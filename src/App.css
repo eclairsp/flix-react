@@ -101,6 +101,10 @@ footer {
     color: #fff;
 }
 
+a {
+    text-decoration: none;
+}
+
 @media (max-width : 600px) {
     h1 {
         font-size: 2.5em;

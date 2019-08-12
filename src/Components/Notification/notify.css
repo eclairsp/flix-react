@@ -1,0 +1,9 @@
+.not {
+    position: absolute;
+    font-size: 5em;
+    background: #000000;
+    color: #ffffff;
+    top: 50%;
+    z-index: 5;
+    right: 50px;
+}

@@ -24,7 +24,7 @@ const Header = () => {
             const user = await tryGettingUser();
 
             if (user[0] === true) {
-                changeName(user[1].user._id);
+                changeName(user[1].user.username);
                 changeLoggedIn(true);
             }
         };
@@ -68,7 +68,11 @@ const Header = () => {
                         />
                         {userMenu && (
                             <ul className="profile-pic-options">
-                                <li>Your profile</li>
+                                {loggedIn && (
+                                    <Link to={`/user/${name}`}>
+                                        <li>Favourites</li>
+                                    </Link>
+                                )}
                                 {loggedIn && (
                                     <li onClick={() => handleLogout()}>
                                         Sign out
