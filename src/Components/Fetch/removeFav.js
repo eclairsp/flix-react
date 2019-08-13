@@ -8,14 +8,17 @@ const RemoveFav = async (tmdbId, type) => {
     });
 
     try {
-        const response = await fetch("http://localhost:3001/user/remove/fav", {
-            method: "delete",
-            headers: {
-                "Content-type": "application/json",
-                Authorization: auth
-            },
-            body: dataFav
-        });
+        const response = await fetch(
+            "https://prab-flix-api.herokuapp.com/user/remove/fav",
+            {
+                method: "delete",
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: auth
+                },
+                body: dataFav
+            }
+        );
 
         if (response.status === 200) {
             await getFavs();

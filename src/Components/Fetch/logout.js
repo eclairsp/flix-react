@@ -2,7 +2,7 @@ const tryLogout = async () => {
     const auth = `Bearer ${localStorage.getItem("authToken")}`;
 
     try {
-        const response = await fetch("http://localhost:3001/user/logout", {
+        const response = await fetch("https://prab-flix-api.herokuapp.com/user/logout", {
             method: "post",
             headers: {
                 "Content-type": "application/json",

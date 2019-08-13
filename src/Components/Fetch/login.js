@@ -7,7 +7,7 @@ const tryLogin = async (username, password) => {
     });
 
     try {
-        let response = await fetch("http://localhost:3001/user/login", {
+        let response = await fetch("https://prab-flix-api.herokuapp.com/user/login", {
             method: "post",
             headers: {
                 "Content-type": "application/json"

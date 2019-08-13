@@ -3,10 +3,13 @@ const tryUploadDP = async file => {
         const formData = new FormData();
 
         formData.append("avatar", file);
-        let response = await fetch("http://localhost:3001/user/me/avatar", {
-            method: "post",
-            body: formData
-        });
+        let response = await fetch(
+            "https://prab-flix-api.herokuapp.com/user/me/avatar",
+            {
+                method: "post",
+                body: formData
+            }
+        );
 
         if (response.status === 200) {
             return true;

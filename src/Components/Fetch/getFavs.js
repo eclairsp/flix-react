@@ -2,7 +2,7 @@ const getFavs = async () => {
     const auth = `Bearer ${localStorage.getItem("authToken")}`;
 
     try {
-        const response = await fetch("http://localhost:3001/user/get/fav", {
+        const response = await fetch("https://prab-flix-api.herokuapp.com/user/get/fav", {
             method: "post",
             headers: {
                 "Content-type": "application/json",

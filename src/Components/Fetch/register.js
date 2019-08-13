@@ -6,7 +6,7 @@ const tryRegister = async (name, username, password, file) => {
     });
 
     try {
-        let response = await fetch("http://localhost:3001/user", {
+        let response = await fetch("https://prab-flix-api.herokuapp.com/user", {
             method: "post",
             headers: {
                 "Content-type": "application/json"
@@ -42,13 +42,16 @@ const DP = async (file, token) => {
 
     formData.append("avatar", file);
 
-    let response = await fetch("http://localhost:3001/user/me/avatar", {
-        method: "post",
-        headers: {
-            Authorization: `Bearer ${token}`
-        },
-        body: formData
-    });
+    let response = await fetch(
+        "https://prab-flix-api.herokuapp.com/user/me/avatar",
+        {
+            method: "post",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            body: formData
+        }
+    );
 
     if (response.status === 200) {
         return true;
@@ -60,12 +63,15 @@ const DP = async (file, token) => {
 };
 
 const deleteUser = async token => {
-    let response = await fetch("http://localhost:3001/user/delete", {
-        method: "delete",
-        headers: {
-            Authorization: `Bearer ${token}`
+    let response = await fetch(
+        "https://prab-flix-api.herokuapp.com/user/delete",
+        {
+            method: "delete",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         }
-    });
+    );
 
     if (response.status === 200) {
         return true;

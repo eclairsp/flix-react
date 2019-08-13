@@ -8,7 +8,7 @@ const addToFav = async (tmdbId, type) => {
     });
 
     try {
-        const response = await fetch("http://localhost:3001/user/fav", {
+        const response = await fetch("https://prab-flix-api.herokuapp.com/user/fav", {
             method: "post",
             headers: {
                 "Content-type": "application/json",
