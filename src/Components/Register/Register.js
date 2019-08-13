@@ -67,7 +67,7 @@ const Register = () => {
             console.log(registerSuccessful);
 
             if (registerSuccessful[0] === true) {
-                window.location.href = "http://localhost:3000";
+                window.location.href = "https://flixi.netlify.com";
             } else {
                 changeValidateMessage(
                     "Can't sign-up. Please try again later! Make sure the image is less tha 2MB"

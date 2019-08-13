@@ -22,7 +22,7 @@ const Login = () => {
 
             if (loginSuccessfull) {
                 changeLoginSuccessfull(false);
-                window.location.href = "http://localhost:3000";
+                window.location.href = "https://flixi.netlify.com";
             } else {
                 changeLoginSuccessfull(true);
             }
