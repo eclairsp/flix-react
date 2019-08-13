@@ -1,12 +1,8 @@
 import React, {useState, useEffect} from "react";
-import {Link} from "@reach/router";
 import {Helmet} from "react-helmet";
 import posed from "react-pose";
-import MovieSlider from "../MovieSlider/MovieSlider";
-import {LazyLoadImage} from "react-lazy-load-image-component";
+import HomeSlider from "../HomeSlider/HomeSlider";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import backdrop300 from "../../backdrop-300.png";
-import celeb154 from "./../../celeb-154.png";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
 import "./movie-home.css";
 import "./../Home/home.css";
@@ -49,38 +45,27 @@ const MovieHome = props => {
                 });
         }
 
-        const fetchData = () => {
+        const fetchData = async () => {
             let urlTopRated =
                 "https://api.themoviedb.org/3/movie/top_rated?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=11";
             let urlNowPlaying = `https://api.themoviedb.org/3/movie/now_playing?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1&${
                 countryCode === null ? "region=US" : `region=${countryCode}`
             }`;
-            console.log(
-                `https://api.themoviedb.org/3/movie/now_playing?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1&${
-                    countryCode === null ? "region=US" : `region=${countryCode}`
-                }`
-            );
             let urlUpcoming = `https://api.themoviedb.org/3/movie/upcoming?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1&${
                 countryCode === null ? "region=US" : `region=${countryCode}`
             }`;
 
-            fetch(urlTopRated)
-                .then(res => res.json())
-                .then(data => {
-                    changeTopRated(data.results);
-                });
+            const responseTopRated = await fetch(urlTopRated);
+            const dataTopRated = await responseTopRated.json();
+            changeTopRated(dataTopRated.results);
 
-            fetch(urlNowPlaying)
-                .then(res => res.json())
-                .then(data => {
-                    changeNowPlaying(data.results);
-                });
+            const responseNowPlaying = await fetch(urlNowPlaying);
+            const dataNowPlaying = await responseNowPlaying.json();
+            changeNowPlaying(dataNowPlaying.results);
 
-            fetch(urlUpcoming)
-                .then(res => res.json())
-                .then(data => {
-                    changeUpcoming(data.results);
-                });
+            const responseUpcomning = await fetch(urlUpcoming);
+            const dataUpcoming = await responseUpcomning.json();
+            changeUpcoming(dataUpcoming.results);
 
             changeLoaded(true);
         };
@@ -103,135 +88,27 @@ const MovieHome = props => {
                     <h1 className="heading home-heading color-orange">
                         MOVIES
                     </h1>
-                    <h2 className="heading color-orange">
-                        Playing now {country ? `in ${country}` : ""}
-                    </h2>
-                    <section className="home-movie home-width">
-                        <MovieSlider>
-                            {nowPlaying.map(val => {
-                                return (
-                                    <Link
-                                        to={"../movie/" + val.id}
-                                        key={val.id}
-                                        className="card"
-                                    >
-                                        <div>
-                                            <LazyLoadImage
-                                                alt={`${val.title} poster`}
-                                                effect="blur"
-                                                src={
-                                                    val.backdrop_path === null
-                                                        ? backdrop300
-                                                        : `https://image.tmdb.org/t/p/w300/${
-                                                              val.backdrop_path
-                                                          }`
-                                                }
-                                                className="card-image"
-                                                placeholderSrc={backdrop300}
-                                                onError={e =>
-                                                    (e.target.src = backdrop300)
-                                                }
-                                            />
-                                            <div className="data">
-                                                <h4 className="card-movie-name">
-                                                    {val.title}
-                                                </h4>
-                                                <h5 className="card-release-date">
-                                                    {new Date(
-                                                        val.release_date
-                                                    ).toDateString()}
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                );
-                            })}
-                        </MovieSlider>
-                    </section>
 
-                    <h2 className="heading color-orange">
-                        Upcoming {country ? `in ${country}` : ""}
-                    </h2>
-                    <section className="home-tv home-width">
-                        <MovieSlider>
-                            {upcoming.map(val => {
-                                return (
-                                    <Link
-                                        to={"../movie/" + val.id}
-                                        key={val.id}
-                                        className="card"
-                                    >
-                                        <div>
-                                            <LazyLoadImage
-                                                alt={`${val.title} poster`}
-                                                effect="blur"
-                                                src={
-                                                    val.backdrop_path === null
-                                                        ? backdrop300
-                                                        : `https://image.tmdb.org/t/p/w300/${
-                                                              val.backdrop_path
-                                                          }`
-                                                }
-                                                className="card-image"
-                                                placeholderSrc={backdrop300}
-                                            />
-                                            <div className="data">
-                                                <h4 className="card-movie-name">
-                                                    {val.title}
-                                                </h4>
-                                                <h5 className="card-release-date">
-                                                    {new Date(
-                                                        val.release_date
-                                                    ).toDateString()}
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                );
-                            })}
-                        </MovieSlider>
-                    </section>
+                    <HomeSlider
+                        name={`Playing now ${country ? `in ${country}` : ""}`}
+                        data={nowPlaying}
+                        type="movie"
+                        showMore={false}
+                    />
 
-                    <h2 className="heading color-orange">Top Rated</h2>
-                    <section className="home-tv home-width">
-                        <MovieSlider>
-                            {topRated.map(val => {
-                                return (
-                                    <Link
-                                        to={"../movie/" + val.id}
-                                        key={val.id}
-                                        className="card"
-                                    >
-                                        <div>
-                                            <LazyLoadImage
-                                                alt={`${val.title} poster`}
-                                                effect="blur"
-                                                src={
-                                                    val.backdrop_path === null
-                                                        ? celeb154
-                                                        : `https://image.tmdb.org/t/p/w300/${
-                                                              val.backdrop_path
-                                                          }`
-                                                }
-                                                className="card-image"
-                                                placeholderSrc={celeb154}
-                                            />
-                                            <div className="data">
-                                                <h4 className="card-movie-name">
-                                                    {val.title}
-                                                </h4>
-                                                <h5 className="card-release-date">
-                                                    {new Date(
-                                                        val.release_date
-                                                    ).toDateString()}
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                );
-                            })}
-                        </MovieSlider>
-                    </section>
+                    <HomeSlider
+                        name={`Upcoming ${country ? `in ${country}` : ""}`}
+                        data={upcoming}
+                        type="movie"
+                        showMore={false}
+                    />
+
+                    <HomeSlider
+                        name={`Top Rated`}
+                        data={topRated}
+                        type="movie"
+                        showMore={false}
+                    />
                 </section>
             )}
             {!loaded && (

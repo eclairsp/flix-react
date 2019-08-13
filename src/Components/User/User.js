@@ -38,7 +38,6 @@ class User extends React.Component {
 
     componentDidMount() {
         this.fetchFavs();
-        console.log(sessionStorage.getItem("favs"));
     }
 
     Fav = async (e, index) => {
@@ -166,7 +165,7 @@ class User extends React.Component {
                                                         this.Fav(e, index)
                                                     }
                                                 >
-                                                    &#10060;
+                                                    &#128155;
                                                 </span>
                                                 <LazyLoadImage
                                                     className="result-full-img"

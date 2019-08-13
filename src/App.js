@@ -52,7 +52,7 @@ const App = () => {
                                 <Router primary={false}>
                                     <Home path="/" />
                                     <Login path="/login" />
-                                    <Register path="/signup" />
+                                    <Register path="/register" />
                                     <Movie path="/movie">
                                         <MovieHome path="/" />
                                         <MovieInfo path=":movieId" />

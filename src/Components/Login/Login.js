@@ -37,7 +37,7 @@ const Login = () => {
                 <section className="login-wrapper">
                     <div className="login-form">
                         <label>
-                            <span className="label-name">Email:</span>
+                            <span className="label-name">Username:</span>
                             <br />
                             <input
                                 className="input"

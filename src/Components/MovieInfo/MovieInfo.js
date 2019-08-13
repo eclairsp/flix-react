@@ -7,6 +7,8 @@ import poster342 from "./../../poster-342.png";
 import backdrop300 from "../../backdrop-300.png";
 import celeb154 from "./../../celeb-154.png";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
+import addToFav from "../Fetch/addToFav";
+import removeFav from "../Fetch/removeFav";
 import "./movie-info.css";
 
 const MovieInfo = props => {
@@ -17,8 +19,27 @@ const MovieInfo = props => {
     const [loaded, changeLoaded] = useState(false);
     const [ratings, changeRatings] = useState([]);
     const [background, changeBackground] = useState("none");
+    const [isFavourite, changeFavourite] = useState(false);
+    const [favs, updateFavs] = useState(
+        JSON.parse(sessionStorage.getItem("favs"))
+    );
 
     useEffect(() => {
+        const checkFav = async () => {
+            const id = props.movieId;
+
+            if (favs !== null) {
+                favs.forEach(element => {
+                    if (
+                        element.tmdbID === id.toString() &&
+                        element.type === "movie"
+                    ) {
+                        changeFavourite(true);
+                    }
+                });
+            }
+        };
+
         const fetchData = async () => {
             let urlMovie = `https://api.themoviedb.org/3/movie/${
                 props.movieId
@@ -138,8 +159,28 @@ const MovieInfo = props => {
         };
 
         fetchData();
+        checkFav();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const Fav = async e => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (isFavourite) {
+            const isRemoved = await removeFav(props.movieId, "movie");
+            if (isRemoved) {
+                changeFavourite(false);
+                updateFavs(JSON.parse(sessionStorage.getItem("favs")));
+            }
+        } else {
+            const isAdded = await addToFav(props.movieId, "movie");
+            if (isAdded) {
+                changeFavourite(true);
+                updateFavs(JSON.parse(sessionStorage.getItem("favs")));
+            }
+        }
+    };
 
     return (
         <>
@@ -180,6 +221,27 @@ const MovieInfo = props => {
                                 <article className="movie-main-info">
                                     <h1 className="heading heading-details color-orange">
                                         {movieInfo.title}
+                                        &nbsp;&nbsp;
+                                        <span
+                                            onClick={async e => Fav(e)}
+                                            style={{cursor: "pointer"}}
+                                        >
+                                            {isFavourite ? (
+                                                <span
+                                                    role="img"
+                                                    aria-label="love"
+                                                >
+                                                    &#128155;
+                                                </span>
+                                            ) : (
+                                                <span
+                                                    role="img"
+                                                    aria-label="love"
+                                                >
+                                                    &#128153;
+                                                </span>
+                                            )}
+                                        </span>
                                     </h1>
                                     <h2 className="heading heading-details">
                                         {new Date(

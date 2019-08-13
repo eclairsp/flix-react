@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {navigate} from "@reach/router";
 import tryRegister from "./../Fetch/register";
 import "./../Login/login.css";
 
@@ -10,10 +9,14 @@ const Register = () => {
         password: "",
         passwordConfirm: ""
     });
-    const [validateMessage, changeValidateMessage] = useState("");
-    const [validated, changeValidated] = useState(false);
+    const [validateMessage, changeValidateMessage] = useState(
+        "All fields required. All should be filled!"
+    );
+    const [validated, changeValidated] = useState(true);
+    const [filename, changeFilename] = useState("Upload Profile Picture");
 
     const handleInputChange = e => {
+        changeValidated(false);
         changeInfo({
             ...info,
             [e.target.name]: e.target.value
@@ -64,9 +67,11 @@ const Register = () => {
             console.log(registerSuccessful);
 
             if (registerSuccessful[0] === true) {
-                navigate("/");
+                window.location.href = "http://localhost:3000";
             } else {
-                changeValidateMessage("Can't sign-up. Please try again later!");
+                changeValidateMessage(
+                    "Can't sign-up. Please try again later! Make sure the image is less tha 2MB"
+                );
                 changeValidated(true);
             }
 
@@ -83,6 +88,8 @@ const Register = () => {
         if (e.target.files.length > 1) {
             return changeValidateMessage("Only one image allowed!");
         }
+
+        changeFilename(e.target.files[0].name);
 
         changeInfo({
             ...info,
@@ -136,16 +143,16 @@ const Register = () => {
                             />
                         </label>
                         <label>
-                            <span className="label-name">
-                                Upload profile image
-                            </span>
-                            <br />
-                            <input
-                                className="input"
-                                type="file"
-                                name="file"
-                                onChange={e => handleFileUpload(e)}
-                            />
+                            <div className="upload-btn-wrapper">
+                                <button className="upload-btn">
+                                    {filename}
+                                </button>
+                                <input
+                                    type="file"
+                                    name="file"
+                                    onChange={e => handleFileUpload(e)}
+                                />
+                            </div>
                         </label>
                         <button
                             className="btn login-btn"
@@ -157,9 +164,11 @@ const Register = () => {
                 </section>
             )}
             {localStorage.getItem("authToken") !== null && (
-                <h1>Already logged in!</h1>
+                <h1 className="validation-message">Already logged in!</h1>
             )}
-            {validated && <h1>{validateMessage}</h1>}
+            {validated && (
+                <h1 className="validation-message">{validateMessage}</h1>
+            )}
         </>
     );
 };
