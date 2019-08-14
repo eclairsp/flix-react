@@ -47,6 +47,15 @@
     overflow-wrap: break-word;
 }
 
+.spinner-search {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 5px;
+    right: 3px;
+    font-size: 2em;
+}
+
 @media (max-width : 599px) {
     .results-search {
         justify-content: flex-start;

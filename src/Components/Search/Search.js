@@ -29,7 +29,9 @@ class Search extends React.Component {
         resultImg: [],
         resultId: [],
         favs: JSON.parse(sessionStorage.getItem("favs")),
-        loaded: false
+        loaded: false,
+        addToWatchlistLoading: false,
+        clickedId: ""
     };
 
     componentDidMount() {
@@ -95,23 +97,35 @@ class Search extends React.Component {
         e.stopPropagation();
 
         if (isFav) {
+            this.setState({
+                addToWatchlistLoading: true,
+                clickedId: this.state.resultId[index].toString()
+            });
             const isRemoved = await removeFav(
                 this.state.resultId[index].toString(),
                 this.state.resultLastHead[index]
             );
             if (isRemoved) {
                 this.setState({
-                    favs: JSON.parse(sessionStorage.getItem("favs"))
+                    favs: JSON.parse(sessionStorage.getItem("favs")),
+                    addToWatchlistLoading: false,
+                    clickedId: ""
                 });
             }
         } else {
+            this.setState({
+                addToWatchlistLoading: true,
+                clickedId: this.state.resultId[index].toString()
+            });
             const isAdded = await addToFav(
                 this.state.resultId[index].toString(),
                 this.state.resultLastHead[index]
             );
             if (isAdded) {
                 this.setState({
-                    favs: JSON.parse(sessionStorage.getItem("favs"))
+                    favs: JSON.parse(sessionStorage.getItem("favs")),
+                    addToWatchlistLoading: false,
+                    clickedId: ""
                 });
             }
         }
@@ -169,7 +183,17 @@ class Search extends React.Component {
                                                         this.Fav(e, index, fav)
                                                     }
                                                 >
-                                                    {fav ? (
+                                                    {this.state
+                                                        .addToWatchlistLoading &&
+                                                    this.state.resultId[
+                                                        index
+                                                    ].toString() ===
+                                                        this.state.clickedId ? (
+                                                        <div class="spinner-search">
+                                                            <div class="double-bounce1" />
+                                                            <div class="double-bounce2" />
+                                                        </div>
+                                                    ) : fav ? (
                                                         <span
                                                             role="img"
                                                             aria-label="love"

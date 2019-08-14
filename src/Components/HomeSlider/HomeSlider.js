@@ -7,6 +7,7 @@ import backdrop300 from "../../backdrop-300.png";
 import celeb154 from "./../../celeb-154.png";
 import addToFav from "../Fetch/addToFav";
 import removeFav from "../Fetch/removeFav";
+import "./homeslider.css";
 
 const HomeSlider = ({name, data, type, showMore}) => {
     const imagePlaceholder = name === "PEOPLE" ? celeb154 : backdrop300;
@@ -14,20 +15,32 @@ const HomeSlider = ({name, data, type, showMore}) => {
     const [favs, updateFavs] = useState(
         JSON.parse(sessionStorage.getItem("favs"))
     );
+    const [addToWatchlistLoading, changeAddToWatchlistLoading] = useState(
+        false
+    );
+    const [clickedId, changeClickedId] = useState("");
 
     const Fav = async (e, index, isFav) => {
         e.preventDefault();
         e.stopPropagation();
 
         if (isFav) {
+            changeAddToWatchlistLoading(true);
+            changeClickedId(data[index].id.toString());
             const isRemoved = await removeFav(data[index].id, type);
             if (isRemoved) {
                 updateFavs(JSON.parse(sessionStorage.getItem("favs")));
+                changeAddToWatchlistLoading(false);
+                changeClickedId("");
             }
         } else {
+            changeAddToWatchlistLoading(true);
+            changeClickedId(data[index].id.toString());
             const isAdded = await addToFav(data[index].id, type);
             if (isAdded) {
                 updateFavs(JSON.parse(sessionStorage.getItem("favs")));
+                changeAddToWatchlistLoading(false);
+                changeClickedId("");
             }
         }
     };
@@ -80,7 +93,13 @@ const HomeSlider = ({name, data, type, showMore}) => {
                                         onClick={async e => Fav(e, index, fav)}
                                         className="fav"
                                     >
-                                        {fav ? (
+                                        {addToWatchlistLoading &&
+                                        val.id.toString() === clickedId ? (
+                                            <div class="spinner">
+                                                <div class="double-bounce1" />
+                                                <div class="double-bounce2" />
+                                            </div>
+                                        ) : fav ? (
                                             <span role="img" aria-label="love">
                                                 &#128155;
                                             </span>

@@ -33,7 +33,9 @@ class User extends React.Component {
             sessionStorage.getItem("favs") !== null ||
             JSON.parse(sessionStorage.getItem("favs")).length === 0
                 ? false
-                : true
+                : true,
+        addToWatchlistLoading: false,
+        clickedId: ""
     };
 
     componentDidMount() {
@@ -43,17 +45,21 @@ class User extends React.Component {
     Fav = async (e, index) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log(
-            this.state.resultId[index].toString(),
-            this.state.resultLastHead[index]
-        );
 
+        this.setState({
+            addToWatchlistLoading: true,
+            clickedId: this.state.resultId[index].toString()
+        });
         const isRemoved = await removeFav(
             this.state.resultId[index].toString(),
             this.state.resultLastHead[index]
         );
         if (isRemoved) {
             this.fetchFavs();
+            this.setState({
+                addToWatchlistLoading: false,
+                clickedId: ""
+            });
         }
     };
 
@@ -143,7 +149,7 @@ class User extends React.Component {
                             }" | FLIX`}</title>
                         </Helmet>
                         <h1 className="heading result-heading home-heading color-orange">
-                            {`Favourites of ${this.props.username}`}
+                            {`Watchlist of ${this.props.username}`}
                         </h1>
                         <div className="results-search-wrapper">
                             <div className="results-search">
@@ -157,16 +163,28 @@ class User extends React.Component {
                                                 }
                                                 key={this.state.resultId[index]}
                                             >
-                                                <span
-                                                    className="remove"
-                                                    role="img"
-                                                    aria-label="love"
-                                                    onClick={async e =>
-                                                        this.Fav(e, index)
-                                                    }
-                                                >
-                                                    &#128155;
-                                                </span>
+                                                {this.state
+                                                    .addToWatchlistLoading &&
+                                                this.state.resultId[
+                                                    index
+                                                ].toString() ===
+                                                    this.state.clickedId ? (
+                                                    <div class="spinner-user">
+                                                        <div class="double-bounce1" />
+                                                        <div class="double-bounce2" />
+                                                    </div>
+                                                ) : (
+                                                    <span
+                                                        className="remove"
+                                                        role="img"
+                                                        aria-label="love"
+                                                        onClick={async e =>
+                                                            this.Fav(e, index)
+                                                        }
+                                                    >
+                                                        &#128155;
+                                                    </span>
+                                                )}
                                                 <LazyLoadImage
                                                     className="result-full-img"
                                                     src={

@@ -23,6 +23,9 @@ const MovieInfo = props => {
     const [favs, updateFavs] = useState(
         JSON.parse(sessionStorage.getItem("favs"))
     );
+    const [addToWatchlistLoading, changeAddToWatchlistLoading] = useState(
+        false
+    );
 
     useEffect(() => {
         const checkFav = async () => {
@@ -168,16 +171,20 @@ const MovieInfo = props => {
         e.stopPropagation();
 
         if (isFavourite) {
+            changeAddToWatchlistLoading(true);
             const isRemoved = await removeFav(props.movieId, "movie");
             if (isRemoved) {
                 changeFavourite(false);
                 updateFavs(JSON.parse(sessionStorage.getItem("favs")));
+                changeAddToWatchlistLoading(false);
             }
         } else {
+            changeAddToWatchlistLoading(true);
             const isAdded = await addToFav(props.movieId, "movie");
             if (isAdded) {
                 changeFavourite(true);
                 updateFavs(JSON.parse(sessionStorage.getItem("favs")));
+                changeAddToWatchlistLoading(false);
             }
         }
     };
@@ -226,7 +233,12 @@ const MovieInfo = props => {
                                             onClick={async e => Fav(e)}
                                             style={{cursor: "pointer"}}
                                         >
-                                            {isFavourite ? (
+                                            {addToWatchlistLoading ? (
+                                                <div class="spinner">
+                                                    <div class="double-bounce1" />
+                                                    <div class="double-bounce2" />
+                                                </div>
+                                            ) : isFavourite ? (
                                                 <span
                                                     role="img"
                                                     aria-label="love"

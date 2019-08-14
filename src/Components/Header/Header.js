@@ -37,7 +37,7 @@ const Header = () => {
 
         if (logoutSuccessfull) {
             changeLoggedIn(true);
-            window.location.href = "http://localhost:3000/";
+            window.location.href = "https://flixi.netlify.com";
             console.log("Logged Out");
         } else {
             changeLoggedIn(false);
@@ -62,7 +62,7 @@ const Header = () => {
                         onClick={() => changeUserMenu(!userMenu)}
                     >
                         <img
-                            src={`http://localhost:3001/user/${name}/avatar`}
+                            src={`https://prab-flix-api.herokuapp.com/user/${name}/avatar`}
                             alt="profile pic"
                             className="profile-pic-image"
                         />
@@ -70,7 +70,7 @@ const Header = () => {
                             <ul className="profile-pic-options">
                                 {loggedIn && (
                                     <Link to={`/user/${name}`}>
-                                        <li>Favourites</li>
+                                        <li>Watchlist</li>
                                     </Link>
                                 )}
                                 {loggedIn && (
