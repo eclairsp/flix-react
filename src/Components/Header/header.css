@@ -50,7 +50,7 @@
     user-select: none;
     grid-area: menu;
     justify-self: flex-end;
-    z-index: 200;
+    z-index: 101;
 }
 
 .hamRotate.active {
@@ -93,6 +93,13 @@
     height: 100%;
     background: #101010;
     color: #ff5252;
+}
+
+.user-menu {
+    z-index: 200;
+}
+
+.general-menu {
     z-index: 100;
 }
 
@@ -108,8 +115,8 @@
     display: inline-block;
     text-decoration: none;
     font-weight: 300;
-    margin: 20px;
-    padding: 10px 20px;
+    margin: 10px;
+    padding: 5px 10px;
     color: #ff5252;
     text-transform: uppercase;
     background: linear-gradient(120deg, transparent 0%, transparent 50%, #ff5252 50%);
@@ -127,30 +134,13 @@
     align-self: center;
     position: relative;
     cursor: pointer;
+    z-index: 201;
 }
 
 .profile-pic-image {
     border-radius: 50%;
     width: 70px;
     height: 70px;
-}
-
-.profile-pic-options {
-    position: absolute;
-    top: 100%;
-    width: max-content;
-    background: #ff5252;
-    border-radius: 10px;
-    padding: 10px;
-    display: block;
-    z-index: 25;
-}
-
-.profile-pic-options li {
-    border-bottom: 2px solid #ff5252;
-    padding-bottom: 5px;
-    padding-top: 5px;
-    cursor: pointer;
 }
 
 @media (hover: hover) {
@@ -166,19 +156,22 @@
 @media (max-width : 599px) {
 
     .header {
-        grid-template-columns: max-content max-content max-content;
+        grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: max-content max-content max-content;
         grid-template-areas:
-            "logo user menu"
+            "user logo menu"
             "search search search";
     }
 
     .logo {
-        height: 60px;
-        width: 120px;
-        margin-bottom: 30px; 
+        width: 100px;
+        height: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        margin: auto;
         -webkit-tap-highlight-color: transparent;
         user-select: none;
+        align-self: center;
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
         cursor: default;
     }
@@ -189,15 +182,24 @@
 
     .ham {
         width: 60px;
+        justify-self: flex-end;
+        align-self: center;
+    }
+
+    .menu-item {
+        margin: 10px;
+        padding: 5px 10px;
+    }
+
+    .profile-pic {
+        justify-self: flex-start;
+        align-self: center;
+        width: 50px;
+        height: 50px;
     }
 
     .profile-pic-image {
-        width: 40px;
-        height: 40px;
-    }
-
-    .profile-pic-options {
-        margin: 0;
-        top: 80%;
+        width: 50px;
+        height: 50px;
     }
 }

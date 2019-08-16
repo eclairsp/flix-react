@@ -169,9 +169,9 @@ class User extends React.Component {
                                                     index
                                                 ].toString() ===
                                                     this.state.clickedId ? (
-                                                    <div class="spinner-user">
-                                                        <div class="double-bounce1" />
-                                                        <div class="double-bounce2" />
+                                                    <div className="spinner-user">
+                                                        <div className="double-bounce1" />
+                                                        <div className="double-bounce2" />
                                                     </div>
                                                 ) : (
                                                     <span

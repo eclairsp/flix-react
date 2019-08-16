@@ -7,27 +7,34 @@ const tryLogin = async (username, password) => {
     });
 
     try {
-        let response = await fetch("https://prab-flix-api.herokuapp.com/user/login", {
-            method: "post",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: userData
-        });
+        let response = await fetch(
+            "https://prab-flix-api.herokuapp.com/user/login",
+            {
+                method: "post",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: userData
+            }
+        );
 
         let data = await response.json();
 
         if (response.status === 200) {
             localStorage.setItem("authToken", data.token);
             await getFavs();
-            return true;
+            return [true, 200];
         }
 
         if (response.status === 400) {
-            return false;
+            return [false, 400];
+        }
+
+        if (response.status !== 400 && response.status !== 200) {
+            throw "Something went wrong!";
         }
     } catch (error) {
-        return false;
+        return [false, 500];
     }
 };
 

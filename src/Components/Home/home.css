@@ -9,12 +9,13 @@
 
 .heading {
     padding-left: 20px;
+    margin-bottom: 0;
 }
 
 .home-width {
     width: calc(100vw - 20px);
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .heading-see-more {
@@ -78,8 +79,8 @@
 
 @media (max-width : 599px) {
     .home-width {
-        margin-top: 30px;
-        margin-bottom: 30px;
+        margin-top: 10px;
+        margin-bottom: 10px;
         width: 100%;
     }
 

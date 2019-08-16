@@ -4,7 +4,9 @@ import "./login.css";
 
 const Login = () => {
     const [info, changeInfo] = useState({});
-    const [isLoginSuccessfull, changeLoginSuccessfull] = useState(false);
+    const [isLoginSuccessfull, changeIsLoginSuccessfull] = useState(false);
+    const [isLoggingIn, changeIsLoggingIn] = useState(false);
+    const [validationMessage, changeValidationMessage] = useState("");
 
     const handleInputChange = e => {
         changeInfo({
@@ -15,19 +17,51 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const loginSuccessfull = await tryLogin(
-                info.username,
-                info.password
-            );
+            changeIsLoggingIn(true);
+            console.log(info);
 
-            if (loginSuccessfull) {
-                changeLoginSuccessfull(false);
-                window.location.href = "https://flixi.netlify.com";
-            } else {
-                changeLoginSuccessfull(true);
+            let areEmpty = false;
+
+            if (
+                Object.entries(info).length === 0 &&
+                info.constructor === Object
+            ) {
+                changeValidationMessage("You can't leave the fields empty!");
+                areEmpty = true;
+                changeIsLoggingIn(false);
+                throw "Fields Empty";
+            }
+
+            if (!areEmpty) {
+                const loginSuccessfull = await tryLogin(
+                    info.username,
+                    info.password
+                );
+
+                if (loginSuccessfull[0]) {
+                    changeIsLoginSuccessfull(false);
+                    changeIsLoggingIn(false);
+                    window.location.href = "https://flixi.netlify.com";
+                } else {
+                    loginSuccessfull[1] === 400
+                        ? changeValidationMessage(
+                              "Username or password incorrect!"
+                          )
+                        : changeValidationMessage(
+                              "Uh Oh. Something went wrong. Try again or refresh the page!"
+                          );
+                    changeIsLoggingIn(false);
+                    changeIsLoginSuccessfull(true);
+                }
             }
         } catch (error) {
-            changeLoginSuccessfull(true);
+            error === "Fields Empty"
+                ? changeValidationMessage("Can't leave fields empty!")
+                : changeValidationMessage(
+                      "Uh Oh. Something went wrong. Try again or refresh the page!"
+                  );
+            changeIsLoggingIn(false);
+            changeIsLoginSuccessfull(true);
         }
     };
 
@@ -60,18 +94,20 @@ const Login = () => {
                             className="btn login-btn"
                             onClick={() => handleLogin()}
                         >
-                            Login
+                            {isLoggingIn ? (
+                                <div className="spinner-login-btn" />
+                            ) : (
+                                "Login"
+                            )}
                         </button>
                     </div>
                 </section>
             )}
             {localStorage.getItem("authToken") !== null && (
-                <h1>Already logged in!</h1>
+                <h1 className="validation-message">Already logged in!</h1>
             )}
             {isLoginSuccessfull && (
-                <div className="error login-error">
-                    Can't login at the moment. Try again later!
-                </div>
+                <div className="validation-message">{validationMessage}</div>
             )}
         </>
     );

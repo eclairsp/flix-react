@@ -32,11 +32,13 @@
 	padding: 10px;
 	margin: 10px;
 	border: 4px solid #ff5252;
-	background: none;
+	background: #ff5252;
 	color: #fff;
 	font-size: 2em;
 	border-radius: 10px;
 	align-self: flex-end;
+	cursor: pointer;
+	transition: all 2s ease;
 }
 
 .validation-message {
@@ -67,6 +69,25 @@
 	left: 0;
 	top: 0;
 	opacity: 0;
+}
+
+.spinner-login-btn {
+	width: 40px;
+	height: 40px;
+	background-color: #fff;
+	border-radius: 100%;  
+	animation: sk-scaleout 1.0s infinite ease-in-out;
+}
+
+@keyframes sk-scaleout {
+	0% { 
+		transform: scale(0);
+	} 
+
+	100% {
+		transform: scale(1.0);
+		opacity: 0;
+	}
 }
 
 @media (max-width : 599px) {

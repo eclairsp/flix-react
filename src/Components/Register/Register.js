@@ -14,6 +14,7 @@ const Register = () => {
     );
     const [validated, changeValidated] = useState(true);
     const [filename, changeFilename] = useState("Upload Profile Picture");
+    const [isRegistering, changeIsRegistering] = useState(false);
 
     const handleInputChange = e => {
         changeValidated(false);
@@ -24,11 +25,14 @@ const Register = () => {
     };
 
     const handleRegister = async () => {
+        changeIsRegistering(true);
+
         let passwordMatch;
         let passwordLengthCorrect;
         let isEmpty;
         if (info.password !== info.passwordConfirm) {
             passwordMatch = false;
+            changeIsRegistering(false);
             changeValidateMessage("Passwords don't match");
             changeValidated(true);
         } else {
@@ -37,6 +41,7 @@ const Register = () => {
 
         if (info.password.length < 8) {
             passwordLengthCorrect = false;
+            changeIsRegistering(false);
             changeValidateMessage("Pasword should be atleast 8 characters.");
             changeValidated(true);
         } else {
@@ -50,6 +55,7 @@ const Register = () => {
             info.passwordConfirm === 0
         ) {
             isEmpty = true;
+            changeIsRegistering(false);
             changeValidateMessage("All fields required. All should be filled!");
             changeValidated(true);
         } else {
@@ -64,11 +70,11 @@ const Register = () => {
                 info.file
             );
 
-            console.log(registerSuccessful);
-
             if (registerSuccessful[0] === true) {
+                changeIsRegistering(false);
                 window.location.href = "https://flixi.netlify.com";
             } else {
+                changeIsRegistering(false);
                 changeValidateMessage(
                     "Can't sign-up. Please try again later! Make sure the image is less tha 2MB"
                 );
@@ -76,11 +82,11 @@ const Register = () => {
             }
 
             if (registerSuccessful[0] === false) {
+                changeIsRegistering(false);
                 registerSuccessful[1] === 1001
                     ? changeValidateMessage("User already exists!")
                     : changeValidateMessage("Check your information again!");
             }
-        } else {
         }
     };
 
@@ -158,7 +164,11 @@ const Register = () => {
                             className="btn login-btn"
                             onClick={() => handleRegister()}
                         >
-                            Login
+                            {isRegistering ? (
+                                <div className="spinner-login-btn" />
+                            ) : (
+                                "Register"
+                            )}
                         </button>
                     </div>
                 </section>
