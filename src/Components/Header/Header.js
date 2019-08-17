@@ -90,7 +90,7 @@ const Header = () => {
 
                 <SearchBox />
 
-                {name !== "" && (
+                {loggedIn && (
                     <section
                         className="profile-pic"
                         onClick={() => changeUserMenu(!userMenu)}
@@ -103,6 +103,13 @@ const Header = () => {
                             placeholderSrc={userProfilePic}
                             onError={e => (e.target.src = userProfilePic)}
                         />
+                    </section>
+                )}
+
+                {!loggedIn && (
+                    <section className="user-sec">
+                        <button className="btn">Sign Up</button>
+                        <button className="btn btn-login">Login</button>
                     </section>
                 )}
 
@@ -231,6 +238,42 @@ const Header = () => {
                                         <h1 className="menu-item">Search</h1>
                                     </li>
                                 </Link>
+                                {!loggedIn && (
+                                    <Link
+                                        to="./../login"
+                                        onClick={e => {
+                                            hamRef.current.classList.toggle(
+                                                "active"
+                                            );
+                                            menuVisible
+                                                ? changeMenuVisible(false)
+                                                : changeMenuVisible(true);
+                                        }}
+                                    >
+                                        <li>
+                                            <h1 className="menu-item">Login</h1>
+                                        </li>
+                                    </Link>
+                                )}
+                                {!loggedIn && (
+                                    <Link
+                                        to="./../register"
+                                        onClick={e => {
+                                            hamRef.current.classList.toggle(
+                                                "active"
+                                            );
+                                            menuVisible
+                                                ? changeMenuVisible(false)
+                                                : changeMenuVisible(true);
+                                        }}
+                                    >
+                                        <li>
+                                            <h1 className="menu-item">
+                                                Sign Up
+                                            </h1>
+                                        </li>
+                                    </Link>
+                                )}
                             </ul>
                         </div>
                     </Menu>

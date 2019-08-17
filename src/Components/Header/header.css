@@ -11,7 +11,7 @@
     width: 100%;
     display: grid;
     grid-template-rows: max-content;
-    grid-template-columns: 150px 1fr 150px;
+    grid-template-columns: 150px 1fr max-content 150px;
     grid-template-areas:
         "logo search user menu";
     justify-content: flex-start;
@@ -143,6 +143,27 @@
     height: 70px;
 }
 
+.user-sec {
+    grid-area: user;
+    justify-self: center;
+    align-self: center;
+}
+
+.btn {
+    display: inline;
+	border: 4px solid #ff5252;
+	color: #fff;
+	background-color: #ff5252;
+	padding: 10px;
+	border-radius: 20px;
+	font-size: 2em;
+	margin: 10px;
+}
+
+.btn-login {
+    background-color: transparent;
+}
+
 @media (hover: hover) {
 
     .menu-item:hover {
@@ -201,5 +222,9 @@
     .profile-pic-image {
         width: 50px;
         height: 50px;
+    }
+
+    .user-sec {
+        display: none;
     }
 }

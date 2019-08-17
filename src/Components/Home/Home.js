@@ -95,6 +95,7 @@ const Home = () => {
                             name="PEOPLE"
                             data={celebData}
                             showMore={false}
+                            type="people"
                         />
                     )}
                 </section>

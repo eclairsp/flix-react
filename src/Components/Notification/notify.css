@@ -1,9 +1,19 @@
-.not {
-    position: absolute;
-    font-size: 5em;
+.notification {
+    position: fixed;
+    font-size: 2em;
     background: #000000;
-    color: #ffffff;
-    top: 50%;
+    color: #ff5252;
     z-index: 5;
+    top: 80vh;
     right: 50px;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+@media (max-width : 600px) {
+    .notification {
+        font-size: 1em;
+        right: 10px;
+        top: 85vh
+    }
 }

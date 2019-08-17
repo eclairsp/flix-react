@@ -9,6 +9,7 @@ import celeb154 from "./../../celeb-154.png";
 import "./user.css";
 import "./../Search/search.css";
 import removeFav from "../Fetch/removeFav";
+import Notify from "../Notification/Notify";
 
 const Item = posed.li();
 
@@ -35,7 +36,11 @@ class User extends React.Component {
                 ? false
                 : true,
         addToWatchlistLoading: false,
-        clickedId: ""
+        clickedId: "",
+        notification: {
+            show: false,
+            message: ""
+        }
     };
 
     componentDidMount() {
@@ -55,12 +60,30 @@ class User extends React.Component {
             this.state.resultLastHead[index]
         );
         if (isRemoved) {
+            this.notify("Removed from your watchlist!");
             this.fetchFavs();
             this.setState({
                 addToWatchlistLoading: false,
                 clickedId: ""
             });
         }
+    };
+
+    notify = message => {
+        this.setState({
+            notification: {
+                show: true,
+                message: message
+            }
+        });
+        setTimeout(() => {
+            this.setState({
+                notification: {
+                    show: false,
+                    message: ""
+                }
+            });
+        }, 2000);
     };
 
     fetchFavs = () => {
@@ -174,16 +197,30 @@ class User extends React.Component {
                                                         <div className="double-bounce2" />
                                                     </div>
                                                 ) : (
-                                                    <span
-                                                        className="remove"
-                                                        role="img"
+                                                    // <span
+                                                    //     className="remove"
+                                                    //     role="img"
+                                                    //     aria-label="love"
+                                                    //     onClick={async e =>
+                                                    //         this.Fav(e, index)
+                                                    //     }
+                                                    // >
+                                                    //     &#128155;
+                                                    // </span>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 512 512"
+                                                        width="40"
+                                                        height="40"
+                                                        fill="#f9a602"
                                                         aria-label="love"
+                                                        className="remove"
                                                         onClick={async e =>
                                                             this.Fav(e, index)
                                                         }
                                                     >
-                                                        &#128155;
-                                                    </span>
+                                                        <path d="M170.718 216.482L141.6 245.6l93.6 93.6 208-208-29.118-29.118L235.2 279.918l-64.482-63.436zM422.4 256c0 91.518-74.883 166.4-166.4 166.4S89.6 347.518 89.6 256 164.482 89.6 256 89.6c15.6 0 31.2 2.082 45.764 6.241L334 63.6C310.082 53.2 284.082 48 256 48 141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208h-41.6z" />
+                                                    </svg>
                                                 )}
                                                 <LazyLoadImage
                                                     className="result-full-img"
@@ -253,6 +290,10 @@ class User extends React.Component {
                         />
                     </>
                 )}
+                <Notify
+                    notify={this.state.notification.show}
+                    message={this.state.notification.message}
+                />
             </Hom>
         );
     }

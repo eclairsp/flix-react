@@ -8,7 +8,6 @@ import MovieInfo from "./Components/MovieInfo/MovieInfo";
 import Header from "./Components/Header/Header";
 // import Search from "./Components/Search/Search";
 import LoadingAnimation from "./Components/LoadingAnimation/LoadingAnimation";
-// import Notify from "./Components/Notification/Notify";
 import "./App.css";
 
 import getFavs from "./Components/Fetch/getFavs";
@@ -35,7 +34,7 @@ const RoutesContainer = posed.div({
 
 const App = () => {
     useEffect(() => {
-        getFavs();
+        localStorage.getItem("authToken") && getFavs();
     });
     return (
         <div className="app">
@@ -78,7 +77,6 @@ const App = () => {
                 </span>{" "}
                 by, Prab
             </footer>
-            {/* <Notify /> */}
         </div>
     );
 };

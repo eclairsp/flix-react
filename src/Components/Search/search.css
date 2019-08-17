@@ -52,8 +52,16 @@
     height: 40px;
     position: absolute;
     top: 5px;
-    right: 3px;
+    right: 5px;
     font-size: 2em;
+}
+
+.watchlist {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 @media (max-width : 599px) {
