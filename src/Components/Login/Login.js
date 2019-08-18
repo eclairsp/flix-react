@@ -18,7 +18,6 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             changeIsLoggingIn(true);
-            console.log(info);
 
             let areEmpty = false;
 
@@ -29,7 +28,7 @@ const Login = () => {
                 changeValidationMessage("You can't leave the fields empty!");
                 areEmpty = true;
                 changeIsLoggingIn(false);
-                throw "Fields Empty";
+                throw new Error("Fields Empty");
             }
 
             if (!areEmpty) {
@@ -55,7 +54,7 @@ const Login = () => {
                 }
             }
         } catch (error) {
-            error === "Fields Empty"
+            error.message === "Fields Empty"
                 ? changeValidationMessage("Can't leave fields empty!")
                 : changeValidationMessage(
                       "Uh Oh. Something went wrong. Try again or refresh the page!"
@@ -91,11 +90,14 @@ const Login = () => {
                             />
                         </label>
                         <button
-                            className="btn login-btn"
+                            className="user-btn form-btn menu-item"
                             onClick={() => handleLogin()}
                         >
                             {isLoggingIn ? (
-                                <div className="spinner-login-btn" />
+                                <div
+                                    aria-label="Trying to log in."
+                                    className="spinner-login-btn"
+                                />
                             ) : (
                                 "Login"
                             )}

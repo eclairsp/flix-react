@@ -109,10 +109,20 @@ const Header = () => {
                 {!loggedIn && (
                     <section className="user-sec">
                         <Link to="./../register">
-                            <button className="btn">Sign Up</button>
+                            <h1
+                                className="menu-item user-btn"
+                                aria-label="Sign Up button"
+                            >
+                                Sign Up
+                            </h1>
                         </Link>
                         <Link to="./../login">
-                            <button className="btn btn-login">Login</button>
+                            <h1
+                                className="menu-item user-btn"
+                                aria-label="Login button"
+                            >
+                                Login
+                            </h1>
                         </Link>
                     </section>
                 )}

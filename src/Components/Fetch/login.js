@@ -31,7 +31,7 @@ const tryLogin = async (username, password) => {
         }
 
         if (response.status !== 400 && response.status !== 200) {
-            throw "Something went wrong!";
+            throw new Error("Something went wrong!");
         }
     } catch (error) {
         return [false, 500];

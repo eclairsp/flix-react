@@ -161,11 +161,14 @@ const Register = () => {
                             </div>
                         </label>
                         <button
-                            className="btn login-btn"
+                            className="user-btn menu-item form-btn"
                             onClick={() => handleRegister()}
                         >
                             {isRegistering ? (
-                                <div className="spinner-login-btn" />
+                                <div
+                                    aria-label="Trying to register."
+                                    className="spinner-login-btn"
+                                />
                             ) : (
                                 "Register"
                             )}
