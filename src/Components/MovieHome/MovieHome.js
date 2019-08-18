@@ -77,7 +77,7 @@ const MovieHome = props => {
     return (
         <Hom>
             <Helmet>
-                <title>{`FLIX | Movies Home`}</title>
+                <title>{`FLIXI | Movies Home`}</title>
                 <meta
                     name="description"
                     content="Get the latest and upcoming movies. Also the top rated movies over the year."

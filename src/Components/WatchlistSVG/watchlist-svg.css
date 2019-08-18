@@ -1,0 +1,31 @@
+.watchlist-ill-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.watchlist-ill {
+    width: 35vw;
+    height: 35vw;
+}
+
+.watchlist-head {
+    width: 80vw;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+@media (max-width : 1024px) {
+    .watchlist-ill {
+        width: 60vw;
+        height: 60vw;
+    }
+}
+
+@media (max-width : 600px) {
+    .watchlist-ill {
+        width: 60vw;
+        height: 60vw;
+    }
+}

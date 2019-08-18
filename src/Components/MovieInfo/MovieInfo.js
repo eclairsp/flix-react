@@ -208,7 +208,7 @@ const MovieInfo = props => {
             {loaded && (
                 <>
                     <Helmet>
-                        <title>{`${movieInfo.title} (Movie) | FLIX`}</title>
+                        <title>{`${movieInfo.title} (Movie) | FLIXI`}</title>
                         <meta name="description" content={movieInfo.overview} />
                     </Helmet>
                     <section

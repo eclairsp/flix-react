@@ -146,7 +146,7 @@ const TvInfo = props => {
             {loaded && (
                 <>
                     <Helmet>
-                        <title>{`${tvInfo.name} (TV) | FLIX`}</title>
+                        <title>{`${tvInfo.name} (TV) | FLIXI`}</title>
                         <meta name="description" content={tvInfo.overview} />
                     </Helmet>
                     <div

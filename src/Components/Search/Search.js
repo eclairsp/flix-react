@@ -181,7 +181,7 @@ class Search extends React.Component {
                         <Helmet>
                             <title>{`Search results for "${
                                 this.props.query
-                            }" | FLIX`}</title>
+                            }" | FLIXI`}</title>
                         </Helmet>
                         <h1 className="heading result-heading home-heading color-orange">
                             {`Search results for "${this.props.query}"`}

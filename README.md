@@ -1,4 +1,4 @@
-![FLIX](https://github.com/eclairsp/flix-react/blob/master/src/FLIX.svg)
+![FLIXI](https://github.com/eclairsp/flix-react/blob/master/src/FLIX.svg)
 
 ### A project I made to learn React. :smile:
 

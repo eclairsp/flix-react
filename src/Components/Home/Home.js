@@ -61,7 +61,7 @@ const Home = () => {
     return (
         <Hom>
             <Helmet>
-                <title>FLIX | Home</title>
+                <title>FLIXI | Home</title>
                 <meta
                     name="description"
                     content="Get info about your favourite movies, TV-shows and celebs"

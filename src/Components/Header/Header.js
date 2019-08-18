@@ -54,34 +54,34 @@ const Header = () => {
             <div className="header">
                 <Link to="/">
                     <div className="logo">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            version="1.1"
-                            viewBox="0 0 69.648 39.065"
-                        >
+                        <svg viewBox="0 0 83.348 39.065">
                             <g
-                                fill="#ff5252"
-                                fillOpacity="1"
-                                stroke="none"
-                                strokeWidth="0.265"
                                 aria-label="FLIX"
+                                style={{
+                                    lineHeight: 1.25
+                                }}
+                                fontWeight={400}
+                                fontSize={50.8}
                                 fontFamily="ShadowW90-Gothic"
-                                fontSize="50.8"
-                                fontStretch="normal"
-                                fontStyle="normal"
-                                fontVariant="normal"
-                                fontWeight="normal"
-                                letterSpacing="0"
-                                wordSpacing="0"
-                                style={{lineHeight: "1.25"}}
+                                letterSpacing={0}
+                                wordSpacing={0}
+                                strokeWidth={0.265}
+                                fill="#ff5252"
                             >
                                 <path
+                                    d="M16.662 9.042H9.855v4.877h2.388l3.86 3.455v5.842H9.856v15.85H3.302L0 35.762V0h12.852l3.81 3.404zm-4.318-3.911V.813H.864v34.442H5.69V19.304h6.096V14.63H5.69v-9.5zM34.921 39.065H21.408l-3.251-3.302V0h6.248l3.81 3.454v25.908h2.845l3.861 3.455zm-4.318-3.81v-5.08h-6.706V.813h-4.876v34.442zM46.07 39.065h-6.604l-3.251-3.302V0h6.4l3.455 3.404zm-4.166-3.81V.813h-4.826v34.442zM69.648 39.065h-7.67l-2.845-3.302-.61-1.88-1.27 5.182h-6.807l-3.607-3.302 6.198-17.983L47.347 0h7.214l3.403 3.15.712-3.15h6.654l3.556 3.556-5.69 16.51zm-4.267-3.81l-6.4-18.135L64.567.813h-5.283l-2.641 11.074L53.748.813h-5.283l5.486 16.916-5.994 17.526h5.385l2.895-13.259 3.709 13.26z"
                                     style={{
                                         InkscapeFontSpecification:
                                             "ShadowW90-Gothic"
                                     }}
-                                    d="M-103.776 88.572h-6.807v4.877h2.387l3.861 3.455v5.842h-6.248v15.85h-6.553l-3.302-3.303V79.53h12.852l3.81 3.404zm-4.318-3.911v-4.318h-11.48v34.442h4.825V98.834h6.096V94.16h-6.096v-9.5zM-85.517 118.595H-99.03l-3.251-3.302V79.53h6.248l3.81 3.454v25.908h2.845l3.86 3.455zm-4.318-3.81v-5.08h-6.706V80.343h-4.877v34.442zM-74.368 118.595h-6.604l-3.251-3.302V79.53h6.4l3.455 3.404zm-4.166-3.81V80.343h-4.826v34.442zM-50.79 118.595h-7.67l-2.846-3.302-.61-1.88-1.27 5.182h-6.806l-3.607-3.302 6.197-17.983-5.69-17.78h7.214l3.404 3.15.711-3.15h6.655l3.556 3.556-5.69 16.51zm-4.267-3.81l-6.4-18.135 5.587-16.307h-5.283l-2.642 11.074-2.895-11.074h-5.284l5.487 16.916-5.995 17.526h5.385l2.896-13.259 3.708 13.26z"
-                                    transform="translate(120.438 -79.53)"
+                                />
+                                <path
+                                    d="M80.217 38.979h-6.604l-3.252-3.302V-.087h6.401l3.455 3.404zm-4.166-3.81V.726h-4.826V35.17z"
+                                    style={{
+                                        lineHeight: 1.25,
+                                        InkscapeFontSpecification:
+                                            "ShadowW90-Gothic"
+                                    }}
                                 />
                             </g>
                         </svg>
@@ -108,8 +108,12 @@ const Header = () => {
 
                 {!loggedIn && (
                     <section className="user-sec">
-                        <button className="btn">Sign Up</button>
-                        <button className="btn btn-login">Login</button>
+                        <Link to="./../register">
+                            <button className="btn">Sign Up</button>
+                        </Link>
+                        <Link to="./../login">
+                            <button className="btn btn-login">Login</button>
+                        </Link>
                     </section>
                 )}
 

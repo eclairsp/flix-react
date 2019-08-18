@@ -4,7 +4,7 @@ import posed, {PoseGroup} from "react-pose";
 import {Helmet} from "react-helmet";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
+import WatchlistSVG from "../WatchlistSVG/WatchlistSVG";
 import celeb154 from "./../../celeb-154.png";
 import "./user.css";
 import "./../Search/search.css";
@@ -167,9 +167,9 @@ class User extends React.Component {
                 {this.state.areFav && (
                     <section className="search-results">
                         <Helmet>
-                            <title>{`Search results for "${
-                                this.props.query
-                            }" | FLIX`}</title>
+                            <title>{`Watchlist of "${
+                                this.props.username
+                            }" | FLIXI`}</title>
                         </Helmet>
                         <h1 className="heading result-heading home-heading color-orange">
                             {`Watchlist of ${this.props.username}`}
@@ -284,10 +284,7 @@ class User extends React.Component {
                             <title>{this.props.username}'s profile</title>
                         </Helmet>
 
-                        <LoadingAnimation
-                            message="Your favourites will show up here"
-                            animation={false}
-                        />
+                        <WatchlistSVG message="Your watchlist will show up here" />
                     </>
                 )}
                 <Notify
