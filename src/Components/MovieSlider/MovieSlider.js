@@ -36,10 +36,18 @@ const MovieSlider = props => {
 
     return (
         <section className="slider-container-wrappper">
-            <button onClick={scrollToPrev} className="direction-arrow prev">
+            <button
+                aria-label="previous"
+                onClick={scrollToPrev}
+                className="direction-arrow prev"
+            >
                 <span className="arrow arrow-left" />
             </button>
-            <button onClick={scrollToNext} className="direction-arrow next">
+            <button
+                aria-label="next"
+                onClick={scrollToNext}
+                className="direction-arrow next"
+            >
                 <span className="arrow arrow-right" />
             </button>
             <div className="slider-container" ref={sliderContainerRef}>

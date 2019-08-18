@@ -255,11 +255,13 @@ class SearchBox extends Component {
                     onChange={e => this.handleQueryChange(e)}
                     onKeyDown={e => this.handleKeyboardPress(e)}
                     pose={this.state.inputBorder ? "on" : "off"}
+                    aria-label="Input what you want to search?"
                 />
                 <Btn
                     className="search-btn"
                     onClick={() => this.handleBtnClick()}
                     pose={this.state.inputBorder ? "on" : "off"}
+                    aria-label="Search Button"
                 >
                     <svg
                         className="svg-icon-search svg-icon"
@@ -288,7 +290,7 @@ class SearchBox extends Component {
                                                             index
                                                         ] === null
                                                             ? search45
-                                                            : `http://image.tmdb.org/t/p/w45/${
+                                                            : `https://image.tmdb.org/t/p/w45/${
                                                                   this.state
                                                                       .resultImg[
                                                                       index
