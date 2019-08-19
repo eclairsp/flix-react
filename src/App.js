@@ -1,4 +1,4 @@
-import React, {lazy, Suspense, useEffect} from "react";
+import React, {lazy, Suspense, useEffect, useState} from "react";
 import {Router, Location} from "@reach/router";
 import posed, {PoseGroup} from "react-pose";
 import Home from "./Components/Home/Home";
@@ -33,6 +33,19 @@ const RoutesContainer = posed.div({
 });
 
 const App = () => {
+    const [dialogues] = useState([
+        "May the Force be with you.",
+        "You talking to me?",
+        "I see dead people.",
+        "Here's Johnny!",
+        "Hasta la vista, baby.",
+        "I'm the king of the world!",
+        "My precious.",
+        "Why so serious?",
+        "Elementary, my dear Watson.",
+        "Where we're going, we don't need roads"
+    ]);
+
     useEffect(() => {
         localStorage.getItem("authToken") && getFavs();
     });
@@ -46,7 +59,7 @@ const App = () => {
             >
                 <Location>
                     {({location}) => (
-                        <PoseGroup>
+                        <PoseGroup className="main-outer">
                             <RoutesContainer key={location.key}>
                                 <Router primary={false}>
                                     <Home path="/" />
@@ -74,8 +87,8 @@ const App = () => {
                 Made with{" "}
                 <span role="img" aria-label="love">
                     &#128153;
-                </span>{" "}
-                by, Prab
+                </span>
+                ,{` ${dialogues[Math.floor(Math.random() * 10)]}`}
             </footer>
         </div>
     );

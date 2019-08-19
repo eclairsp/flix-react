@@ -52,7 +52,7 @@ const Header = () => {
     return (
         <header className="header-wrapper">
             <div className="header">
-                <Link to="/">
+                <Link to="/" className="logo-position">
                     <div className="logo">
                         <svg viewBox="0 0 83.348 39.065">
                             <g

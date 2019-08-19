@@ -30,7 +30,8 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    padding-bottom: 68px;
+    display: flex;
+    flex-direction: column;
 }
 
 img {
@@ -82,15 +83,16 @@ a:active, a:visited, a:hover, a:link {
     color: #fff;
 }
 
+.main-outer {
+    flex: 1;
+}
+
 footer {
-    position:absolute;
-    left:0;
-    bottom:0;
-    right:0;
     padding: 20px;
     text-align: center;
     font-size: 1.3em;
     background: #000;
+    position: relative;
 }
 
 .circle {
