@@ -9,7 +9,9 @@ import celeb154 from "./../../celeb-154.png";
 import "./user.css";
 import "./../Search/search.css";
 import removeFav from "../Fetch/removeFav";
+import isUserPresent from "../Fetch/isUserPresent";
 import Notify from "../Notification/Notify";
+import NotFound from "../NotFound/NotFound";
 
 const Item = posed.li();
 
@@ -30,22 +32,49 @@ class User extends React.Component {
         resultLastHead: [],
         resultImg: [],
         resultId: [],
-        areFav:
-            sessionStorage.getItem("favs") !== null ||
-            JSON.parse(sessionStorage.getItem("favs")).length === 0
-                ? false
-                : true,
+        areFav: [],
         addToWatchlistLoading: false,
         clickedId: "",
         notification: {
             show: false,
             message: ""
-        }
+        },
+        isValidUser: true,
+        userFoundMessage: ""
     };
 
     componentDidMount() {
-        this.fetchFavs();
+        this.checkUser();
     }
+
+    checkUser = async () => {
+        const isPresent = await isUserPresent(this.props.username);
+
+        if (localStorage.getItem("authToken") && isPresent) {
+            this.setState({
+                isValidUser: true,
+                areFav:
+                    sessionStorage.getItem("favs") !== null &&
+                    JSON.parse(sessionStorage.getItem("favs")).length === 0
+                        ? false
+                        : true
+            });
+            this.fetchFavs();
+        } else if (isPresent && !localStorage.getItem("authToken")) {
+            this.setState({
+                areFav: [],
+                isValidUser: false,
+                userFoundMessage:
+                    "Can't check other users profile. If you are the owner of the account, try to login!"
+            });
+        } else {
+            this.setState({
+                areFav: [],
+                isValidUser: false,
+                userFoundMessage: "Can't seem to find this user!"
+            });
+        }
+    };
 
     Fav = async (e, index) => {
         e.preventDefault();
@@ -164,16 +193,18 @@ class User extends React.Component {
     render() {
         return (
             <Hom>
-                {this.state.areFav && (
+                {this.state.areFav && this.state.isValidUser && (
                     <section className="search-results">
                         <Helmet>
-                            <title>{`Watchlist of "${
+                            <title>{`Watchlist of ${
                                 this.props.username
-                            }" | FLIXI`}</title>
+                            } | FLIXI`}</title>
                         </Helmet>
-                        <h1 className="heading result-heading home-heading color-orange">
-                            {`Watchlist of ${this.props.username}`}
-                        </h1>
+                        {this.state.areFav.length !== 0 && (
+                            <h1 className="heading result-heading home-heading color-orange">
+                                {`${this.props.username}'s watchlist`}
+                            </h1>
+                        )}
                         <div className="results-search-wrapper">
                             <div className="results-search">
                                 <PoseGroup>
@@ -278,14 +309,17 @@ class User extends React.Component {
                         </div>
                     </section>
                 )}
-                {!this.state.areFav && (
+                {!this.state.areFav && this.state.isValidUser && (
                     <>
                         <Helmet>
-                            <title>{this.props.username}'s profile</title>
+                            <title>{this.props.username}'s watchlist</title>
                         </Helmet>
 
                         <WatchlistSVG message="Your watchlist will show up here" />
                     </>
+                )}
+                {!this.state.isValidUser && (
+                    <NotFound message={this.state.userFoundMessage} />
                 )}
                 <Notify
                     notify={this.state.notification.show}

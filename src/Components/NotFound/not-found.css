@@ -1,0 +1,32 @@
+.not-found-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.not-found {
+    width: 40vw;
+    height: 40vw;
+}
+
+.not-found-head {
+    width: 80vw;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+@media (max-width : 1024px) {
+    .not-found {
+        width: 70vw;
+        height: 70vw;
+    }
+}
+
+@media (max-width : 600px) {
+    .not-found {
+        width: 90vw;
+        height: 90vw;
+    }
+}
+

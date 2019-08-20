@@ -41,7 +41,7 @@ const Header = () => {
 
         if (logoutSuccessfull) {
             changeLoggedIn(true);
-            window.location.href = "https://flixi.netlify.com";
+            window.location.reload();
             console.log("Logged Out");
         } else {
             changeLoggedIn(false);
@@ -90,7 +90,7 @@ const Header = () => {
 
                 <SearchBox />
 
-                {loggedIn && (
+                {loggedIn && !menuVisible && (
                     <section
                         className="profile-pic"
                         onClick={() => changeUserMenu(!userMenu)}
@@ -127,27 +127,29 @@ const Header = () => {
                     </section>
                 )}
 
-                <svg
-                    className="ham hamRotate ham4"
-                    viewBox="0 0 100 100"
-                    onClick={e => {
-                        hamRef.current.classList.toggle("active");
-                        menuVisible
-                            ? changeMenuVisible(false)
-                            : changeMenuVisible(true);
-                    }}
-                    ref={hamRef}
-                >
-                    <path
-                        className="line top"
-                        d="m 70,33 h -40 c 0,0 -8.5,-0.149796 -8.5,8.5 0,8.649796 8.5,8.5 8.5,8.5 h 20 v -20"
-                    />
-                    <path className="line middle" d="m 70,50 h -40" />
-                    <path
-                        className="line bottom"
-                        d="m 30,67 h 40 c 0,0 8.5,0.149796 8.5,-8.5 0,-8.649796 -8.5,-8.5 -8.5,-8.5 h -20 v 20"
-                    />
-                </svg>
+                {!userMenu && (
+                    <svg
+                        className="ham hamRotate ham4"
+                        viewBox="0 0 100 100"
+                        onClick={e => {
+                            hamRef.current.classList.toggle("active");
+                            menuVisible
+                                ? changeMenuVisible(false)
+                                : changeMenuVisible(true);
+                        }}
+                        ref={hamRef}
+                    >
+                        <path
+                            className="line top"
+                            d="m 70,33 h -40 c 0,0 -8.5,-0.149796 -8.5,8.5 0,8.649796 8.5,8.5 8.5,8.5 h 20 v -20"
+                        />
+                        <path className="line middle" d="m 70,50 h -40" />
+                        <path
+                            className="line bottom"
+                            d="m 30,67 h 40 c 0,0 8.5,0.149796 8.5,-8.5 0,-8.649796 -8.5,-8.5 -8.5,-8.5 h -20 v 20"
+                        />
+                    </svg>
+                )}
             </div>
             <PoseGroup>
                 {userMenu && (
@@ -157,7 +159,7 @@ const Header = () => {
                                 {loggedIn && (
                                     <Link
                                         to={`/user/${name}`}
-                                        onClick={e => {
+                                        onClick={() => {
                                             userMenu
                                                 ? changeUserMenu(false)
                                                 : changeUserMenu(true);
@@ -172,7 +174,7 @@ const Header = () => {
                                 )}
                                 {loggedIn && (
                                     <li
-                                        onClick={e => {
+                                        onClick={() => {
                                             userMenu
                                                 ? changeUserMenu(false)
                                                 : changeUserMenu(true);
@@ -194,7 +196,7 @@ const Header = () => {
                             <ul className="menu-main">
                                 <Link
                                     to="/"
-                                    onClick={e => {
+                                    onClick={() => {
                                         hamRef.current.classList.toggle(
                                             "active"
                                         );
@@ -209,7 +211,7 @@ const Header = () => {
                                 </Link>
                                 <Link
                                     to="./../movie"
-                                    onClick={e => {
+                                    onClick={() => {
                                         hamRef.current.classList.toggle(
                                             "active"
                                         );
@@ -224,7 +226,7 @@ const Header = () => {
                                 </Link>
                                 <Link
                                     to="./../tv"
-                                    onClick={e => {
+                                    onClick={() => {
                                         hamRef.current.classList.toggle(
                                             "active"
                                         );
@@ -239,7 +241,7 @@ const Header = () => {
                                 </Link>
                                 <Link
                                     to="./../search"
-                                    onClick={e => {
+                                    onClick={() => {
                                         hamRef.current.classList.toggle(
                                             "active"
                                         );
@@ -255,7 +257,7 @@ const Header = () => {
                                 {!loggedIn && (
                                     <Link
                                         to="./../login"
-                                        onClick={e => {
+                                        onClick={() => {
                                             hamRef.current.classList.toggle(
                                                 "active"
                                             );
@@ -272,7 +274,7 @@ const Header = () => {
                                 {!loggedIn && (
                                     <Link
                                         to="./../register"
-                                        onClick={e => {
+                                        onClick={() => {
                                             hamRef.current.classList.toggle(
                                                 "active"
                                             );

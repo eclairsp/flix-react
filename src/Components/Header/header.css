@@ -98,13 +98,6 @@
     height: 100%;
     background: #101010;
     color: #ff5252;
-}
-
-.user-menu {
-    z-index: 200;
-}
-
-.general-menu {
     z-index: 100;
 }
 

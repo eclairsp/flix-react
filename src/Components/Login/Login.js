@@ -40,7 +40,9 @@ const Login = () => {
                 if (loginSuccessfull[0]) {
                     changeIsLoginSuccessfull(false);
                     changeIsLoggingIn(false);
-                    window.location.href = "https://flixi.netlify.com";
+                    window.location.href = `https://flixi.netlify.com/user/${
+                        info.username
+                    }`;
                 } else {
                     loginSuccessfull[1] === 400
                         ? changeValidationMessage(
@@ -64,6 +66,14 @@ const Login = () => {
         }
     };
 
+    const handleKeyboardPress = e => {
+        let keyPressed = e.keyCode || e.which;
+
+        if (keyPressed === 13) {
+            handleLogin();
+        }
+    };
+
     return (
         <>
             {localStorage.getItem("authToken") === null && (
@@ -77,6 +87,7 @@ const Login = () => {
                                 type="username"
                                 name="username"
                                 onChange={handleInputChange}
+                                onKeyDown={e => handleKeyboardPress(e)}
                             />
                         </label>
                         <label>
@@ -87,6 +98,7 @@ const Login = () => {
                                 type="password"
                                 name="password"
                                 onChange={handleInputChange}
+                                onKeyDown={e => handleKeyboardPress(e)}
                             />
                         </label>
                         <button

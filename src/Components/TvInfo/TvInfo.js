@@ -8,6 +8,7 @@ import poster342 from "./../../poster-342.png";
 import backdrop300 from "../../backdrop-300.png";
 import celeb154 from "./../../celeb-154.png";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
+import NotFound from "../NotFound/NotFound";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import addToFav from "../Fetch/addToFav";
 import removeFav from "../Fetch/removeFav";
@@ -33,6 +34,7 @@ const TvInfo = props => {
         show: false,
         message: ""
     });
+    const [isValidTv, changeIsValidTv] = useState(true);
 
     useEffect(() => {
         const checkFav = async () => {
@@ -67,6 +69,10 @@ const TvInfo = props => {
 
             const response = await fetch(urlMovie);
             const data = await response.json();
+
+            if ("status_code" in data) {
+                return data.status_code === 34 && changeIsValidTv(false);
+            }
 
             changeTvInfo(data);
             changeBackground(
@@ -143,7 +149,7 @@ const TvInfo = props => {
 
     return (
         <>
-            {loaded && (
+            {loaded && isValidTv && (
                 <>
                     <Helmet>
                         <title>{`${tvInfo.name} (TV) | FLIXI`}</title>
@@ -181,41 +187,43 @@ const TvInfo = props => {
                                     <h1 className="heading heading-details color-orange">
                                         {tvInfo.name}
                                         &nbsp;&nbsp;
-                                        <span
-                                            onClick={async e => Fav(e)}
-                                            style={{cursor: "pointer"}}
-                                        >
-                                            {addToWatchlistLoading ? (
-                                                <div class="spinner">
-                                                    <div class="double-bounce1" />
-                                                    <div class="double-bounce2" />
-                                                </div>
-                                            ) : isFavourite &&
-                                              localStorage.getItem(
-                                                  "authToken"
-                                              ) ? (
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 512 512"
-                                                    width="40"
-                                                    height="40"
-                                                    fill="#f9a602"
-                                                >
-                                                    <path d="M170.718 216.482L141.6 245.6l93.6 93.6 208-208-29.118-29.118L235.2 279.918l-64.482-63.436zM422.4 256c0 91.518-74.883 166.4-166.4 166.4S89.6 347.518 89.6 256 164.482 89.6 256 89.6c15.6 0 31.2 2.082 45.764 6.241L334 63.6C310.082 53.2 284.082 48 256 48 141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208h-41.6z" />
-                                                </svg>
-                                            ) : (
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 512 512"
-                                                    width="40"
-                                                    height="40"
-                                                    fill="#fff"
-                                                >
-                                                    <path d="M363 277h-86v86h-42v-86h-86v-42h86v-86h42v86h86v42z" />
-                                                    <path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422c-44.3 0-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256c0-44.3 17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z" />
-                                                </svg>
-                                            )}
-                                        </span>
+                                        {localStorage.getItem("authToken") && (
+                                            <span
+                                                onClick={async e => Fav(e)}
+                                                style={{cursor: "pointer"}}
+                                            >
+                                                {addToWatchlistLoading ? (
+                                                    <div class="spinner">
+                                                        <div class="double-bounce1" />
+                                                        <div class="double-bounce2" />
+                                                    </div>
+                                                ) : isFavourite &&
+                                                  localStorage.getItem(
+                                                      "authToken"
+                                                  ) ? (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 512 512"
+                                                        width="40"
+                                                        height="40"
+                                                        fill="#f9a602"
+                                                    >
+                                                        <path d="M170.718 216.482L141.6 245.6l93.6 93.6 208-208-29.118-29.118L235.2 279.918l-64.482-63.436zM422.4 256c0 91.518-74.883 166.4-166.4 166.4S89.6 347.518 89.6 256 164.482 89.6 256 89.6c15.6 0 31.2 2.082 45.764 6.241L334 63.6C310.082 53.2 284.082 48 256 48 141.6 48 48 141.6 48 256s93.6 208 208 208 208-93.6 208-208h-41.6z" />
+                                                    </svg>
+                                                ) : (
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 512 512"
+                                                        width="40"
+                                                        height="40"
+                                                        fill="#fff"
+                                                    >
+                                                        <path d="M363 277h-86v86h-42v-86h-86v-42h86v-86h42v86h86v42z" />
+                                                        <path d="M256 90c44.3 0 86 17.3 117.4 48.6C404.7 170 422 211.7 422 256s-17.3 86-48.6 117.4C342 404.7 300.3 422 256 422c-44.3 0-86-17.3-117.4-48.6C107.3 342 90 300.3 90 256c0-44.3 17.3-86 48.6-117.4C170 107.3 211.7 90 256 90m0-42C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48z" />
+                                                    </svg>
+                                                )}
+                                            </span>
+                                        )}
                                     </h1>
                                     <h2 className="heading heading-details">
                                         {new Date(
@@ -511,9 +519,10 @@ const TvInfo = props => {
                     </section>
                 </>
             )}
-            {!loaded && (
+            {!loaded && isValidTv && (
                 <LoadingAnimation animation={true} message="LOADING..." />
             )}
+            {!isValidTv && <NotFound message="No TV-Show found!" />}
             <Notify notify={notification.show} message={notification.message} />
         </>
     );

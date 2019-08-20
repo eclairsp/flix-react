@@ -72,7 +72,9 @@ const Register = () => {
 
             if (registerSuccessful[0] === true) {
                 changeIsRegistering(false);
-                window.location.href = "https://flixi.netlify.com";
+                window.location.href = `https://flixi.netlify.com/user/${
+                    info.username
+                }`;
             } else {
                 changeIsRegistering(false);
                 changeValidateMessage(
@@ -103,6 +105,14 @@ const Register = () => {
         });
     };
 
+    const handleKeyboardPress = e => {
+        let keyPressed = e.keyCode || e.which || document.keyCode;
+
+        if (keyPressed === 13) {
+            handleRegister();
+        }
+    };
+
     return (
         <>
             {localStorage.getItem("authToken") === null && (
@@ -116,6 +126,7 @@ const Register = () => {
                                 type="name"
                                 name="name"
                                 onChange={handleInputChange}
+                                onKeyDown={e => handleKeyboardPress(e)}
                             />
                         </label>
                         <label>
@@ -126,6 +137,7 @@ const Register = () => {
                                 type="username"
                                 name="username"
                                 onChange={handleInputChange}
+                                onKeyDown={e => handleKeyboardPress(e)}
                             />
                         </label>
                         <label>

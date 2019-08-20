@@ -11,6 +11,7 @@ import removeFav from "../Fetch/removeFav";
 import "./search.css";
 import "./../User/user.css";
 import Notify from "../Notification/Notify";
+import NotFound from "../NotFound/NotFound";
 
 const Hom = posed.div({
     enter: {y: 0, opacity: 1, delay: 300},
@@ -36,7 +37,8 @@ class Search extends React.Component {
         notification: {
             show: false,
             message: ""
-        }
+        },
+        areResultsFound: true
     };
 
     componentDidMount() {
@@ -50,6 +52,10 @@ class Search extends React.Component {
 
         const response = await fetch(urlSearch);
         const data = await response.json();
+
+        if (data.total_results === 0) {
+            return this.setState({areResultsFound: false});
+        }
 
         let head = [];
         let secHead = [];
@@ -176,7 +182,7 @@ class Search extends React.Component {
     render() {
         return (
             <Hom>
-                {this.state.query && (
+                {this.state.query && this.state.areResultsFound && (
                     <section className="search-results">
                         <Helmet>
                             <title>{`Search results for "${
@@ -317,6 +323,13 @@ class Search extends React.Component {
                     notify={this.state.notification.show}
                     message={this.state.notification.message}
                 />
+                {this.state.query && !this.state.areResultsFound && (
+                    <NotFound
+                        message={`No search results found for ${
+                            this.state.query
+                        }`}
+                    />
+                )}
             </Hom>
         );
     }

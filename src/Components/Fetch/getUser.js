@@ -2,13 +2,16 @@ const tryGettingUser = async () => {
     const auth = `Bearer ${localStorage.getItem("authToken")}`;
 
     try {
-        const response = await fetch("https://prab-flix-api.herokuapp.com/user/me", {
-            method: "get",
-            headers: {
-                "Content-type": "application/json",
-                Authorization: auth
+        const response = await fetch(
+            "https://prab-flix-api.herokuapp.com/user/me",
+            {
+                method: "get",
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: auth
+                }
             }
-        });
+        );
 
         let data = await response.json();
 

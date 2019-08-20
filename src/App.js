@@ -83,13 +83,7 @@ const App = () => {
                     )}
                 </Location>
             </Suspense>
-            <footer>
-                Made with{" "}
-                <span role="img" aria-label="love">
-                    &#128153;
-                </span>
-                ,{` ${dialogues[Math.floor(Math.random() * 10)]}`}
-            </footer>
+            <footer>{`${dialogues[Math.floor(Math.random() * 10)]}`}</footer>
         </div>
     );
 };
