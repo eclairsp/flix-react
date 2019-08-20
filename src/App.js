@@ -22,6 +22,7 @@ const SeasonInfo = lazy(() => import("./Components/SeasonInfo/SeasonInfo"));
 const Login = lazy(() => import("./Components/Login/Login"));
 const Register = lazy(() => import("./Components/Register/Register"));
 const User = lazy(() => import("./Components/User/User"));
+const NotFound = lazy(() => import("./Components/NotFound/NotFound"));
 
 const RoutesContainer = posed.div({
     enter: {y: 0, opacity: 1, delay: 300, staggerChildren: 50},
@@ -62,6 +63,10 @@ const App = () => {
                         <PoseGroup className="main-outer">
                             <RoutesContainer key={location.key}>
                                 <Router primary={false}>
+                                    <NotFound
+                                        default
+                                        message="Sorry, nothing here!"
+                                    />
                                     <Home path="/" />
                                     <Login path="/login" />
                                     <Register path="/register" />
