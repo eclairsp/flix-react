@@ -19,7 +19,7 @@ body {
     overflow-x: hidden;
     width: 100vw;
     min-height: 100%;
-    font-family: 'Numans', sans-serif;
+    font-family: "Numans", sans-serif;
 }
 
 .app {
@@ -47,28 +47,28 @@ img {
 
 h1 {
     font-size: 4em;
-    font-family: 'Imprima', sans-serif;
+    font-family: "Imprima", sans-serif;
     font-weight: bold;
 }
 
 h2 {
     font-size: 2em;
-    font-family: 'Imprima', sans-serif;
+    font-family: "Imprima", sans-serif;
 }
 
 h3 {
     font-size: 1.5em;
-    font-family: 'Imprima', sans-serif;
+    font-family: "Imprima", sans-serif;
 }
 
 h4 {
     font-size: 1em;
-    font-family: 'Imprima', sans-serif;
+    font-family: "Imprima", sans-serif;
 }
 
 h5 {
     font-size: 1em;
-    font-family: 'Imprima', sans-serif;
+    font-family: "Imprima", sans-serif;
 }
 
 .color-orange {
@@ -79,7 +79,10 @@ a {
     display: block;
 }
 
-a:active, a:visited, a:hover, a:link {
+a:active,
+a:visited,
+a:hover,
+a:link {
     color: #fff;
 }
 
@@ -93,6 +96,13 @@ footer {
     font-size: 1.3em;
     background: #000;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tmdb-attribution {
+    margin-left: auto;
 }
 
 .circle {
@@ -107,7 +117,7 @@ a {
     text-decoration: none;
 }
 
-@media (max-width : 600px) {
+@media (max-width: 600px) {
     h1 {
         font-size: 2.5em;
     }
@@ -116,7 +126,7 @@ a {
         font-size: 1.5em;
     }
 
-    h3{
+    h3 {
         font-size: 1em;
     }
     h4 {
@@ -124,5 +134,10 @@ a {
     }
     h5 {
         font-size: 0.5em;
+    }
+
+    .tmdb-attribution {
+        margin: 5px;
+        margin-left: auto;
     }
 }

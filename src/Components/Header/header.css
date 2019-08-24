@@ -12,8 +12,7 @@
     display: grid;
     grid-template-rows: max-content;
     grid-template-columns: 150px 1fr max-content 80px;
-    grid-template-areas:
-        "logo search user menu";
+    grid-template-areas: "logo search user menu";
     justify-content: flex-start;
 }
 
@@ -67,11 +66,11 @@
 }
 
 .line {
-    fill:none;
+    fill: none;
     transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
-    stroke:#ff5252;
-    stroke-width:5.5;
-    stroke-linecap:round;
+    stroke: #ff5252;
+    stroke-width: 5.5;
+    stroke-linecap: round;
 }
 
 .ham4 .top {
@@ -117,9 +116,14 @@
     padding: 5px 10px;
     color: #ff5252;
     text-transform: uppercase;
-    background: linear-gradient(120deg, transparent 0%, transparent 50%, #ff5252 50%);
+    background: linear-gradient(
+        120deg,
+        transparent 0%,
+        transparent 50%,
+        #ff5252 50%
+    );
     background-size: 250%;
-    transition: all .4s;
+    transition: all 0.4s;
     cursor: pointer;
     border-radius: 10px;
     border: none;
@@ -158,16 +162,14 @@
 }
 
 @media (hover: hover) {
-
     .menu-item:hover {
         background-position: 100%;
         color: #fff;
         transform: translateX(10px);
     }
-
 }
 
-@media (max-width : 768px) {
+@media (max-width: 768px) {
     .header {
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: max-content max-content max-content;
@@ -194,8 +196,7 @@
     }
 }
 
-@media (max-width : 599px) {
-
+@media (max-width: 599px) {
     .header {
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: max-content max-content max-content;
