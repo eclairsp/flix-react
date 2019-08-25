@@ -20,7 +20,7 @@ const configInput = {
 const configBtn = {
     off: {
         opacity: 1,
-        background: "#101010"
+        background: "transparent"
     },
     on: {
         opacity: 1,
@@ -286,12 +286,7 @@ class SearchBox extends Component {
                                                             index
                                                         ] === null
                                                             ? search45
-                                                            : `https://image.tmdb.org/t/p/w45/${
-                                                                  this.state
-                                                                      .resultImg[
-                                                                      index
-                                                                  ]
-                                                              }`
+                                                            : `https://image.tmdb.org/t/p/w45/${this.state.resultImg[index]}`
                                                     }
                                                     alt={val}
                                                     className="result-img"

@@ -19,7 +19,9 @@ const Header = () => {
     const [userMenu, changeUserMenu] = useState(false);
     const hamRef = useRef();
     const [name, changeName] = useState("");
-    const [loggedIn, changeLoggedIn] = useState(name === "" ? false : true);
+    const [loggedIn, changeLoggedIn] = useState(
+        localStorage.getItem("authToken") === "" ? false : true
+    );
 
     useEffect(() => {
         const getUser = async () => {
