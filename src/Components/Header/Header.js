@@ -20,7 +20,7 @@ const Header = () => {
     const hamRef = useRef();
     const [name, changeName] = useState("");
     const [loggedIn, changeLoggedIn] = useState(
-        localStorage.getItem("authToken") === "" ? false : true
+        localStorage.getItem("authToken") ? true : false
     );
 
     useEffect(() => {
@@ -33,7 +33,7 @@ const Header = () => {
             }
         };
 
-        if (localStorage.getItem("authToken") !== null) {
+        if (localStorage.getItem("authToken")) {
             getUser();
         }
     });
