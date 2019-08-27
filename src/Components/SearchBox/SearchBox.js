@@ -71,7 +71,7 @@ class SearchBox extends Component {
     }
 
     searchMovie = async query => {
-        let urlSearch = `https://api.themoviedb.org/3/search/multi?api_key=74d9bb95f2c26a20a3f908c481d10af3&query=${query}&sort_by=popularity.asc`;
+        let urlSearch = `https://api.themoviedb.org/3/search/multi?api_key=74d9bb95f2c26a20a3f908c481d10af3&query=${query}`;
 
         const res = await fetch(urlSearch);
         return await res.json();
