@@ -48,7 +48,7 @@ class Search extends React.Component {
     fetchSearchResults = async () => {
         let urlSearch = `https://api.themoviedb.org/3/search/multi?api_key=74d9bb95f2c26a20a3f908c481d10af3&query=${
             this.state.query
-        }&sort_by=popularity.asc`;
+        }`;
 
         const response = await fetch(urlSearch);
         const data = await response.json();

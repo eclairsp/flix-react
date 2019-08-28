@@ -55,7 +55,7 @@ class SearchBox extends Component {
                 localStorage.getItem("cache") === undefined
                     ? {}
                     : JSON.parse(localStorage.getItem("cache")),
-            activeElement: 0
+            activeElement: -1
         };
 
         this.searchListRef = React.createRef();
@@ -65,7 +65,8 @@ class SearchBox extends Component {
         document.addEventListener("click", () => {
             this.setState({
                 inputBorder: false,
-                resultVisible: false
+                resultVisible: false,
+                activeElement: -1
             });
         });
     }
@@ -190,54 +191,61 @@ class SearchBox extends Component {
 
     handleKeyboardPress = e => {
         let keyPressed = e.keyCode || e.which;
-        if (keyPressed === 13) {
+        const arrowDown = 40;
+        const arrowUp = 38;
+        const enter = 13;
+        const totalSuggestions = this.state.resultHead.length;
+        if (keyPressed === enter) {
             this.setState({
                 inputBorder: false,
                 resultVisible: false,
-                activeElement: 0
+                activeElement: -1
             });
-            navigate(`./../search/${this.state.query}`);
-        } else if (keyPressed === 40 && this.searchListRef.current !== null) {
-            if (this.state.activeElement <= 4) {
-                if (this.state.activeElement !== 0) {
-                    this.searchListRef.current.children[
-                        this.state.activeElement - 1
-                    ].children[0].classList.remove("search-result-active");
+
+            if (this.state.activeElement === -1) {
+                navigate(`./../search/${this.state.query}`);
+                // if no suggestion selected show all the results
+            } else {
+                // if suggestion is selected depending upon the type movie or tv go to respective link
+                if (
+                    this.state.resultLastHead[this.state.activeElement] ===
+                    "movie"
+                ) {
+                    navigate(
+                        `./../movie/${
+                            this.state.resultId[this.state.activeElement]
+                        }`
+                    );
+                } else if (
+                    this.state.resultLastHead[this.state.activeElement] === "TV"
+                ) {
+                    if (window.location.href.includes("season")) {
+                        navigate(
+                            `./../../../../tv/${
+                                this.state.resultId[this.state.activeElement]
+                            }`
+                        );
+                    } else {
+                        navigate(
+                            `./../tv/${
+                                this.state.resultId[this.state.activeElement]
+                            }`
+                        );
+                    }
                 }
-
-                this.searchListRef.current.children[
-                    this.state.activeElement
-                ].children[0].classList.add("search-result-active");
-
-                this.setState({
-                    activeElement:
-                        this.state.activeElement === 4
-                            ? 4
-                            : this.state.activeElement + 1
+            }
+        } else if (keyPressed === arrowDown) {
+            if (this.state.activeElement < totalSuggestions - 1) {
+                this.setState(prevState => {
+                    return {activeElement: prevState.activeElement + 1};
                 });
-                console.log(this.state.activeElement);
             }
-        } else if (keyPressed === 38 && this.searchListRef.current !== null) {
-            if (this.state.activeElement <= 4 && this.state.activeElement > 0) {
-                if (this.state.activeElement !== 0) {
-                    this.searchListRef.current.children[
-                        this.state.activeElement
-                    ].children[0].classList.remove("search-result-active");
-                }
-
-                this.searchListRef.current.children[
-                    this.state.activeElement - 1
-                ].children[0].classList.add("search-result-active");
+        } else if (keyPressed === arrowUp) {
+            if (this.state.activeElement > 0) {
+                this.setState(prevState => {
+                    return {activeElement: prevState.activeElement - 1};
+                });
             }
-
-            console.log(this.state.activeElement);
-
-            this.setState({
-                activeElement:
-                    this.state.activeElement === 4
-                        ? 3
-                        : this.state.activeElement - 1
-            });
         }
     };
 
@@ -269,7 +277,7 @@ class SearchBox extends Component {
                 <PoseGroup>
                     {this.state.resultVisible && (
                         <Result key="results" className="result">
-                            <ul ref={this.searchListRef}>
+                            <ul>
                                 {this.state.resultHead.map((val, index) => {
                                     return (
                                         <li
@@ -277,52 +285,59 @@ class SearchBox extends Component {
                                             onClick={() =>
                                                 this.handleSuggestClick(index)
                                             }
+                                            className={
+                                                this.state.activeElement ===
+                                                index
+                                                    ? "result-card search-result-active"
+                                                    : "result-card"
+                                            }
                                             // className="search-result-active"
                                         >
-                                            <div className="result-card">
-                                                <LazyLoadImage
-                                                    src={
-                                                        this.state.resultImg[
-                                                            index
-                                                        ] === null
-                                                            ? search45
-                                                            : `https://image.tmdb.org/t/p/w45/${this.state.resultImg[index]}`
-                                                    }
-                                                    alt={val}
-                                                    className="result-img"
-                                                    placeholderSrc={search45}
-                                                    effec="blur"
-                                                    onError={e =>
-                                                        (e.target.src = search45)
-                                                    }
-                                                />
-                                                <div className="result-info">
-                                                    <h5 className="result-text">
-                                                        {val}
-                                                    </h5>
-                                                    <h5 className="result-text">
-                                                        {this.state.resultSecHead[
-                                                            index
-                                                        ].includes("known for,")
-                                                            ? this.state
-                                                                  .resultSecHead[
+                                            <LazyLoadImage
+                                                src={
+                                                    this.state.resultImg[
+                                                        index
+                                                    ] === null
+                                                        ? search45
+                                                        : `https://image.tmdb.org/t/p/w45/${this.state.resultImg[index]}`
+                                                }
+                                                alt={val}
+                                                className="result-img"
+                                                placeholderSrc={search45}
+                                                effec="blur"
+                                                onError={e =>
+                                                    (e.target.src = search45)
+                                                }
+                                            />
+                                            <div className="result-info">
+                                                <h5 className="result-text">
+                                                    {val}
+                                                </h5>
+                                                <h5 className="result-text">
+                                                    {this.state.resultSecHead[
+                                                        index
+                                                    ].includes("known for,") &&
+                                                    this.state.resultSecHead[
+                                                        index
+                                                    ] !== undefined
+                                                        ? this.state
+                                                              .resultSecHead[
+                                                              index
+                                                          ]
+                                                        : new Date(
+                                                              this.state.resultSecHead[
                                                                   index
                                                               ]
-                                                            : new Date(
-                                                                  this.state.resultSecHead[
-                                                                      index
-                                                                  ]
-                                                              ).toDateString()}
-                                                    </h5>
-                                                    <h5 className="result-text">
-                                                        {
-                                                            this.state
-                                                                .resultLastHead[
-                                                                index
-                                                            ]
-                                                        }
-                                                    </h5>
-                                                </div>
+                                                          ).toDateString()}
+                                                </h5>
+                                                <h5 className="result-text">
+                                                    {
+                                                        this.state
+                                                            .resultLastHead[
+                                                            index
+                                                        ]
+                                                    }
+                                                </h5>
                                             </div>
                                         </li>
                                     );
