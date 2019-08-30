@@ -4,7 +4,6 @@ import {Helmet} from "react-helmet";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
 import Notify from "../Notification/Notify";
 import poster342 from "./../../poster-342.png";
-import celeb154 from "./../../celeb-154.png";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
 import HomeSlider from "../HomeSlider/HomeSlider";
 import NotFound from "../NotFound/NotFound";
@@ -226,9 +225,7 @@ const MovieInfo = props => {
                                     <Img
                                         className="poster-main"
                                         src={[
-                                            movieInfo.backdrop_path === null
-                                                ? celeb154
-                                                : `https://image.tmdb.org/t/p/w342/${movieInfo.poster_path}`,
+                                            `https://image.tmdb.org/t/p/w342/${movieInfo.poster_path}`,
                                             poster342
                                         ]}
                                         loader={

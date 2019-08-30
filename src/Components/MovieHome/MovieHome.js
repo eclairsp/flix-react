@@ -94,6 +94,7 @@ const MovieHome = props => {
                         data={nowPlaying}
                         type="movie"
                         showMore={false}
+                        to="../"
                     />
 
                     <HomeSlider
@@ -101,6 +102,7 @@ const MovieHome = props => {
                         data={upcoming}
                         type="movie"
                         showMore={false}
+                        to="../"
                     />
 
                     <HomeSlider
@@ -108,6 +110,7 @@ const MovieHome = props => {
                         data={topRated}
                         type="movie"
                         showMore={false}
+                        to="../"
                     />
                 </section>
             )}

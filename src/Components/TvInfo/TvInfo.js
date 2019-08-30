@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "@reach/router";
-import {LazyLoadImage} from "react-lazy-load-image-component";
+import Img from "react-image";
 import {Helmet} from "react-helmet";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
 import Notify from "../Notification/Notify";
@@ -160,16 +160,23 @@ const TvInfo = props => {
                         <section className="details-1">
                             <div className="car">
                                 <div className="poster">
-                                    <LazyLoadImage
+                                    <Img
                                         className="poster-main"
-                                        src={
-                                            tvInfo.poster_path === null
-                                                ? poster342
-                                                : `https://image.tmdb.org/t/p/w342/${tvInfo.poster_path}`
+                                        src={[
+                                            `https://image.tmdb.org/t/p/w342/${tvInfo.poster_path}`,
+                                            poster342
+                                        ]}
+                                        loader={
+                                            <div
+                                                style={{
+                                                    height: "513px",
+                                                    width: "342px",
+                                                    borderRadius: "10px"
+                                                }}
+                                                className="gradient"
+                                            ></div>
                                         }
-                                        alt={`${tvInfo.name} poster`}
-                                        placeholderSrc={poster342}
-                                        effect="blur"
+                                        alt={`${tvInfo.title} poster`}
                                         onError={e =>
                                             (e.target.src = poster342)
                                         }
