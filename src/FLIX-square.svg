@@ -12,8 +12,11 @@
    viewBox="0 0 80.216522 39.714264"
    version="1.1"
    id="svg4643"
-   sodipodi:docname="FLIX.svg"
-   inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
+   sodipodi:docname="FLIX-square.svg"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   inkscape:export-filename="C:\Users\admin\OneDrive\Desktop\FLIX.png"
+   inkscape:export-xdpi="137.14"
+   inkscape:export-ydpi="137.14">
   <metadata
      id="metadata13">
     <rdf:RDF>
@@ -22,6 +25,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -50,6 +54,14 @@
   <g
      id="layer1"
      transform="translate(120.43833,-79.530038)">
+    <rect
+       style="fill:#101010;fill-opacity:1;stroke-width:0.19429855"
+       id="rect4521"
+       width="96.282776"
+       height="89.661278"
+       x="-128.53127"
+       y="54.842819"
+       ry="11.526318" />
     <g
        aria-label="FLIX"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"

@@ -40,9 +40,7 @@ const Login = () => {
                 if (loginSuccessfull[0]) {
                     changeIsLoginSuccessfull(false);
                     changeIsLoggingIn(false);
-                    window.location.href = `https://flixi.netlify.com/user/${
-                        info.username
-                    }`;
+                    window.location.href = `https://flixi.netlify.com/user/${info.username}`;
                 } else {
                     loginSuccessfull[1] === 400
                         ? changeValidationMessage(

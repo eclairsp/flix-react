@@ -1,11 +1,9 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef} from "react";
 import {Link} from "@reach/router";
 import posed, {PoseGroup} from "react-pose";
 import {LazyLoadImage} from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import SearchBox from "./../SearchBox/SearchBox";
-import tryLogout from "../Fetch/logout";
-import tryGettingUser from "../Fetch/getUser";
 import userProfilePic from "./../../user.png";
 import "./header.css";
 
@@ -14,42 +12,10 @@ const Menu = posed.div({
     exit: {y: 100, opacity: 0, transition: {duration: 300}}
 });
 
-const Header = () => {
+const Header = ({name, logout, isLoggedIn}) => {
     const [menuVisible, changeMenuVisible] = useState(false);
     const [userMenu, changeUserMenu] = useState(false);
     const hamRef = useRef();
-    const [name, changeName] = useState("");
-    const [loggedIn, changeLoggedIn] = useState(
-        localStorage.getItem("authToken") ? true : false
-    );
-
-    useEffect(() => {
-        const getUser = async () => {
-            const user = await tryGettingUser();
-
-            if (user[0] === true) {
-                changeName(user[1].user.username);
-                changeLoggedIn(true);
-            }
-        };
-
-        if (localStorage.getItem("authToken")) {
-            getUser();
-        }
-    });
-
-    const handleLogout = async () => {
-        const logoutSuccessfull = await tryLogout();
-
-        if (logoutSuccessfull) {
-            changeLoggedIn(true);
-            window.location.reload();
-            console.log("Logged Out");
-        } else {
-            changeLoggedIn(false);
-            console.log("Can't Logout");
-        }
-    };
 
     return (
         <header className="header-wrapper">
@@ -92,7 +58,7 @@ const Header = () => {
 
                 <SearchBox />
 
-                {loggedIn && !menuVisible && (
+                {isLoggedIn && !menuVisible && (
                     <section
                         className="profile-pic"
                         onClick={() => changeUserMenu(!userMenu)}
@@ -108,7 +74,7 @@ const Header = () => {
                     </section>
                 )}
 
-                {!loggedIn && (
+                {!isLoggedIn && (
                     <section className="user-sec">
                         <Link to="./../register">
                             <h1
@@ -158,7 +124,7 @@ const Header = () => {
                     <Menu key="menu" className="menu user-menu">
                         <div className="menu-wrap">
                             <ul className="menu-main">
-                                {loggedIn && (
+                                {isLoggedIn && (
                                     <Link
                                         to={`/user/${name}`}
                                         onClick={() => {
@@ -174,13 +140,13 @@ const Header = () => {
                                         </li>
                                     </Link>
                                 )}
-                                {loggedIn && (
+                                {isLoggedIn && (
                                     <li
                                         onClick={() => {
                                             userMenu
                                                 ? changeUserMenu(false)
                                                 : changeUserMenu(true);
-                                            handleLogout();
+                                            logout();
                                         }}
                                     >
                                         <h1 className="menu-item">Sign Out</h1>
@@ -256,7 +222,7 @@ const Header = () => {
                                         <h1 className="menu-item">Search</h1>
                                     </li>
                                 </Link>
-                                {!loggedIn && (
+                                {!isLoggedIn && (
                                     <Link
                                         to="./../login"
                                         onClick={() => {
@@ -273,7 +239,7 @@ const Header = () => {
                                         </li>
                                     </Link>
                                 )}
-                                {!loggedIn && (
+                                {!isLoggedIn && (
                                     <Link
                                         to="./../register"
                                         onClick={() => {

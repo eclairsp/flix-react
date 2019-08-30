@@ -7,7 +7,8 @@
     right: 2px;
 }
 
-.double-bounce1, .double-bounce2 {
+.double-bounce1,
+.double-bounce2 {
     width: 90%;
     height: 90%;
     border-radius: 50%;
@@ -16,12 +17,12 @@
     position: absolute;
     top: 0;
     left: 0;
-    
-    animation: sk-bounce 2.0s infinite ease-in-out;
+
+    animation: sk-bounce 2s infinite ease-in-out;
 }
 
 .double-bounce2 {
-    animation-delay: -1.0s;
+    animation-delay: -1s;
 }
 
 .fav svg {
@@ -33,12 +34,36 @@
     right: 2px;
 }
 
+.gradient {
+    animation-duration: 1.8s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeHolderShimmer;
+    animation-timing-function: linear;
+    background: #000;
+    background: linear-gradient(to right, #000 8%, #101010 38%, #000 54%);
+    background-size: 1000px 640px;
+
+    position: relative;
+}
+
+@keyframes placeHolderShimmer {
+    0% {
+        background-position: -468px 0;
+    }
+    100% {
+        background-position: 468px 0;
+    }
+}
+
 @keyframes sk-bounce {
-    0%, 100% { 
-        transform: scale(0.0);
+    0%,
+    100% {
+        transform: scale(0);
         opacity: 0.3;
-    } 50% { 
-        transform: scale(1.0);
+    }
+    50% {
+        transform: scale(1);
         opacity: 1;
     }
 }

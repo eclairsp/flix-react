@@ -72,9 +72,7 @@ const Register = () => {
 
             if (registerSuccessful[0] === true) {
                 changeIsRegistering(false);
-                window.location.href = `https://flixi.netlify.com/user/${
-                    info.username
-                }`;
+                window.location.href = `https://flixi.netlify.com/user/${info.username}`;
             } else {
                 changeIsRegistering(false);
                 changeValidateMessage(

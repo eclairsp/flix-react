@@ -78,6 +78,7 @@ const Home = () => {
                             data={movieData}
                             type="movie"
                             showMore={true}
+                            to="../"
                         />
                     )}
 
@@ -87,6 +88,7 @@ const Home = () => {
                             data={tvData}
                             type="tv"
                             showMore={false}
+                            to="../"
                         />
                     )}
 
@@ -96,6 +98,8 @@ const Home = () => {
                             data={celebData}
                             showMore={false}
                             type="people"
+                            to="../"
+                            cast={false}
                         />
                     )}
                 </section>

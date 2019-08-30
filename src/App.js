@@ -11,6 +11,8 @@ import LoadingAnimation from "./Components/LoadingAnimation/LoadingAnimation";
 import "./App.css";
 
 import getFavs from "./Components/Fetch/getFavs";
+import tryGettingUser from "./Components/Fetch/getUser";
+import tryLogout from "./Components/Fetch/logout";
 
 // const Header = true && import('./Components/Header/Header')
 const Movie = lazy(() => import("./Components/Movie/Movie"));
@@ -46,13 +48,51 @@ const App = () => {
         "Elementary, my dear Watson.",
         "Where we're going, we don't need roads"
     ]);
+    const [name, changeName] = useState("");
+    const [loggedIn, changeLoggedIn] = useState(
+        localStorage.getItem("authToken") ? true : false
+    );
 
     useEffect(() => {
-        localStorage.getItem("authToken") && getFavs();
+        console.log(
+            "%cStop!",
+            "color:red;font-family:system-ui;font-size:4em;font-weight:bold"
+        );
+
+        console.log(
+            "%cPlease don't enter anything into the console if you are not sure.",
+            "color:black;font-family:system-ui;font-size:2em;font-weight:bold"
+        );
+
+        const getUser = async () => {
+            const user = await tryGettingUser();
+
+            if (user[0] === true) {
+                changeName(user[1].user.username);
+                changeLoggedIn(true);
+            }
+        };
+
+        if (localStorage.getItem("authToken")) {
+            getUser();
+            getFavs();
+        }
     });
+
+    const handleLogout = async () => {
+        const logoutSuccessfull = await tryLogout();
+
+        if (logoutSuccessfull) {
+            changeLoggedIn(true);
+            window.location.href = "https://flixi.netlify.com/";
+        } else {
+            changeLoggedIn(false);
+        }
+    };
+
     return (
         <div className="app">
-            <Header />
+            <Header logout={handleLogout} name={name} isLoggedIn={loggedIn} />
             <Suspense
                 fallback={
                     <LoadingAnimation animation={true} message="LOADING..." />

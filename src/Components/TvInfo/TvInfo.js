@@ -5,11 +5,10 @@ import {Helmet} from "react-helmet";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
 import Notify from "../Notification/Notify";
 import poster342 from "./../../poster-342.png";
-import backdrop300 from "../../backdrop-300.png";
-import celeb154 from "./../../celeb-154.png";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
 import NotFound from "../NotFound/NotFound";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import HomeSlider from "../HomeSlider/HomeSlider";
 import addToFav from "../Fetch/addToFav";
 import removeFav from "../Fetch/removeFav";
 import "./../MovieInfo/movie-info.css";
@@ -53,9 +52,7 @@ const TvInfo = props => {
         };
 
         const fetchData = async () => {
-            let urlMovie = `https://api.themoviedb.org/3/tv/${
-                props.tvId
-            }?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&append_to_response=videos,credits,similar,external_ids`;
+            let urlMovie = `https://api.themoviedb.org/3/tv/${props.tvId}?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&append_to_response=videos,credits,similar,external_ids`;
             // let urlVideo = `https://api.themoviedb.org/3/tv/${
             //     props.tvId
             // }/videos?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
@@ -76,9 +73,7 @@ const TvInfo = props => {
 
             changeTvInfo(data);
             changeBackground(
-                `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${
-                    data.backdrop_path
-                })`
+                `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${data.backdrop_path})`
             );
 
             changeVideoSrc(data.videos.results);
@@ -103,7 +98,6 @@ const TvInfo = props => {
 
         const fetchRatings = async (imdbId, arr) => {
             const url = `https://www.omdbapi.com/?apikey=ba5af482&i=${imdbId}`;
-            console.log(imdbId);
             const response = await fetch(url);
             const data = await response.json();
 
@@ -171,9 +165,7 @@ const TvInfo = props => {
                                         src={
                                             tvInfo.poster_path === null
                                                 ? poster342
-                                                : `https://image.tmdb.org/t/p/w342/${
-                                                      tvInfo.poster_path
-                                                  }`
+                                                : `https://image.tmdb.org/t/p/w342/${tvInfo.poster_path}`
                                         }
                                         alt={`${tvInfo.name} poster`}
                                         placeholderSrc={poster342}
@@ -237,29 +229,30 @@ const TvInfo = props => {
                                         {tvInfo.overview}
                                     </p>
                                     {ratings === undefined ||
-                                    ratings.length === 0
-                                        ? "not found"
-                                        : ratings.map((val, index) => {
-                                              return (
-                                                  <h2
-                                                      key={index}
-                                                      className="heading heading-details"
-                                                  >
-                                                      {`${val.Source}: ${
-                                                          val.Value
-                                                      }`}
-                                                  </h2>
-                                              );
-                                          })}
+                                    ratings.length === 0 ||
+                                    ratings[0].Value === "0/10" ? (
+                                        <h2 className="heading heading-details">
+                                            No ratings found
+                                        </h2>
+                                    ) : (
+                                        ratings.map((val, index) => {
+                                            return (
+                                                <h2
+                                                    key={index}
+                                                    className="heading heading-details"
+                                                >
+                                                    {`${val.Source}: ${val.Value}`}
+                                                </h2>
+                                            );
+                                        })
+                                    )}
                                 </article>
                             </div>
                         </section>
                     </div>
                     <section className="season">
                         <Link
-                            to={`./../season/${props.tvId}/${tvInfo.name}/${
-                                tvInfo.number_of_seasons
-                            }`}
+                            to={`./../season/${props.tvId}/${tvInfo.name}/${tvInfo.number_of_seasons}`}
                             className="season-link"
                         >
                             <h1 className="all-season color-orange">
@@ -282,50 +275,14 @@ const TvInfo = props => {
                                           })}
                                 </h2>
                                 <div className="cast">
-                                    <MovieSlider>
-                                        {cast.cast === undefined
-                                            ? "not found"
-                                            : cast.cast.map((val, index) => {
-                                                  return (
-                                                      <div
-                                                          className="card card-r"
-                                                          key={index}
-                                                      >
-                                                          <div>
-                                                              <LazyLoadImage
-                                                                  className="image"
-                                                                  src={
-                                                                      val.profile_path ===
-                                                                      null
-                                                                          ? celeb154
-                                                                          : `https://image.tmdb.org/t/p/w154/${
-                                                                                val.profile_path
-                                                                            }`
-                                                                  }
-                                                                  alt={val.name}
-                                                                  placeholderSrc={
-                                                                      celeb154
-                                                                  }
-                                                                  effect="blur"
-                                                                  onError={e =>
-                                                                      (e.target.src = celeb154)
-                                                                  }
-                                                              />
-                                                          </div>
-                                                          <div>
-                                                              <h4 className="cast-name">
-                                                                  {val.name}
-                                                              </h4>
-                                                              <h5 className="cast-name">
-                                                                  {
-                                                                      val.character
-                                                                  }
-                                                              </h5>
-                                                          </div>
-                                                      </div>
-                                                  );
-                                              })}
-                                    </MovieSlider>
+                                    <HomeSlider
+                                        name=""
+                                        data={cast.cast}
+                                        showMore={false}
+                                        type="people"
+                                        to=""
+                                        cast={true}
+                                    />
                                 </div>
                             </div>
                             <div className="trailer">
@@ -344,12 +301,8 @@ const TvInfo = props => {
                                                           >
                                                               <div className="video">
                                                                   <iframe
-                                                                      title={`${
-                                                                          val.name
-                                                                      } trailer`}
-                                                                      src={`https://www.youtube-nocookie.com/embed/${
-                                                                          val.key
-                                                                      }`}
+                                                                      title={`${val.name} trailer`}
+                                                                      src={`https://www.youtube-nocookie.com/embed/${val.key}`}
                                                                       frameBorder="0"
                                                                       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                                                       allowFullScreen
@@ -370,11 +323,7 @@ const TvInfo = props => {
                                         <h3 className="heading">Seasons</h3>
                                         <div className="tags">
                                             <Link
-                                                to={`./../season/${
-                                                    props.tvId
-                                                }/${tvInfo.name}/${
-                                                    tvInfo.number_of_seasons
-                                                }`}
+                                                to={`./../season/${props.tvId}/${tvInfo.name}/${tvInfo.number_of_seasons}`}
                                                 className="season-link"
                                             >
                                                 <div className="genre__tag">
@@ -430,11 +379,7 @@ const TvInfo = props => {
                                         </h3>
                                         <div className="tags">
                                             <Link
-                                                to={`./../season/${
-                                                    props.tvId
-                                                }/${tvInfo.name}/${
-                                                    tvInfo.number_of_seasons
-                                                }`}
+                                                to={`./../season/${props.tvId}/${tvInfo.name}/${tvInfo.number_of_seasons}`}
                                                 className="season-link"
                                             >
                                                 <div className="genre__tag">
@@ -470,52 +415,16 @@ const TvInfo = props => {
                                 Similar TV-Shows
                             </h1>
                         </div>
-                        <MovieSlider>
-                            {similar === undefined
-                                ? "not found"
-                                : similar.map((val, index) => {
-                                      return (
-                                          <Link
-                                              to={"./../../tv/" + val.id}
-                                              key={index}
-                                              className="card"
-                                              onClick={window.scrollTo(0, 0)}
-                                          >
-                                              <div>
-                                                  <LazyLoadImage
-                                                      src={
-                                                          val.backdrop_path ===
-                                                          null
-                                                              ? backdrop300
-                                                              : `https://image.tmdb.org/t/p/w300/${
-                                                                    val.backdrop_path
-                                                                }`
-                                                      }
-                                                      alt="poster"
-                                                      className="card-image"
-                                                      placeholderSrc={
-                                                          backdrop300
-                                                      }
-                                                      effec="blur"
-                                                      onError={e =>
-                                                          (e.target.src = backdrop300)
-                                                      }
-                                                  />
-                                                  <div className="data">
-                                                      <h3 className="card-movie-name">
-                                                          {val.name}
-                                                      </h3>
-                                                      <h4 className="card-release-date">
-                                                          {new Date(
-                                                              val.first_air_date
-                                                          ).toDateString()}
-                                                      </h4>
-                                                  </div>
-                                              </div>
-                                          </Link>
-                                      );
-                                  })}
-                        </MovieSlider>
+                        {similar === undefined ? (
+                            "not found"
+                        ) : (
+                            <HomeSlider
+                                data={similar}
+                                type="tv"
+                                showMore={false}
+                                to="./../../"
+                            />
+                        )}
                     </section>
                 </>
             )}

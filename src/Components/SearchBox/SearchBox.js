@@ -102,7 +102,11 @@ class SearchBox extends Component {
                 secHead.push(
                     val.known_for[0] === null || val.known_for[0] === undefined
                         ? ""
-                        : `known for, ${val.known_for[0].title}`
+                        : `known for, ${
+                              val.known_for[0].media_type === "movie"
+                                  ? val.known_for[0].title
+                                  : val.known_for[0].name
+                          }`
                 );
                 lastHead.push("celeb");
                 img.push(val.profile_path);
