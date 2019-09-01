@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import posed, {PoseGroup} from "react-pose";
 import {navigate, Link} from "@reach/router";
 import {LazyLoadImage} from "react-lazy-load-image-component";
+import debounce from "../Utils/Debounce";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import search45 from "./../../search-45.png";
 import "./search-box.css";
@@ -125,7 +126,7 @@ class SearchBox extends Component {
         });
     };
 
-    cache = query => {
+    cache = debounce(query => {
         if (this.state.cache[query]) {
             this.setResults(this.state.cache[query]);
         } else {
@@ -142,7 +143,7 @@ class SearchBox extends Component {
                 this.setResults(data);
             });
         }
-    };
+    }, 250);
 
     handleQueryChange = e => {
         if (e.target.value === "") {
@@ -158,7 +159,7 @@ class SearchBox extends Component {
                 resultVisible: true,
                 placeholder: "Search any Movie, TV-Show, Celeb",
                 query: e.target.value,
-                activeElement: 0
+                activeElement: -1
             });
             this.cache(e.target.value);
         }

@@ -2,8 +2,7 @@ import React from "react";
 import {navigate} from "@reach/router";
 import posed from "react-pose";
 import {Helmet} from "react-helmet";
-import {LazyLoadImage} from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
+import Img from "react-image";
 import LoadingAnimation from "./../LoadingAnimation/LoadingAnimation";
 import celeb154 from "./../../celeb-154.png";
 import addToFav from "../Fetch/addToFav";
@@ -12,7 +11,7 @@ import "./search.css";
 import "./../User/user.css";
 import Notify from "../Notification/Notify";
 import NotFound from "../NotFound/NotFound";
-
+import debounce from "../Utils/Debounce";
 const Hom = posed.div({
     enter: {y: 0, opacity: 1, delay: 300},
     exit: {
@@ -23,46 +22,81 @@ const Hom = posed.div({
 });
 
 class Search extends React.Component {
-    state = {
-        query: this.props.query,
-        resultHead: [],
-        resultSecHead: [],
-        resultLastHead: [],
-        resultImg: [],
-        resultId: [],
-        favs: JSON.parse(sessionStorage.getItem("favs")),
-        loaded: false,
-        addToWatchlistLoading: false,
-        clickedId: "",
-        notification: {
-            show: false,
-            message: ""
-        },
-        areResultsFound: true
-    };
+    constructor(props) {
+        super(props);
 
-    componentDidMount() {
-        this.fetchSearchResults();
+        this.state = {
+            query: this.props.query,
+            resultHead: [],
+            resultSecHead: [],
+            resultLastHead: [],
+            resultImg: [],
+            resultId: [],
+            favs: JSON.parse(sessionStorage.getItem("favs")),
+            loaded: false,
+            addToWatchlistLoading: false,
+            clickedId: "",
+            notification: {
+                show: false,
+                message: ""
+            },
+            areResultsFound: true,
+            page: 1,
+            allData: {results: []},
+            infiniteLoading: true
+        };
     }
 
-    fetchSearchResults = async () => {
-        let urlSearch = `https://api.themoviedb.org/3/search/multi?api_key=74d9bb95f2c26a20a3f908c481d10af3&query=${
-            this.state.query
-        }`;
+    componentDidMount() {
+        const dataFromCache = JSON.parse(localStorage.getItem("cache"));
+        if (dataFromCache !== null) {
+            dataFromCache[this.state.query]
+                ? this.fetchSearchResults(dataFromCache[this.state.query])
+                : this.fetchSearchResults(null);
+        }
 
-        const response = await fetch(urlSearch);
-        const data = await response.json();
+        document.addEventListener(
+            "scroll",
+            debounce(this.loadMoreResults, 250),
+            true
+        );
+    }
+
+    fetchSearchResults = async isQueryInCache => {
+        let urlSearch = `https://api.themoviedb.org/3/search/multi?api_key=74d9bb95f2c26a20a3f908c481d10af3&query=${this.state.query}&page=${this.state.page}`;
+        let data;
+
+        if (isQueryInCache !== null) {
+            data = isQueryInCache;
+        } else {
+            const response = await fetch(urlSearch);
+            data = await response.json();
+        }
 
         if (data.total_results === 0) {
             return this.setState({areResultsFound: false});
         }
 
+        this.setState(
+            prevState => ({
+                infiniteLoading: false,
+                allData: {
+                    ...data,
+                    results: [...prevState.allData.results, ...data.results]
+                }
+            }),
+            () => this.dataSetter()
+        );
+    };
+
+    dataSetter = () => {
         let head = [];
         let secHead = [];
         let lastHead = [];
         let img = [];
         let id = [];
-        data.results.map(val => {
+
+        this.state.allData.results.map(val => {
             if (val.media_type === "movie") {
                 head.push(val.title);
                 secHead.push(val.release_date);
@@ -75,7 +109,10 @@ class Search extends React.Component {
                 lastHead.push("tv");
                 img.push(val.poster_path);
                 id.push(val.id);
-            } else if (val.media_type === "person") {
+            } else if (
+                val.media_type === "person" &&
+                val.known_for.length > 0
+            ) {
                 head.push(val.name);
                 secHead.push("known for, " + val.known_for[0].title);
                 lastHead.push("celeb");
@@ -179,17 +216,57 @@ class Search extends React.Component {
         return isFav;
     };
 
+    loadMoreResults = () => {
+        console.log(
+            window.innerHeight + document.documentElement.scrollTop ===
+                document.documentElement.offsetHeight
+        );
+        this.setState({
+            infiniteLoading: true
+        });
+
+        if (
+            this.state.page <= this.state.allData.total_pages ||
+            window.innerHeight + document.documentElement.scrollTop ===
+                document.documentElement.offsetHeight
+        ) {
+            this.setState(
+                {
+                    page: this.state.page + 1
+                },
+                () => this.fetchSearchResults(null)
+            );
+        }
+    };
+
+    // loadMoreResults = debounce(() => {
+    //     this.setState({
+    //         infiniteLoading: true
+    //     });
+
+    //     if (
+    //         this.state.page <= this.state.allData.total_pages ||
+    //         window.innerHeight + document.documentElement.scrollTop ===
+    //             document.documentElement.offsetHeight
+    //     ) {
+    //         this.setState(
+    //             {
+    //                 page: this.state.page + 1
+    //             },
+    //             () => this.fetchSearchResults(null)
+    //         );
+    //     }
+    // }, 250);
+
     render() {
         return (
             <Hom>
                 {this.state.query && this.state.areResultsFound && (
                     <section className="search-results">
                         <Helmet>
-                            <title>{`Search results for "${
-                                this.props.query
-                            }" | FLIXI`}</title>
+                            <title>{`Search results for "${this.props.query}" | FLIXI`}</title>
                         </Helmet>
-                        <h1 className="heading result-heading home-heading color-orange">
+                        <h1 className="heading search-main-head result-heading home-heading color-orange">
                             {`Search results for "${this.props.query}"`}
                         </h1>
                         <div className="results-search-wrapper">
@@ -252,23 +329,23 @@ class Search extends React.Component {
                                                     )}
                                                 </span>
                                             )}
-                                            <LazyLoadImage
+                                            <Img
                                                 className="result-full-img"
-                                                src={
-                                                    this.state.resultImg[
-                                                        index
-                                                    ] === null
-                                                        ? celeb154
-                                                        : `https://image.tmdb.org/t/p/w154/${
-                                                              this.state
-                                                                  .resultImg[
-                                                                  index
-                                                              ]
-                                                          }`
-                                                }
+                                                src={[
+                                                    `https://image.tmdb.org/t/p/w154/${this.state.resultImg[index]}`,
+                                                    celeb154
+                                                ]}
                                                 alt={val}
-                                                placeholderSrc={celeb154}
-                                                effect="blur"
+                                                loader={
+                                                    <div
+                                                        style={{
+                                                            height: "231px",
+                                                            width: "154px",
+                                                            borderRadius: "10px"
+                                                        }}
+                                                        className="gradient"
+                                                    ></div>
+                                                }
                                                 onError={e =>
                                                     (e.target.src = celeb154)
                                                 }
@@ -277,7 +354,7 @@ class Search extends React.Component {
                                                 <h3 className="heading color-orange card-after-result-head">
                                                     {val}
                                                 </h3>
-                                                <h3 className="heading">
+                                                <h3 className="heading card-after-result-head">
                                                     {this.state.resultSecHead[
                                                         index
                                                     ].includes("known for,")
@@ -291,7 +368,7 @@ class Search extends React.Component {
                                                               ]
                                                           ).toDateString()}
                                                 </h3>
-                                                <h3 className="heading">
+                                                <h3 className="heading card-after-result-head">
                                                     {
                                                         this.state
                                                             .resultLastHead[
@@ -305,6 +382,12 @@ class Search extends React.Component {
                                 })}
                             </div>
                         </div>
+                        {this.state.infiniteLoading && (
+                            <div className="spinner-load-more">
+                                <div className="double-bounce1" />
+                                <div className="double-bounce2" />
+                            </div>
+                        )}
                     </section>
                 )}
                 {!this.state.query && (
@@ -325,9 +408,7 @@ class Search extends React.Component {
                 />
                 {this.state.query && !this.state.areResultsFound && (
                     <NotFound
-                        message={`No search results found for ${
-                            this.state.query
-                        }`}
+                        message={`No search results found for ${this.state.query}`}
                     />
                 )}
             </Hom>
