@@ -9,7 +9,12 @@
 }
 
 .center-details {
-    background-image: linear-gradient(270deg, rgba(0, 0, 0, 0.9) 40%, rgba(16, 16, 16, 0.7) 80%, rgba(16, 16, 16, 0.5) 90%);
+    background-image: linear-gradient(
+        270deg,
+        rgba(0, 0, 0, 0.9) 40%,
+        rgba(16, 16, 16, 0.7) 80%,
+        rgba(16, 16, 16, 0.5) 90%
+    );
     background-size: cover;
     background-attachment: fixed;
     background-position: center center;
@@ -34,8 +39,7 @@
     display: grid;
     grid-auto-columns: max-content 1fr;
     grid-auto-rows: 1fr;
-    grid-template-areas: 
-        "pos info";
+    grid-template-areas: "pos info";
 }
 
 .poster {
@@ -67,7 +71,7 @@
     display: grid;
     grid-template-columns: 50vw 30vw;
     grid-template-rows: max-content max-content;
-    grid-template-areas: 
+    grid-template-areas:
         "cast_crew details"
         "trailer details";
 }
@@ -91,11 +95,11 @@
 }
 
 .trailer {
-    grid-area: trailer
+    grid-area: trailer;
 }
 
 .all-movie-details {
-    grid-area: details
+    grid-area: details;
 }
 
 .video-slider {
@@ -106,6 +110,35 @@
     width: max-content;
     height: max-content;
     margin-right: 20px;
+}
+
+.video-image-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.video-load-image {
+    position: relative;
+}
+
+.video-load-image::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.548);
+}
+
+.video-load {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    fill: #fff;
+    width: 10vw;
+    height: 10vh;
 }
 
 .video {
@@ -124,22 +157,21 @@
     height: 100%;
 }
 
-
-
 .details-main {
     padding-left: 40px;
     width: 30vw;
     display: grid;
     grid-auto-columns: max-content;
-    grid-auto-rows: max-content max-content max-content max-content max-content max-content max-content max-content;
-    grid-template-areas: 
+    grid-auto-rows: max-content max-content max-content max-content max-content
+        max-content max-content max-content;
+    grid-template-areas:
         "rating"
         "runtime"
         "language"
         "country"
         "genre"
         "production"
-        "budget" 
+        "budget"
         "box-office";
     justify-items: flex-start;
     align-items: center;
@@ -203,8 +235,7 @@
     width: 80vw;
 }
 
-@media (max-width : 768px) {
-
+@media (max-width: 768px) {
     .details-1 {
         padding: 0;
         background: none !important;
@@ -222,7 +253,7 @@
         justify-items: center;
         grid-auto-columns: 1fr;
         grid-auto-rows: max-content 1fr;
-        grid-template-areas: 
+        grid-template-areas:
             "pos"
             "info";
     }
@@ -235,8 +266,8 @@
     .heading-details {
         padding-left: 5px;
     }
-    
-    .synopsis{
+
+    .synopsis {
         padding-left: 0;
         word-spacing: 5px;
         line-height: 1.5;
@@ -247,7 +278,7 @@
         display: grid;
         grid-template-columns: max-content;
         grid-template-rows: max-content max-content max-content;
-        grid-template-areas: 
+        grid-template-areas:
             "cast_crew"
             "trailer"
             "details";
@@ -256,7 +287,7 @@
     .video-slider {
         width: 100vw;
     }
-    
+
     .video {
         width: 80vw;
     }

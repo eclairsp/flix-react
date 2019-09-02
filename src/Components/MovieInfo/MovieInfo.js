@@ -20,6 +20,7 @@ const MovieInfo = props => {
     const [ratings, changeRatings] = useState([]);
     const [background, changeBackground] = useState("none");
     const [isFavourite, changeFavourite] = useState(false);
+    const [videoToLoad, changeVideoToLoad] = useState([]);
     const [favs, updateFavs] = useState(
         JSON.parse(sessionStorage.getItem("favs"))
     );
@@ -50,16 +51,6 @@ const MovieInfo = props => {
 
         const fetchData = async () => {
             let urlMovie = `https://api.themoviedb.org/3/movie/${props.movieId}?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&append_to_response=videos,credits,similar`;
-            // let urlVideo = `https://api.themoviedb.org/3/movie/${
-            //     props.movieId
-            // }/videos?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US`;
-            // let urlCast = `
-            // https://api.themoviedb.org/3/movie/${
-            //     props.movieId
-            // }/credits?api_key=74d9bb95f2c26a20a3f908c481d10af3`;
-            // let urlSimilar = `https://api.themoviedb.org/3/movie/${
-            //     props.movieId
-            // }/similar?api_key=74d9bb95f2c26a20a3f908c481d10af3&language=en-US&page=1`;
 
             const response = await fetch(urlMovie);
             const data = await response.json();
@@ -79,28 +70,12 @@ const MovieInfo = props => {
                 `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${data.backdrop_path})`
             );
 
-            let trailer = data.videos.results.filter(val => {
-                return val.type === "Trailer";
+            let videos = data.videos.results.filter(val => {
+                return val.site === "YouTube";
             });
 
-            let teaser = data.videos.results.filter(val => {
-                return val.type === "Teaser";
-            });
-
-            if (trailer.length === 10) {
-                changeVideoSrc([...trailer]);
-            } else if (
-                teaser.length === 10 - trailer.length ||
-                teaser.length < 10 - trailer.length
-            ) {
-                changeVideoSrc([...trailer, ...teaser]);
-            } else {
-                changeVideoSrc([
-                    ...trailer,
-                    ...teaser.slice(0, 10 - trailer.length)
-                ]);
-            }
-
+            changeVideoSrc([...videos]);
+            changeVideoToLoad([...Array(videos.length).fill(false)]);
             changeCast(data.credits);
 
             changeSimilar(data.similar.results);
@@ -201,6 +176,14 @@ const MovieInfo = props => {
         setTimeout(() => {
             changeNotification({show: false, message: ""});
         }, 2000);
+    };
+
+    const loadVideo = index => {
+        let copy = [...videoToLoad];
+        copy[index] = true;
+        changeVideoToLoad(copy);
+
+        console.log("index", index, videoToLoad);
     };
 
     return (
@@ -359,26 +342,60 @@ const MovieInfo = props => {
                                 <h1 className="heading color-orange">Videos</h1>
                                 <div className="video-slider">
                                     <MovieSlider type="full">
-                                        {videoSrc === undefined
-                                            ? "no videos found"
-                                            : videoSrc.map((val, index) => {
-                                                  return (
-                                                      <div
-                                                          className="video-card"
-                                                          key={index}
-                                                      >
-                                                          <div className="video">
-                                                              <iframe
-                                                                  title={`${val.name} trailer`}
-                                                                  src={`https://www.youtube-nocookie.com/embed/${val.key}`}
-                                                                  frameBorder="0"
-                                                                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                                  allowFullScreen
-                                                              />
-                                                          </div>
-                                                      </div>
-                                                  );
-                                              })}
+                                        {videoSrc === undefined ? (
+                                            <h2 className="heading">
+                                                No videos found
+                                            </h2>
+                                        ) : (
+                                            videoSrc.map((val, index) => {
+                                                return (
+                                                    <div
+                                                        className="video-wrapper"
+                                                        key={index}
+                                                    >
+                                                        {videoToLoad[index] ? (
+                                                            <div className="video-card">
+                                                                <div className="video">
+                                                                    <iframe
+                                                                        title={`${val.name} trailer`}
+                                                                        src={`https://www.youtube-nocookie.com/embed/${val.key}`}
+                                                                        frameBorder="0"
+                                                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                                        allowFullScreen
+                                                                        autoplay
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        ) : (
+                                                            <div
+                                                                className="video-card video-image-card"
+                                                                onClick={() =>
+                                                                    loadVideo(
+                                                                        index
+                                                                    )
+                                                                }
+                                                            >
+                                                                <Img
+                                                                    src={[
+                                                                        `https://img.youtube.com/vi/${val.key}/hqdefault.jpg
+`
+                                                                    ]}
+                                                                    className="video-load-image"
+                                                                />
+
+                                                                <svg
+                                                                    className="video-load"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                    viewBox="0 0 512 512"
+                                                                >
+                                                                    <path d="M96 52v408l320-204L96 52z" />
+                                                                </svg>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })
+                                        )}
                                     </MovieSlider>
                                 </div>
                             </div>
