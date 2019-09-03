@@ -12,6 +12,7 @@ import "./../User/user.css";
 import Notify from "../Notification/Notify";
 import NotFound from "../NotFound/NotFound";
 import debounce from "../Utils/Debounce";
+
 const Hom = posed.div({
     enter: {y: 0, opacity: 1, delay: 300},
     exit: {
@@ -217,10 +218,6 @@ class Search extends React.Component {
     };
 
     loadMoreResults = () => {
-        console.log(
-            window.innerHeight + document.documentElement.scrollTop ===
-                document.documentElement.offsetHeight
-        );
         this.setState({
             infiniteLoading: true
         });
@@ -355,9 +352,9 @@ class Search extends React.Component {
                                                     {val}
                                                 </h3>
                                                 <h3 className="heading card-after-result-head">
-                                                    {this.state.resultSecHead[
+                                                    {this.state.resultLastHead[
                                                         index
-                                                    ].includes("known for,")
+                                                    ] === "celeb"
                                                         ? this.state
                                                               .resultSecHead[
                                                               index

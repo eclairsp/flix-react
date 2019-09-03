@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Link} from "@reach/router";
 import Img from "react-image";
 import {Helmet} from "react-helmet";
+import posed, {PoseGroup} from "react-pose";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
 import Notify from "../Notification/Notify";
 import poster342 from "./../../poster-342.png";
@@ -14,6 +15,11 @@ import removeFav from "../Fetch/removeFav";
 import "./../MovieInfo/movie-info.css";
 import "./tv-info.css";
 
+const VideoContainer = posed.div({
+    enter: {opacity: 1},
+    exit: {opacity: 0}
+});
+
 const TvInfo = props => {
     const [tvInfo, changeTvInfo] = useState([]);
     const [videoSrc, changeVideoSrc] = useState([]);
@@ -23,6 +29,7 @@ const TvInfo = props => {
     const [ratings, changeRatings] = useState([]);
     const [background, changeBackground] = useState("none");
     const [isFavourite, changeFavourite] = useState(false);
+    const [videoToLoad, changeVideoToLoad] = useState([]);
     const [favs, updateFavs] = useState(
         JSON.parse(sessionStorage.getItem("favs"))
     );
@@ -76,7 +83,11 @@ const TvInfo = props => {
                 `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${data.backdrop_path})`
             );
 
-            changeVideoSrc(data.videos.results);
+            let videos = data.videos.results.filter(val => {
+                return val.site === "YouTube";
+            });
+
+            changeVideoSrc([...videos]);
             changeCast(data.credits);
             changeSimilar(data.similar.results);
 
@@ -139,6 +150,14 @@ const TvInfo = props => {
         setTimeout(() => {
             changeNotification({show: false, message: ""});
         }, 2000);
+    };
+
+    const loadVideo = index => {
+        let copy = [...videoToLoad];
+        copy[index] = true;
+        changeVideoToLoad(copy);
+
+        console.log("index", index, videoToLoad);
     };
 
     return (
@@ -296,28 +315,67 @@ const TvInfo = props => {
                                 <h1 className="heading color-orange">Videos</h1>
                                 <div className="video-slider">
                                     <MovieSlider type="full">
-                                        {videoSrc === undefined
-                                            ? "no videos found"
-                                            : videoSrc
-                                                  .reverse()
-                                                  .map((val, index) => {
-                                                      return (
-                                                          <div
-                                                              className="video-card"
-                                                              key={index}
-                                                          >
-                                                              <div className="video">
-                                                                  <iframe
-                                                                      title={`${val.name} trailer`}
-                                                                      src={`https://www.youtube-nocookie.com/embed/${val.key}`}
-                                                                      frameBorder="0"
-                                                                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                                      allowFullScreen
-                                                                  />
-                                                              </div>
-                                                          </div>
-                                                      );
-                                                  })}
+                                        {videoSrc === undefined ? (
+                                            <h2 className="heading">
+                                                No videos found
+                                            </h2>
+                                        ) : (
+                                            videoSrc.map((val, index) => {
+                                                return (
+                                                    <div
+                                                        className="video-wrapper"
+                                                        key={index}
+                                                    >
+                                                        <PoseGroup>
+                                                            {videoToLoad[
+                                                                index
+                                                            ] ? (
+                                                                <VideoContainer
+                                                                    key="video"
+                                                                    className="video-card"
+                                                                >
+                                                                    <div className="video">
+                                                                        <iframe
+                                                                            title={`${val.name} trailer`}
+                                                                            src={`https://www.youtube-nocookie.com/embed/${val.key}?autoplay=1&mute=1`}
+                                                                            frameBorder="0"
+                                                                            allow="autoplay;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                                            allowFullScreen
+                                                                        />
+                                                                    </div>
+                                                                </VideoContainer>
+                                                            ) : (
+                                                                <VideoContainer
+                                                                    key="video-thumbnail"
+                                                                    className="video-card video-image-card"
+                                                                    onClick={() =>
+                                                                        loadVideo(
+                                                                            index
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Img
+                                                                        src={[
+                                                                            `https://img.youtube.com/vi/${val.key}/hqdefault.jpg
+`
+                                                                        ]}
+                                                                        className="video-load-image"
+                                                                    />
+
+                                                                    <svg
+                                                                        className="video-load"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        viewBox="0 0 512 512"
+                                                                    >
+                                                                        <path d="M96 52v408l320-204L96 52z" />
+                                                                    </svg>
+                                                                </VideoContainer>
+                                                            )}
+                                                        </PoseGroup>
+                                                    </div>
+                                                );
+                                            })
+                                        )}
                                     </MovieSlider>
                                 </div>
                             </div>

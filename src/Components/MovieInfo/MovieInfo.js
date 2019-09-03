@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import Img from "react-image";
 import {Helmet} from "react-helmet";
+import posed, {PoseGroup} from "react-pose";
 import MovieSlider from "./../../Components/MovieSlider/MovieSlider";
 import Notify from "../Notification/Notify";
 import poster342 from "./../../poster-342.png";
@@ -10,6 +11,11 @@ import NotFound from "../NotFound/NotFound";
 import addToFav from "../Fetch/addToFav";
 import removeFav from "../Fetch/removeFav";
 import "./movie-info.css";
+
+const VideoContainer = posed.div({
+    enter: {opacity: 1},
+    exit: {opacity: 0}
+});
 
 const MovieInfo = props => {
     const [movieInfo, changeMovieInfo] = useState([]);
@@ -353,45 +359,52 @@ const MovieInfo = props => {
                                                         className="video-wrapper"
                                                         key={index}
                                                     >
-                                                        {videoToLoad[index] ? (
-                                                            <div className="video-card">
-                                                                <div className="video">
-                                                                    <iframe
-                                                                        title={`${val.name} trailer`}
-                                                                        src={`https://www.youtube-nocookie.com/embed/${val.key}`}
-                                                                        frameBorder="0"
-                                                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                                        allowFullScreen
-                                                                        autoplay
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        ) : (
-                                                            <div
-                                                                className="video-card video-image-card"
-                                                                onClick={() =>
-                                                                    loadVideo(
-                                                                        index
-                                                                    )
-                                                                }
-                                                            >
-                                                                <Img
-                                                                    src={[
-                                                                        `https://img.youtube.com/vi/${val.key}/hqdefault.jpg
-`
-                                                                    ]}
-                                                                    className="video-load-image"
-                                                                />
-
-                                                                <svg
-                                                                    className="video-load"
-                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                    viewBox="0 0 512 512"
+                                                        <PoseGroup>
+                                                            {videoToLoad[
+                                                                index
+                                                            ] ? (
+                                                                <VideoContainer
+                                                                    key="video"
+                                                                    className="video-card"
                                                                 >
-                                                                    <path d="M96 52v408l320-204L96 52z" />
-                                                                </svg>
-                                                            </div>
-                                                        )}
+                                                                    <div className="video">
+                                                                        <iframe
+                                                                            title={`${val.name} trailer`}
+                                                                            src={`https://www.youtube-nocookie.com/embed/${val.key}?autoplay=1&mute=1`}
+                                                                            frameBorder="0"
+                                                                            allow="autoplay;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                                            allowFullScreen
+                                                                        />
+                                                                    </div>
+                                                                </VideoContainer>
+                                                            ) : (
+                                                                <VideoContainer
+                                                                    key="video-thumbnail"
+                                                                    className="video-card video-image-card"
+                                                                    onClick={() =>
+                                                                        loadVideo(
+                                                                            index
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Img
+                                                                        src={[
+                                                                            `https://img.youtube.com/vi/${val.key}/hqdefault.jpg
+`
+                                                                        ]}
+                                                                        className="video-load-image"
+                                                                    />
+
+                                                                    <svg
+                                                                        className="video-load"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        viewBox="0 0 512 512"
+                                                                    >
+                                                                        <path d="M96 52v408l320-204L96 52z" />
+                                                                    </svg>
+                                                                </VideoContainer>
+                                                            )}
+                                                        </PoseGroup>
                                                     </div>
                                                 );
                                             })
