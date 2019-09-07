@@ -10,6 +10,7 @@ import HomeSlider from "../HomeSlider/HomeSlider";
 import NotFound from "../NotFound/NotFound";
 import addToFav from "../Fetch/addToFav";
 import removeFav from "../Fetch/removeFav";
+import numberToBoxOffice from "../Utils/NumberToBoxOffice";
 import "./movie-info.css";
 
 const VideoContainer = posed.div({
@@ -516,7 +517,9 @@ const MovieInfo = props => {
                                         <h3 className="heading">Budget</h3>
                                         <div className="tags">
                                             <div className="genre__tag">
-                                                {`${movieInfo.budget} $`}
+                                                {`${numberToBoxOffice(
+                                                    movieInfo.budget
+                                                )} $`}
                                             </div>
                                         </div>
                                     </div>
@@ -524,7 +527,9 @@ const MovieInfo = props => {
                                         <h3 className="heading">Box-Office</h3>
                                         <div className="tags">
                                             <div className="genre__tag">
-                                                {`${movieInfo.revenue} $`}
+                                                {`${numberToBoxOffice(
+                                                    movieInfo.revenue
+                                                )} $`}
                                             </div>
                                         </div>
                                     </div>
