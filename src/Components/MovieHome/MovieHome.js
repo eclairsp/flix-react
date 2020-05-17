@@ -12,11 +12,11 @@ const Hom = posed.div({
     exit: {
         y: 100,
         opacity: 0,
-        transition: {duration: 200}
-    }
+        transition: {duration: 200},
+    },
 });
 
-const MovieHome = props => {
+const MovieHome = (props) => {
     const [topRated, changeTopRated] = useState([]);
     const [nowPlaying, changeNowPlaying] = useState([]);
     const [upcoming, changeUpcoming] = useState([]);
@@ -35,8 +35,8 @@ const MovieHome = props => {
         ) {
             let urlCountry = "https://ipapi.co/json/";
             fetch(urlCountry)
-                .then(res => res.json())
-                .then(data => {
+                .then((res) => res.json())
+                .then((data) => {
                     console.log(data);
                     localStorage.setItem("userCountry", data.country_name);
                     localStorage.setItem("userCountryCode", data.country);
@@ -81,6 +81,15 @@ const MovieHome = props => {
                 <meta
                     name="description"
                     content="Get the latest and upcoming movies. Also the top rated movies over the year."
+                />
+                <meta name="Description" content="Flixi | Movies Home" />
+                <meta name="twitter:card" content="summary" />
+                <meta property="og:url" content="https://flixi.netlify.app/" />
+                <meta property="og:title" content="Movie | Flixi" />
+                <meta property="og:description" content="Checkout the movies" />
+                <meta
+                    property="og:image"
+                    content="https://flixi.netlify.app/android-chrome-192x192.png"
                 />
             </Helmet>
             {loaded && (
