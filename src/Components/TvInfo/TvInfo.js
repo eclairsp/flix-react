@@ -17,10 +17,10 @@ import "./tv-info.css";
 
 const VideoContainer = posed.div({
     enter: {opacity: 1},
-    exit: {opacity: 0}
+    exit: {opacity: 0},
 });
 
-const TvInfo = props => {
+const TvInfo = (props) => {
     const [tvInfo, changeTvInfo] = useState([]);
     const [videoSrc, changeVideoSrc] = useState([]);
     const [cast, changeCast] = useState([]);
@@ -38,7 +38,7 @@ const TvInfo = props => {
     );
     const [notification, changeNotification] = useState({
         show: false,
-        message: ""
+        message: "",
     });
     const [isValidTv, changeIsValidTv] = useState(true);
 
@@ -47,7 +47,7 @@ const TvInfo = props => {
             const id = props.tvId;
 
             if (favs !== null) {
-                favs.forEach(element => {
+                favs.forEach((element) => {
                     if (
                         element.tmdbID === id.toString() &&
                         element.type === "tv"
@@ -83,7 +83,7 @@ const TvInfo = props => {
                 `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${data.backdrop_path})`
             );
 
-            let videos = data.videos.results.filter(val => {
+            let videos = data.videos.results.filter((val) => {
                 return val.site === "YouTube";
             });
 
@@ -94,8 +94,8 @@ const TvInfo = props => {
             const rating = [
                 {
                     Source: "The Movie Database",
-                    Value: data.vote_average.toString() + "/10"
-                }
+                    Value: data.vote_average.toString() + "/10",
+                },
             ];
 
             const ratings = await fetchRatings(
@@ -120,7 +120,7 @@ const TvInfo = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const Fav = async e => {
+    const Fav = async (e) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -145,14 +145,14 @@ const TvInfo = props => {
         }
     };
 
-    const notify = message => {
+    const notify = (message) => {
         changeNotification({show: true, message: message});
         setTimeout(() => {
             changeNotification({show: false, message: ""});
         }, 2000);
     };
 
-    const loadVideo = index => {
+    const loadVideo = (index) => {
         let copy = [...videoToLoad];
         copy[index] = true;
         changeVideoToLoad(copy);
@@ -167,6 +167,23 @@ const TvInfo = props => {
                     <Helmet>
                         <title>{`${tvInfo.name} (TV) | FLIXI`}</title>
                         <meta name="description" content={tvInfo.overview} />
+                        <title>{`${tvInfo.title} (Movie) | FLIXI`}</title>
+                        <meta name="description" content={tvInfo.overview} />
+                        <meta name="Description" content={tvInfo.overview} />
+                        <meta name="twitter:card" content="summary" />
+                        <meta
+                            property="og:url"
+                            content="https://flixi.netlify.app/"
+                        />
+                        <meta property="og:title" content="Movie | Flixi" />
+                        <meta
+                            property="og:description"
+                            content={tvInfo.overview}
+                        />
+                        <meta
+                            property="og:image"
+                            content={`https://image.tmdb.org/t/p/w342/${tvInfo.poster_path}`}
+                        />
                     </Helmet>
                     <div
                         className="center-details"
@@ -183,20 +200,20 @@ const TvInfo = props => {
                                         className="poster-main"
                                         src={[
                                             `https://image.tmdb.org/t/p/w342/${tvInfo.poster_path}`,
-                                            poster342
+                                            poster342,
                                         ]}
                                         loader={
                                             <div
                                                 style={{
                                                     height: "513px",
                                                     width: "342px",
-                                                    borderRadius: "10px"
+                                                    borderRadius: "10px",
                                                 }}
                                                 className="gradient"
                                             ></div>
                                         }
                                         alt={`${tvInfo.title} poster`}
-                                        onError={e =>
+                                        onError={(e) =>
                                             (e.target.src = poster342)
                                         }
                                     />
@@ -207,7 +224,7 @@ const TvInfo = props => {
                                         &nbsp;&nbsp;
                                         {localStorage.getItem("authToken") && (
                                             <span
-                                                onClick={async e => Fav(e)}
+                                                onClick={async (e) => Fav(e)}
                                                 style={{cursor: "pointer"}}
                                             >
                                                 {addToWatchlistLoading ? (
@@ -296,7 +313,7 @@ const TvInfo = props => {
                                     Created By,{" "}
                                     {tvInfo.created_by === undefined
                                         ? "not found"
-                                        : tvInfo.created_by.map(val => {
+                                        : tvInfo.created_by.map((val) => {
                                               return val.name + " | ";
                                           })}
                                 </h2>
@@ -357,7 +374,7 @@ const TvInfo = props => {
                                                                     <Img
                                                                         src={[
                                                                             `https://img.youtube.com/vi/${val.key}/hqdefault.jpg
-`
+`,
                                                                         ]}
                                                                         className="video-load-image"
                                                                     />

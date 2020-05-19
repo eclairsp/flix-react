@@ -10,8 +10,8 @@ const Hom = posed.div({
     exit: {
         y: 100,
         opacity: 0,
-        transition: {duration: 200}
-    }
+        transition: {duration: 200},
+    },
 });
 
 const Home = () => {
@@ -71,10 +71,13 @@ const Home = () => {
                 <meta name="twitter:card" content="summary" />
                 <meta property="og:url" content="https://flixi.netlify.app/" />
                 <meta property="og:title" content="Flixi" />
-                <meta property="og:description" content="Flixi is a webapp to know about the lastest movies and make a list of ones you want to watch." />
+                <meta
+                    property="og:description"
+                    content="Flixi is a webapp to know about the lastest movies and make a list of ones you want to watch."
+                />
                 <meta
                     property="og:image"
-                    content="https://flixi.netlify.app/android-chrome-192x192.png"
+                    content="https://flixi.netlify.app/android-chrome-512x512.png"
                 />
             </Helmet>
             {loaded && (
