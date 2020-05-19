@@ -15,10 +15,10 @@ import "./movie-info.css";
 
 const VideoContainer = posed.div({
     enter: {opacity: 1},
-    exit: {opacity: 0}
+    exit: {opacity: 0},
 });
 
-const MovieInfo = props => {
+const MovieInfo = (props) => {
     const [movieInfo, changeMovieInfo] = useState([]);
     const [videoSrc, changeVideoSrc] = useState([]);
     const [cast, changeCast] = useState([]);
@@ -36,7 +36,7 @@ const MovieInfo = props => {
     );
     const [notification, changeNotification] = useState({
         show: false,
-        message: ""
+        message: "",
     });
     const [isValidMovie, changeIsValidMovie] = useState(true);
 
@@ -45,7 +45,7 @@ const MovieInfo = props => {
             const id = props.movieId;
 
             if (favs !== null) {
-                favs.forEach(element => {
+                favs.forEach((element) => {
                     if (
                         element.tmdbID === id.toString() &&
                         element.type === "movie"
@@ -77,7 +77,7 @@ const MovieInfo = props => {
                 `linear-gradient(270deg, rgba(0, 0, 0, 0.7) 40%, rgba(16, 16, 16, 0.5) 80%, rgba(16, 16, 16, 0.3) 90%), url(https://image.tmdb.org/t/p/original/${data.backdrop_path})`
             );
 
-            let videos = data.videos.results.filter(val => {
+            let videos = data.videos.results.filter((val) => {
                 return val.site === "YouTube";
             });
 
@@ -90,8 +90,8 @@ const MovieInfo = props => {
             const rating = [
                 {
                     Source: "The Movie Database",
-                    Value: data.vote_average.toString() + "/10"
-                }
+                    Value: data.vote_average.toString() + "/10",
+                },
             ];
 
             const ratings = await fetchRatings(data.imdb_id, rating);
@@ -153,7 +153,7 @@ const MovieInfo = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const Fav = async e => {
+    const Fav = async (e) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -178,14 +178,14 @@ const MovieInfo = props => {
         }
     };
 
-    const notify = message => {
+    const notify = (message) => {
         changeNotification({show: true, message: message});
         setTimeout(() => {
             changeNotification({show: false, message: ""});
         }, 2000);
     };
 
-    const loadVideo = index => {
+    const loadVideo = (index) => {
         let copy = [...videoToLoad];
         copy[index] = true;
         changeVideoToLoad(copy);
@@ -200,6 +200,21 @@ const MovieInfo = props => {
                     <Helmet>
                         <title>{`${movieInfo.title} (Movie) | FLIXI`}</title>
                         <meta name="description" content={movieInfo.overview} />
+                        <meta name="Description" content={movieInfo.overview} />
+                        <meta name="twitter:card" content="summary" />
+                        <meta
+                            property="og:url"
+                            content="https://flixi.netlify.app/"
+                        />
+                        <meta property="og:title" content="Movie | Flixi" />
+                        <meta
+                            property="og:description"
+                            content={movieInfo.overview}
+                        />
+                        <meta
+                            property="og:image"
+                            content={`https://image.tmdb.org/t/p/w342/${movieInfo.poster_path}`}
+                        />
                     </Helmet>
                     <section
                         className="center-details"
@@ -216,20 +231,20 @@ const MovieInfo = props => {
                                         className="poster-main"
                                         src={[
                                             `https://image.tmdb.org/t/p/w342/${movieInfo.poster_path}`,
-                                            poster342
+                                            poster342,
                                         ]}
                                         loader={
                                             <div
                                                 style={{
                                                     height: "513px",
                                                     width: "342px",
-                                                    borderRadius: "10px"
+                                                    borderRadius: "10px",
                                                 }}
                                                 className="gradient"
                                             ></div>
                                         }
                                         alt={`${movieInfo.title} poster`}
-                                        onError={e =>
+                                        onError={(e) =>
                                             (e.target.src = poster342)
                                         }
                                     />
@@ -240,7 +255,7 @@ const MovieInfo = props => {
                                         &nbsp;&nbsp;
                                         {localStorage.getItem("authToken") && (
                                             <span
-                                                onClick={async e => Fav(e)}
+                                                onClick={async (e) => Fav(e)}
                                                 style={{cursor: "pointer"}}
                                             >
                                                 {addToWatchlistLoading ? (
@@ -316,7 +331,7 @@ const MovieInfo = props => {
                                     Directed By,{" "}
                                     {cast.crew === undefined
                                         ? "not found"
-                                        : cast.crew.map(val => {
+                                        : cast.crew.map((val) => {
                                               if (val.job === "Director") {
                                                   return val.name + " | ";
                                               }
@@ -327,7 +342,7 @@ const MovieInfo = props => {
                                     Screenplay By,{" "}
                                     {cast.crew === undefined
                                         ? "not found"
-                                        : cast.crew.map(val => {
+                                        : cast.crew.map((val) => {
                                               if (val.job === "Screenplay") {
                                                   return val.name + " | ";
                                               }
@@ -391,7 +406,7 @@ const MovieInfo = props => {
                                                                     <Img
                                                                         src={[
                                                                             `https://img.youtube.com/vi/${val.key}/hqdefault.jpg
-`
+`,
                                                                         ]}
                                                                         className="video-load-image"
                                                                     />
