@@ -1,4 +1,0 @@
-[[plugins]]
-package = "netlify-plugin-prerender-spa"
-  [plugins.inputs]
-  source = "build"
